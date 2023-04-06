@@ -32,5 +32,5 @@ You will find the built library in `bin/Debug/net6/`.
 
 To run tests on the classlib, run
 ```sh
-dotnet test --environment GothicAssetDirectory="PATH_TO_YOUR_GOTHIC_ASSETS_ROOT_FOLDER"
+dotnet test --environment GOTHIC_ASSET_DIR="PATH_TO_YOUR_GOTHIC_ASSETS_ROOT_FOLDER"
 ```

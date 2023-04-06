@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <EnvironmentVariables>
+      <GOTHIC_ASSET_DIR>C:\Program Files (x86)\Steam\steamapps\common\Gothic\</GOTHIC_ASSET_DIR>
+    </EnvironmentVariables>
+  </RunConfiguration>
+</RunSettings>
