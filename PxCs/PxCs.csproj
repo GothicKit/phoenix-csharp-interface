@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Comment this next line if you want to create a .dll/.so -->
+    <!-- <OutputType>Exe</OutputType> -->
     <TargetFramework>net6</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>8.0</LangVersion>
