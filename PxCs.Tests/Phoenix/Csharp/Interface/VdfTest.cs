@@ -8,10 +8,21 @@ namespace Phoenix.Csharp.Interface
         [Fact]
         public void Is_Vdf_loadable()
         {
-            var vdfPtr = Vdf.pxVdfLoadFromFile(G_ASSET_DIR + "/worlds.VDF");
-            Assert.True(vdfPtr != IntPtr.Zero);
+            var vdfPtrMain = Vdf.pxVdfNew("main");
+            var vdfPtrWorlds = Vdf.pxVdfLoadFromFile(G1_ASSET_DIR + "/Data/worlds.VDF");
+            var vdfPtrTextures = Vdf.pxVdfLoadFromFile(G1_ASSET_DIR + "/Data/textures.VDF");
 
-            Vdf.pxVdfDestroy(vdfPtr);
+            Assert.True(vdfPtrMain != IntPtr.Zero);
+            Assert.True(vdfPtrWorlds != IntPtr.Zero);
+            Assert.True(vdfPtrTextures != IntPtr.Zero);
+
+            Vdf.pxVdfMerge(vdfPtrMain, vdfPtrWorlds, true);
+            Vdf.pxVdfMerge(vdfPtrMain, vdfPtrTextures, true);
+
+            // Destroy early to check that data is stored on vdfPtrMain (as expected)
+            Vdf.pxVdfDestroy(vdfPtrWorlds);
+            Vdf.pxVdfDestroy(vdfPtrTextures);
+            Vdf.pxVdfDestroy(vdfPtrMain);
         }
     }
 }

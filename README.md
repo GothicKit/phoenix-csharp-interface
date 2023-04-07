@@ -39,5 +39,5 @@ You need to have a version of the phoenix-shared-interface library. This won't b
 
 **execution**  
 ```sh
-dotnet test --environment GOTHIC_ASSET_DIR="PATH_TO_YOUR_GOTHIC_ASSETS_ROOT_FOLDER"
+dotnet test --environment GOTHIC1_ASSET_DIR="PATH_TO_YOUR_GOTHIC1_ASSETS_ROOT_FOLDER"
 ```

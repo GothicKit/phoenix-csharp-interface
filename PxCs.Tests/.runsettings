@@ -2,7 +2,7 @@
 <RunSettings>
   <RunConfiguration>
     <EnvironmentVariables>
-      <GOTHIC_ASSET_DIR>C:\Program Files (x86)\Steam\steamapps\common\Gothic\</GOTHIC_ASSET_DIR>
+      <GOTHIC1_ASSET_DIR>C:\Program Files (x86)\Steam\steamapps\common\Gothic\</GOTHIC1_ASSET_DIR>
     </EnvironmentVariables>
   </RunConfiguration>
 </RunSettings>
