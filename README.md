@@ -31,6 +31,13 @@ You will find the built library in `bin/Debug/net6/`.
 
 
 To run tests on the classlib, run
+
+**preparation**  
+You need to have a version of the phoenix-shared-interface library. This won't be bundled by this project.
+1. Build the shared library from this project [GothicKit/phoenix-shared-interface](https://github.com/GothicKit/phoenix-shared-interface)
+2. Put your .dll/.so into ./PxCs.Tests/ConfigFiles
+
+**execution**  
 ```sh
 dotnet test --environment GOTHIC_ASSET_DIR="PATH_TO_YOUR_GOTHIC_ASSETS_ROOT_FOLDER"
 ```

@@ -1,0 +1,5 @@
+# Do not bundle shared libraries with this project.
+# Instead fetch your desired release from https://github.com/GothicKit/phoenix-shared-interface
+*.dll
+*.dll.a
+*.so

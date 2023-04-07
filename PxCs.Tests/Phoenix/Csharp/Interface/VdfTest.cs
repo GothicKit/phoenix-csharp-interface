@@ -1,7 +1,5 @@
-using Xunit;
-using Xunit.Abstractions;
 using System;
-using PxCs.Tests.Phoenix.Csharp.Interface;
+using Xunit;
 
 namespace Phoenix.Csharp.Interface
 {
@@ -10,7 +8,10 @@ namespace Phoenix.Csharp.Interface
         [Fact]
         public void Is_Vdf_loadable()
         {
-            Assert.Equal("234", gothicAssetDir);
+            var vdfPtr = Vdf.pxVdfLoadFromFile(G_ASSET_DIR + "/worlds.VDF");
+            Assert.True(vdfPtr != IntPtr.Zero);
+
+            Vdf.pxVdfDestroy(vdfPtr);
         }
     }
 }
