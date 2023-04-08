@@ -24,7 +24,11 @@ namespace Phoenix.Csharp.Interface
         protected string GetAssetPath(string relativeFilePath)
         {
             var joinedPath = Path.Join(G1_ASSET_DIR, relativeFilePath);
-            return Path.GetFullPath(joinedPath);
+            var fullPath = Path.GetFullPath(joinedPath);
+
+            Assert.True(File.Exists(joinedPath), "The filePath >" + fullPath + "< doesn't exist.");
+
+            return fullPath;
         }
 
         protected IntPtr LoadVdf(string relativeFilePath)
@@ -40,10 +44,25 @@ namespace Phoenix.Csharp.Interface
 
             return vdfPtrMain;
         }
-
         protected void DestroyVdf(IntPtr vdf)
         {
             Vdf.pxVdfDestroy(vdf);
         }
+
+        protected IntPtr LoadBuffer(string relativeFilePath)
+        {
+            var bufferPtr = Buffer.pxBufferMmap(GetAssetPath(relativeFilePath));
+
+            Assert.True(bufferPtr != IntPtr.Zero, "Buffer has no pointer and therefore no data. Does your file exist?");
+
+            return bufferPtr;
+        }
+
+        protected void DestroyBuffer(IntPtr bufferPtr)
+        {
+            Buffer.pxBufferDestroy(bufferPtr);
+        }
+
+
     }
 }
