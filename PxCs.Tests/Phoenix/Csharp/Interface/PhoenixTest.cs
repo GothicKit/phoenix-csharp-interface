@@ -24,10 +24,8 @@ namespace Phoenix.Csharp.Interface
         protected string GetAssetPath(string relativeFilePath)
         {
             var joinedPath = Path.Join(G1_ASSET_DIR, relativeFilePath);
-
             return Path.GetFullPath(joinedPath);
         }
-
 
         protected IntPtr LoadVdf(string relativeFilePath)
         {
