@@ -15,7 +15,7 @@ namespace Phoenix.Csharp.Interface
 
         [DllImport(DLLNAME)] public static extern string pxMshGetName(string msh);
         [DllImport(DLLNAME)] public static extern AABB pxMshGetBbox(IntPtr msh);
-        [DllImport(DLLNAME)] public static extern uint PxMshGetMaterialCount(IntPtr msh);
+        [DllImport(DLLNAME)] public static extern uint pxMshGetMaterialCount(IntPtr msh);
         [DllImport(DLLNAME)] public static extern IntPtr pxMshGetMaterial(IntPtr msh, uint i);
         [DllImport(DLLNAME)] public static extern uint pxMshGetVertexCount(IntPtr msh);
         [DllImport(DLLNAME)] public static extern Vector3 pxMshGetVertex(IntPtr msh, uint i);

@@ -31,6 +31,6 @@ namespace Phoenix.Csharp.Interface
         [DllImport(DLLNAME)] public static extern void pxTexDestroy(IntPtr tex);
 
         [DllImport(DLLNAME)] public static extern void pxTexGetMeta(IntPtr tex, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
-        /*[DllImport(DLLNAME)]*/ public static void /*extern uint8_t const**/ pxTexGetMipmap(IntPtr tex, uint level, out uint width, out uint height) { throw new NotImplementedException("FIXME returns an array (aka uint8_t const* pointers) - We need to check if this is possible..."); }
+        [DllImport(DLLNAME)] public static extern IntPtr pxTexGetMipmap(IntPtr tex, out uint length, uint level, out uint width, out uint height);
     }
 }
