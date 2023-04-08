@@ -6,7 +6,7 @@ namespace Phoenix.Csharp.Interface
 {
     public abstract class PhoenixTest
     {
-        protected readonly string G1_ASSET_DIR;
+        private readonly string G1_ASSET_DIR;
 
         public PhoenixTest()
         {
@@ -18,22 +18,25 @@ namespace Phoenix.Csharp.Interface
             G1_ASSET_DIR = dir;
         }
 
-
         /// <summary>
-        /// Convenient function to load Vdf file.
+        /// The joined path in its canonical representation for the current operating system.
         /// </summary>
-        /// <param name="pathSuffix"></param>
-        /// <returns></returns>
-        protected IntPtr LoadVdf(string pathSuffix)
+        protected string GetAssetPath(string relativeFilePath)
         {
-            string fullPath = G1_ASSET_DIR + pathSuffix;
+            var joinedPath = Path.Join(G1_ASSET_DIR, relativeFilePath);
+            return Path.GetFullPath(joinedPath);
+        }
+
+        protected IntPtr LoadVdf(string relativeFilePath)
+        {
+            string fullPath = GetAssetPath(relativeFilePath);
             Assert.True(File.Exists(fullPath), "Path >" + fullPath + "< does not exist.");
 
             var vdfPtrMain = Vdf.pxVdfNew("main");
-            var vdfPtrToLoad = Vdf.pxVdfLoadFromFile(G1_ASSET_DIR + pathSuffix);
+            var vdfPtrToLoad = Vdf.pxVdfLoadFromFile(fullPath);
 
             Vdf.pxVdfMerge(vdfPtrMain, vdfPtrToLoad, true);
-            Vdf.pxVdfDestroy(vdfPtrToLoad); // Data is already copied into vdfPtrMain and can therefore be Destroyed.
+            Vdf.pxVdfDestroy(vdfPtrToLoad); // Data is already copied into vdfPtrMain and can therefore be destroyed.
 
             return vdfPtrMain;
         }
