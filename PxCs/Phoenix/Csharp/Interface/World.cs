@@ -93,7 +93,7 @@ namespace Phoenix.Csharp.Interface
 
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern void pxWorldLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVdf(IntPtr vdf, string name);
         [DllImport(DLLNAME)] public static extern void pxWorldDestroy(IntPtr world);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldGetMesh(IntPtr world);
@@ -124,15 +124,19 @@ namespace Phoenix.Csharp.Interface
 
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetCdStatic(IntPtr vob);
+        
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetCdDynamic(IntPtr vob);
+        
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetVobStatic(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobShadowMode pxVobGetShadowMode(IntPtr vob);
+        
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetPhysicsEnabled(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobAnimationMode pxVobGetAnimationMode(IntPtr vob);
         [DllImport(DLLNAME)] public static extern int pxVobGetBias(IntPtr vob);
+        
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetAmbient(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetAnimationStrength(IntPtr vob);
