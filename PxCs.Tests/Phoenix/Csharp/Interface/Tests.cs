@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Xunit;
 using static Phoenix.Csharp.Interface.Texture;
 
@@ -10,8 +11,8 @@ namespace Phoenix.Csharp.Interface
         public void Test_load_Vdf()
         {
             var vdfPtrMain = Vdf.pxVdfNew("main");
-            var vdfPtrWorlds = Vdf.pxVdfLoadFromFile(G1_ASSET_DIR + "/Data/worlds.VDF");
-            var vdfPtrTextures = Vdf.pxVdfLoadFromFile(G1_ASSET_DIR + "/Data/textures.VDF");
+            var vdfPtrWorlds = Vdf.pxVdfLoadFromFile(GetAssetPath("Data/worlds.VDF"));
+            var vdfPtrTextures = Vdf.pxVdfLoadFromFile(GetAssetPath("Data/textures.VDF"));
 
             Assert.True(vdfPtrMain != IntPtr.Zero);
             Assert.True(vdfPtrWorlds != IntPtr.Zero);
@@ -28,7 +29,7 @@ namespace Phoenix.Csharp.Interface
         [Fact]
         public void Test_load_World_Mesh()
         {
-            var vdfPtr = LoadVdf("Data\\worlds.VDF");
+            var vdfPtr = LoadVdf("Data/worlds.VDF");
 
             var worldPtr = World.pxWorldLoadFromVdf(vdfPtr, "world.zen");
             Assert.True(worldPtr != IntPtr.Zero, "World couldn't be loaded inside vdf.");
@@ -50,7 +51,7 @@ namespace Phoenix.Csharp.Interface
         [Fact]
         public void Test_load_Texture()
         {
-            var vdfPtr = LoadVdf("Data\\textures.VDF");
+            var vdfPtr = LoadVdf("Data/textures.VDF");
 
             // Textures are named uncompiled >.TGA< and compiled >-C.TEX<
             var texPtr = Texture.pxTexLoadFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX");
