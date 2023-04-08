@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using static Phoenix.Csharp.Interface.Texture;
 
 namespace Phoenix.Csharp.Interface
 {
@@ -55,11 +56,13 @@ namespace Phoenix.Csharp.Interface
             var texPtr = Texture.pxTexLoadFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX");
             Assert.True(texPtr != IntPtr.Zero, "Texture couldn't be loaded inside vdf.");
 
-            Texture.pxTexGetMeta(texPtr, out uint format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
-            Assert.True(format == 10u, "format doesn't match.");
-            Assert.True(width == 256u, "width doesn't match.");
-            Assert.True(height == 256u, "height doesn't match.");
-            Assert.True(mipmapCount == 6u, "mipmapCount doesn't match.");
+            Texture.pxTexGetMeta(texPtr, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
+            Assert.True(format == Format.tex_dxt1, "format >tex_dxt1< doesn't match.");
+            Assert.True(width == 256u, "width >256u< doesn't match.");
+            Assert.True(height == 256u, "height >256u< doesn't match.");
+            Assert.True(mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
+
+
 
             Texture.pxTexDestroy(texPtr);
         }
