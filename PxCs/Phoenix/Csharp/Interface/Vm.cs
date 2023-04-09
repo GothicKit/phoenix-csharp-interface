@@ -14,16 +14,14 @@ namespace Phoenix.Csharp.Interface
         };
 
 
-        public delegate void PxVmExternalDefaultCallback(string missingCallbackName);
-
+        public delegate void PxVmExternalDefaultCallback(IntPtr vmPtr, string missingCallbackName);
+        public delegate void PxVmExternalCallback(IntPtr vmPtr);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoadFromVdf(IntPtr vdf, string name);
         [DllImport(DLLNAME)] public static extern void pxVmDestroy(IntPtr vm);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmStackPopInstance(IntPtr vm);
-
-        // FIXME - will it work to get a string back from C? At least it's on heap there...
         [DllImport(DLLNAME)] public static extern string pxVmStackPopString(IntPtr vm);
         [DllImport(DLLNAME)] public static extern float pxVmStackPopFloat(IntPtr vm);
         [DllImport(DLLNAME)] public static extern int pxVmStackPopInt(IntPtr vm);
@@ -48,14 +46,11 @@ namespace Phoenix.Csharp.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVmSetGlobalHero(IntPtr vm, IntPtr instance);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmSetGlobalItem(IntPtr vm, IntPtr instance);
 
-        // FIXME - How to add dynamic list of parameters
+        // Hint: Varargs aren't possible from C# -> C. We therefore need to push stack entries manually before calling the method (e.g. pxVmPushString())
         [return: MarshalAs(UnmanagedType.U1)]
-        [DllImport(DLLNAME)] public static extern bool pxVmCallFunction(IntPtr vm, string functionName /*, ...*/ );
-
-
-        // FIXME - How to add dynamic list of parameters
+        [DllImport(DLLNAME)] public static extern bool pxVmCallFunction(IntPtr vm, string functionName /*, ...*/);
         [return: MarshalAs(UnmanagedType.U1)]
-        [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index /*, char const* args, ...*/ );
+        [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index /*, ...*/ );
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocate(IntPtr vm, string name, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitialize(IntPtr vm, string name, PxVmInstanceType type, IntPtr existing);
