@@ -22,7 +22,7 @@ namespace Phoenix.Csharp.Interface
 
         public static void PxLogMessage(Logging.Level level, string message)
         {
-            Assert.True(level != Logging.Level.error, "Error thrown: " + message);
+            Assert.True(level != Logging.Level.error, "VM error logged: >" + message + "<");
         }
 
         /// <summary>

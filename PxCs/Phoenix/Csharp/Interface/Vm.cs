@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Phoenix.Csharp.Interface.Marshaller;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Phoenix.Csharp.Interface
@@ -22,6 +23,8 @@ namespace Phoenix.Csharp.Interface
         [DllImport(DLLNAME)] public static extern void pxVmDestroy(IntPtr vm);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmStackPopInstance(IntPtr vm);
+
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(HeapStringMarshaller))]
         [DllImport(DLLNAME)] public static extern string pxVmStackPopString(IntPtr vm);
         [DllImport(DLLNAME)] public static extern float pxVmStackPopFloat(IntPtr vm);
         [DllImport(DLLNAME)] public static extern int pxVmStackPopInt(IntPtr vm);
