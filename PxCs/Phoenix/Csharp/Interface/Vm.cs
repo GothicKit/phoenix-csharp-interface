@@ -33,8 +33,7 @@ namespace Phoenix.Csharp.Interface
         [DllImport(DLLNAME)] public static extern void pxVmStackPushFloat(IntPtr vm, float f);
         [DllImport(DLLNAME)] public static extern void pxVmStackPushInt(IntPtr vm, int i);
 
-        // FIXME need to check how variable parameters can work.
-//        [DllImport(DLLNAME)] public static extern void pxVmRegisterExternal(IntPtr vm, string name, PxVmExternalCallback cb);
+        [DllImport(DLLNAME)] public static extern void pxVmRegisterExternal(IntPtr vm, string name, PxVmExternalCallback cb);
         [DllImport(DLLNAME)] public static extern void pxVmRegisterExternalDefault(IntPtr vm, PxVmExternalDefaultCallback cb);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmGetGlobalSelf(IntPtr vm);

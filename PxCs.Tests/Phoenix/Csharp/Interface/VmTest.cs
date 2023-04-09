@@ -5,9 +5,9 @@ namespace Phoenix.Csharp.Interface
 {
     public class VmTest : PhoenixTest
     {
-        public static void PxVmExternalDefaultCallbackFunction(string missingCallbackName)
+        public static void PxVmExternalDefaultCallbackFunction(IntPtr vmPtr, string missingCallbackName)
         {
-            int a = 2;
+
         }
 
 
@@ -22,8 +22,8 @@ namespace Phoenix.Csharp.Interface
 
             Vm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
-            //var called = Vm.pxVmCallFunction(vmPtr, "STARTUP_SUB_OLDCAMP");
-            //Assert.True(called, "Function wasn't called successfully.");
+            var called = Vm.pxVmCallFunctionJax(vmPtr, "STARTUP_SUB_OLDCAMP");
+            Assert.True(called, "Function wasn't called successfully.");
 
             Vm.pxVmDestroy(vmPtr);
         }
