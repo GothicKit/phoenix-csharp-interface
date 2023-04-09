@@ -16,6 +16,13 @@ namespace Phoenix.Csharp.Interface
             Assert.True(Directory.Exists(dir), "Path not exists");
 
             G1_ASSET_DIR = dir;
+
+            Logging.pxLoggerSet(PxLogMessage);
+        }
+
+        public static void PxLogMessage(Logging.Level level, string message)
+        {
+            Assert.True(level != Logging.Level.error, "Error thrown: " + message);
         }
 
         /// <summary>
