@@ -1,7 +1,10 @@
+using PxCs.Data;
+using PxCs.Marshaller;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Xml.Linq;
 
 namespace PxCs
 {
@@ -102,7 +105,8 @@ namespace PxCs
         public static extern void pxWorldGetWayPoint(
             IntPtr world,
             uint i,
-            StringBuilder name,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
+                out string name,
             out Vector3 position,
             out Vector3 direction,
             [MarshalAs(UnmanagedType.U1)] out bool freePoint,
@@ -148,5 +152,54 @@ namespace PxCs
 
         [DllImport(DLLNAME)] public static extern uint pxVobGetChildCount(IntPtr vob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobGetChild(IntPtr vob, uint i);
+
+
+        public static PxWayPointData[] GetWayPoints(IntPtr worldPtr)
+        {
+            var count = pxWorldGetWayPointCount(worldPtr);
+            var array = new PxWayPointData[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                pxWorldGetWayPoint(worldPtr, i,
+                    out string name,
+                    out Vector3 position,
+                    out Vector3 direction,
+                    out bool freePoint,
+                    out bool underwater,
+                    out int waterDepth
+                );
+
+                array[i] = new PxWayPointData() {
+                    name = name,
+                    position = position,
+                    direction = direction,
+                    freePoint = freePoint,
+                    underwater = underwater,
+                    waterDepth = waterDepth
+                };
+            }
+
+            return array;
+        }
+
+        public static PxWayEdgeData[] GetWayEdges(IntPtr worldPtr)
+        {
+            var count = pxWorldGetWayEdgeCount(worldPtr);
+            var array = new PxWayEdgeData[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                pxWorldGetWayEdge(worldPtr, i, out uint a, out uint b);
+
+                array[i] = new PxWayEdgeData()
+                {
+                    a = a,
+                    b = b
+                };
+            }
+
+            return array;
+        }
     }
 }

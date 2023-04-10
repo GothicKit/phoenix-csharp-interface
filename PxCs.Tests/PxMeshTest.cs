@@ -1,9 +1,8 @@
-﻿using PxCs.Tests;
-using System;
+﻿using System;
 using System.Numerics;
 using Xunit;
 
-namespace PxCs
+namespace PxCs.Tests
 {
     public class PxMeshTest : PxPhoenixTest
     {
