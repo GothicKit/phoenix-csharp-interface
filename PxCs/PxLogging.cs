@@ -3,7 +3,7 @@ using System;
 
 namespace PxCs
 {
-    public class PxLogging
+    public static class PxLogging
     {
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
