@@ -1,4 +1,5 @@
-﻿using PxCs.Marshaller;
+﻿using PxCs.Data;
+using PxCs.Marshaller;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -51,5 +52,15 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern bool pxMatGetIgnoreSun(IntPtr mat);
         [DllImport(DLLNAME)] public static extern byte pxMatGetAlphaFunc(IntPtr mat);
         [DllImport(DLLNAME)] public static extern Vector2 pxMatGetDefaultMapping(IntPtr mat);
+
+
+        public static PxMaterialData GetMaterial(IntPtr mat)
+        {
+            return new PxMaterialData() {
+                name = pxMatGetName(mat),
+                texture = pxMatGetTexture(mat),
+                color = pxMatGetColor(mat)
+            };
+        }
     }
 }

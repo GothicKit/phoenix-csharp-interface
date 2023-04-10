@@ -1,5 +1,6 @@
 ﻿using PxCs.Tests;
 using System;
+using System.Numerics;
 using Xunit;
 
 namespace PxCs
@@ -15,10 +16,14 @@ namespace PxCs
             Assert.True(worldPtr != IntPtr.Zero, "World couldn't be loaded inside vdf.");
 
             var mesh = PxWorld.pxWorldGetMesh(worldPtr);
-            var vertexCount = PxMesh.pxMshGetVertexCount(mesh);
-            var featureCount = PxMesh.pxMshGetFeatureCount(mesh);
-            Assert.Equal(55439u, vertexCount);
-            Assert.Equal(419936u, featureCount);
+            
+            var vertices = PxMesh.GetVertices(mesh);
+            Assert.Equal(55439u, vertices.LongLength);
+            Assert.Equal(new Vector3(91365f, -4026.6008f, 46900f), vertices[0]); // Testing some random Vertex.
+
+            var features = PxMesh.GetFeatures(mesh);
+            Assert.Equal(419936u, features.LongLength);
+            Assert.Equal(new Vector2(1.1119385f, 2.6441517f), features[0].texture); // Testing some random Feature.
 
             // Check indices
             var vertexIndices = PxMesh.GetPolygonVertexIndices(mesh);
