@@ -1,0 +1,19 @@
+name: 'Build'
+on:
+  - 'push'
+jobs:
+  release:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v3'
+      - name: 'Setup .NET Core SDK'
+        uses: 'actions/setup-dotnet@v3'
+        with:
+          dotnet-version: '6.0.x'
+      - name: 'Build'
+        run: 'dotnet publish --configuration Release -o ./__publish/ -v normal PxCs'
+      - name: 'Publish'
+        uses: 'actions/upload-artifact@v3'
+        with:
+          name: 'Managed Library'
+          path: '__publish'
