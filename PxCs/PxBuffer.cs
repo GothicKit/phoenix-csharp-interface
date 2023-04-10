@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public class Buffer
+    public class PxBuffer
     {
-        private const string DLLNAME = Phoenix.DLLNAME;
+        private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxBufferCreate(out IntPtr bytes, ulong size);
         [DllImport(DLLNAME)] public static extern IntPtr pxBufferMmap(string filePath);

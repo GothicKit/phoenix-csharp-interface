@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public class Texture
+    public class PxTexture
     {
-        private const string DLLNAME = Phoenix.DLLNAME;
+        private const string DLLNAME = PxPhoenix.DLLNAME;
 
         public enum Format
         {

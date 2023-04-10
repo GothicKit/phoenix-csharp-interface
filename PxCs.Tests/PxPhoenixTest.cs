@@ -1,14 +1,15 @@
 using System;
 using System.IO;
+using PxCs;
 using Xunit;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs.Tests
 {
-    public abstract class PhoenixTest
+    public abstract class PxPhoenixTest
     {
         private readonly string G1_ASSET_DIR;
 
-        public PhoenixTest()
+        public PxPhoenixTest()
         {
             string? dir = Environment.GetEnvironmentVariable("GOTHIC1_ASSET_DIR");
 
@@ -17,12 +18,12 @@ namespace Phoenix.Csharp.Interface
 
             G1_ASSET_DIR = dir;
 
-            Logging.pxLoggerSet(PxLogMessage);
+            PxLogging.pxLoggerSet(PxLogMessage);
         }
 
-        public static void PxLogMessage(Logging.Level level, string message)
+        public static void PxLogMessage(PxLogging.Level level, string message)
         {
-            Assert.True(level != Logging.Level.error, "VM error logged: >" + message + "<");
+            Assert.True(level != PxLogging.Level.error, "VM error logged: >" + message + "<");
         }
 
         /// <summary>
@@ -43,22 +44,22 @@ namespace Phoenix.Csharp.Interface
             string fullPath = GetAssetPath(relativeFilePath);
             Assert.True(File.Exists(fullPath), "Path >" + fullPath + "< does not exist.");
 
-            var vdfPtrMain = Vdf.pxVdfNew("main");
-            var vdfPtrToLoad = Vdf.pxVdfLoadFromFile(fullPath);
+            var vdfPtrMain = PxVdf.pxVdfNew("main");
+            var vdfPtrToLoad = PxVdf.pxVdfLoadFromFile(fullPath);
 
-            Vdf.pxVdfMerge(vdfPtrMain, vdfPtrToLoad, true);
-            Vdf.pxVdfDestroy(vdfPtrToLoad); // Data is already copied into vdfPtrMain and can therefore be destroyed.
+            PxVdf.pxVdfMerge(vdfPtrMain, vdfPtrToLoad, true);
+            PxVdf.pxVdfDestroy(vdfPtrToLoad); // Data is already copied into vdfPtrMain and can therefore be destroyed.
 
             return vdfPtrMain;
         }
         protected void DestroyVdf(IntPtr vdf)
         {
-            Vdf.pxVdfDestroy(vdf);
+            PxVdf.pxVdfDestroy(vdf);
         }
 
         protected IntPtr LoadBuffer(string relativeFilePath)
         {
-            var bufferPtr = Buffer.pxBufferMmap(GetAssetPath(relativeFilePath));
+            var bufferPtr = PxBuffer.pxBufferMmap(GetAssetPath(relativeFilePath));
 
             Assert.True(bufferPtr != IntPtr.Zero, "Buffer has no pointer and therefore no data. Does your file exist?");
 
@@ -67,7 +68,7 @@ namespace Phoenix.Csharp.Interface
 
         protected void DestroyBuffer(IntPtr bufferPtr)
         {
-            Buffer.pxBufferDestroy(bufferPtr);
+            PxBuffer.pxBufferDestroy(bufferPtr);
         }
 
 

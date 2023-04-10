@@ -1,11 +1,11 @@
 ﻿using System.Runtime.InteropServices;
 using System;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public class Logging
+    public class PxLogging
     {
-        private const string DLLNAME = Phoenix.DLLNAME;
+        private const string DLLNAME = PxPhoenix.DLLNAME;
 
 
         public enum Level

@@ -1,12 +1,12 @@
-﻿using Phoenix.Csharp.Interface.Marshaller;
+﻿using PxCs.Marshaller;
 using System;
 using System.Runtime.InteropServices;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public static class Vm
+    public static class PxVm
     {
-        private const string DLLNAME = Phoenix.DLLNAME;
+        private const string DLLNAME = PxPhoenix.DLLNAME;
 
 
         public enum PxVmInstanceType
@@ -24,7 +24,7 @@ namespace Phoenix.Csharp.Interface
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmStackPopInstance(IntPtr vm);
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(HeapStringMarshaller))]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
         [DllImport(DLLNAME)] public static extern string pxVmStackPopString(IntPtr vm);
         [DllImport(DLLNAME)] public static extern float pxVmStackPopFloat(IntPtr vm);
         [DllImport(DLLNAME)] public static extern int pxVmStackPopInt(IntPtr vm);

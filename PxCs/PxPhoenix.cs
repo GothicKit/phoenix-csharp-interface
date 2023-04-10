@@ -1,6 +1,6 @@
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public static class Phoenix
+    public static class PxPhoenix
     {
         public const string DLLNAME = "libphoenix-shared";
     }

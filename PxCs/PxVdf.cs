@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public static class Vdf
+    public static class PxVdf
     {
-        private const string DLLNAME = Phoenix.DLLNAME;
+        private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVdfNew(string comment);
         [DllImport(DLLNAME)] public static extern IntPtr pxVdfLoad(IntPtr buffer);

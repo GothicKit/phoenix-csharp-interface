@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Phoenix.Csharp.Interface.Marshaller
+namespace PxCs.Marshaller
 {
     /// <summary>
     /// This marshaller is used for heap allocated char* from unmanaged code.
@@ -9,7 +9,7 @@ namespace Phoenix.Csharp.Interface.Marshaller
     /// which we want to overcome in this scenario.
     /// Reference: https://stackoverflow.com/questions/18498452/how-do-i-write-a-custom-marshaler-which-allows-data-to-flow-from-native-to-manag/18713398#18713398
     /// </summary>
-    public class HeapStringMarshaller : ICustomMarshaler
+    public class PxHeapStringMarshaller : ICustomMarshaler
     {
         public void CleanUpManagedData(object ManagedObj) { }
 
@@ -30,6 +30,6 @@ namespace Phoenix.Csharp.Interface.Marshaller
                 return data;
         }
 
-        public static ICustomMarshaler GetInstance(string v) { return new HeapStringMarshaller(); }
+        public static ICustomMarshaler GetInstance(string v) { return new PxHeapStringMarshaller(); }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 
-namespace Phoenix.Csharp.Interface.Types
+namespace PxCs.Types
 {
-    public struct AABB
+    public struct PxAABB
     {
         public Vector3 min;
         public Vector3 max;

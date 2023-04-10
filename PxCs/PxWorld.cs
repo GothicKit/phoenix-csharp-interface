@@ -3,11 +3,11 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Phoenix.Csharp.Interface
+namespace PxCs
 {
-    public static class World
+    public static class PxWorld
     {
-        private const string DLLNAME = Phoenix.DLLNAME;
+        private const string DLLNAME = PxPhoenix.DLLNAME;
 
         public enum PxVobType
         {
@@ -124,19 +124,19 @@ namespace Phoenix.Csharp.Interface
 
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetCdStatic(IntPtr vob);
-        
+
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetCdDynamic(IntPtr vob);
-        
+
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetVobStatic(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobShadowMode pxVobGetShadowMode(IntPtr vob);
-        
+
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetPhysicsEnabled(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobAnimationMode pxVobGetAnimationMode(IntPtr vob);
         [DllImport(DLLNAME)] public static extern int pxVobGetBias(IntPtr vob);
-        
+
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetAmbient(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetAnimationStrength(IntPtr vob);
