@@ -1,5 +1,4 @@
 ﻿using System;
-using PxCs;
 using Xunit;
 
 namespace PxCs.Tests
@@ -18,10 +17,17 @@ namespace PxCs.Tests
             var vertexCount = PxMesh.pxMshGetVertexCount(mesh);
             var materialCount = PxMesh.pxMshGetMaterialCount(mesh);
             var featureCount = PxMesh.pxMshGetFeatureCount(mesh);
-
             Assert.Equal(55439u, vertexCount);
             Assert.Equal(2263u, materialCount);
             Assert.Equal(419936u, featureCount);
+
+            // Check indices
+            var vertexIndices = PxMesh.GetPolygonVertexIndices(mesh);
+            Assert.Equal(320166, vertexIndices.Length);
+            var materialIndices = PxMesh.GetPolygonMaterialIndices(mesh);
+            Assert.Equal(106722, materialIndices.Length);
+            var featureIndices = PxMesh.GetPolygonFeatureIndices(mesh);
+            Assert.Equal(320166, featureIndices.Length);
 
             PxWorld.pxWorldDestroy(worldPtr);
 

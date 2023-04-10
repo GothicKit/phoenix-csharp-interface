@@ -22,12 +22,43 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern uint pxMshGetFeatureCount(IntPtr msh);
         [DllImport(DLLNAME)] public static extern void pxMshGetFeature(IntPtr msh, uint i, out Vector2 texture, out uint light, out Vector3 normal);
 
-        /*[DllImport(DLLNAME)]*/
-        public static /*extern*/ void pxMshGetPolygonMaterialIndices(IntPtr msh, out uint length) { throw new NotImplementedException("FIXME returns an array (aka uint32_t const* pointers) - We need to check if this is possible..."); }
-        /*[DllImport(DLLNAME)]*/
-        public static /*extern*/ void pxMshGetPolygonFeatureIndices(IntPtr msh, out uint length) { throw new NotImplementedException("FIXME returns an array (aka uint32_t const* pointers) - We need to check if this is possible..."); }
-        /*[DllImport(DLLNAME)]*/
-        public static /*extern*/ void pxMshGetPolygonVertexIndices(IntPtr msh, out uint length) { throw new NotImplementedException("FIXME returns an array (aka uint32_t const* pointers) - We need to check if this is possible..."); }
+        [DllImport(DLLNAME)] private static extern IntPtr pxMshGetPolygonMaterialIndices(IntPtr msh, out uint length);
+        [DllImport(DLLNAME)] private static extern IntPtr pxMshGetPolygonFeatureIndices(IntPtr msh, out uint length);
+        [DllImport(DLLNAME)] private static extern IntPtr pxMshGetPolygonVertexIndices(IntPtr msh, out uint length);
+
+
+        // FIXME: We're not supporting uint as of now. Need to throw exception if size of elements is too big.
+        public static int[] GetPolygonVertexIndices(IntPtr msh)
+        {
+            var arrayPtr = PxMesh.pxMshGetPolygonVertexIndices(msh, out uint length);
+            var array = new int[length];
+
+            Marshal.Copy(arrayPtr, array, 0, (int)length);
+
+            return array;
+        }
+
+        // FIXME: We're not supporting uint as of now. Need to throw exception if size of elements is too big.
+        public static int[] GetPolygonMaterialIndices(IntPtr msh)
+        {
+            var arrayPtr = PxMesh.pxMshGetPolygonMaterialIndices(msh, out uint length);
+            var array = new int[length];
+
+            Marshal.Copy(arrayPtr, array, 0, (int)length);
+
+            return array;
+        }
+
+        // FIXME: We're not supporting uint as of now. Need to throw exception if size of elements is too big.
+        public static int[] GetPolygonFeatureIndices(IntPtr msh)
+        {
+            var arrayPtr = PxMesh.pxMshGetPolygonFeatureIndices(msh, out uint length);
+            var array = new int[length];
+
+            Marshal.Copy(arrayPtr, array, 0, (int)length);
+
+            return array;
+        }
     }
 
 }
