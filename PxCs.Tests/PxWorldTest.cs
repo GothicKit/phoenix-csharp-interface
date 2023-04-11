@@ -36,10 +36,5 @@ namespace PxCs.Tests
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
         }
-
-        public void Test_load_WayEdges()
-        {
-
-        }
     }
 }

@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	<!-- PxCs itself is build with .netstandard2.1. Unfortunately xunit doesn't support it. -->
+	<!-- We therefore keep net6 as it works for tests and is independent of PxCs DLL itself. -->
     <TargetFramework>net6</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
