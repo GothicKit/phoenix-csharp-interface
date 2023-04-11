@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace PxCs.Marshaller
 {
@@ -11,6 +13,9 @@ namespace PxCs.Marshaller
     /// </summary>
     public class PxHeapStringMarshaller : ICustomMarshaler
     {
+        private static bool isEncodingProviderRegistered = false;
+
+
         public void CleanUpManagedData(object ManagedObj) { }
 
         // Empty by design: As the received string is from unmanaged heap, we won't clean it up here.
@@ -20,14 +25,40 @@ namespace PxCs.Marshaller
 
         public IntPtr MarshalManagedToNative(object ManagedObj) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Gothic comes with Windows-1252 encoding. We need to ensure this codepage is used.
+        /// Unfortunately Marshal has no option to define codepage. Therefore we need to marshal byte-by-byte.
+        /// </summary>
         public object MarshalNativeToManaged(IntPtr pNativeData)
         {
-            string? data = Marshal.PtrToStringAnsi(pNativeData);
+            // As PxCs is with .netstandard2.1 we need to register the coding provider once.
+            if (!isEncodingProviderRegistered)
+            {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                isEncodingProviderRegistered = true;
+            }
 
-            if (data == null)
+            if (pNativeData == IntPtr.Zero)
+                throw new ArgumentNullException("String parameter is zero.");
+
+            var byteSize = sizeof(byte);
+            var byteArray = new List<byte>();
+            
+            while (true)
+            {
+                var curPtr = IntPtr.Add(pNativeData, byteSize * byteArray.Count);
+                var curByte = Marshal.ReadByte(curPtr);
+
+                if (curByte == 0)
+                    break;
+                else
+                    byteArray.Add(curByte);
+            }
+
+            if (byteArray.Count == 0)
                 return string.Empty;
             else
-                return data;
+                return Encoding.GetEncoding(1252).GetString(byteArray.ToArray(), 0, byteArray.Count);
         }
 
         public static ICustomMarshaler GetInstance(string v) { return new PxHeapStringMarshaller(); }
