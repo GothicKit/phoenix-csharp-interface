@@ -28,33 +28,39 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern IntPtr pxMshGetPolygonVertexIndices(IntPtr msh, out uint length);
 
 
-        // FIXME: We're not supporting uint as of now. Need to throw exception if size of elements is too big.
         public static int[] GetPolygonVertexIndices(IntPtr msh)
         {
             var arrayPtr = PxMesh.pxMshGetPolygonVertexIndices(msh, out uint length);
             var array = new int[length];
 
+            if (length > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
+
             Marshal.Copy(arrayPtr, array, 0, (int)length);
 
             return array;
         }
 
-        // FIXME: We're not supporting uint as of now. Need to throw exception if size of elements is too big.
         public static int[] GetPolygonMaterialIndices(IntPtr msh)
         {
             var arrayPtr = PxMesh.pxMshGetPolygonMaterialIndices(msh, out uint length);
             var array = new int[length];
 
+            if (length > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
+
             Marshal.Copy(arrayPtr, array, 0, (int)length);
 
             return array;
         }
 
-        // FIXME: We're not supporting uint as of now. Need to throw exception if size of elements is too big.
         public static int[] GetPolygonFeatureIndices(IntPtr msh)
         {
             var arrayPtr = PxMesh.pxMshGetPolygonFeatureIndices(msh, out uint length);
             var array = new int[length];
+
+            if (length > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
 
             Marshal.Copy(arrayPtr, array, 0, (int)length);
 
@@ -65,6 +71,9 @@ namespace PxCs
         {
             var count = pxMshGetVertexCount(msh);
             var array = new Vector3[count];
+
+            if (count > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{count}< was given.");
 
             for (var i = 0u; i < count; i++)
             {
@@ -78,6 +87,9 @@ namespace PxCs
         {
             var count = pxMshGetFeatureCount(msh);
             var array = new PxFeatureData[count];
+
+            if (count > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{count}< was given.");
 
             for (var i = 0u; i < count; i++)
             {
@@ -98,6 +110,9 @@ namespace PxCs
         {
             var count = pxMshGetMaterialCount(msh);
             var array = new PxMaterialData[count];
+
+            if (count > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{count}< was given.");
 
             for (var i = 0u; i < count; i++)
             {
