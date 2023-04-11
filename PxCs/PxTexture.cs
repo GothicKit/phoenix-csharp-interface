@@ -1,5 +1,10 @@
-﻿using System;
+﻿using PxCs.Data;
+using System;
+using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
+using static PxCs.PxLogging;
 
 namespace PxCs
 {
@@ -32,5 +37,71 @@ namespace PxCs
 
         [DllImport(DLLNAME)] public static extern void pxTexGetMeta(IntPtr tex, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
         [DllImport(DLLNAME)] public static extern IntPtr pxTexGetMipmap(IntPtr tex, out uint length, uint level, out uint width, out uint height);
+
+
+        public static PxTextureData? GetTextureFromVdf(IntPtr vdf, string name)
+        {
+            var texturePtr = LoadTextureFromVdf(vdf, name);
+
+            if (texturePtr == IntPtr.Zero)
+                return null;
+
+            pxTexGetMeta(texturePtr, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
+            var mipmaps = new PxTextureMipmapData[mipmapCount];
+
+            for (var level = 0u; level < mipmapCount; level++)
+            {
+                mipmaps[level] = LoadMipmap(texturePtr, level);
+            }
+
+            pxTexDestroy(texturePtr);
+
+            return new PxTextureData()
+            {
+                format = format,
+                width = width,
+                height = height,
+                mipmapCount = mipmapCount,
+                averageColor = averageColor,
+
+                mipmaps= mipmaps
+            };
+        }
+
+        /// <summary>
+        /// Try to load texture in default name (.TGA) and compiled (-C.TEX)
+        /// </summary>
+        private static IntPtr LoadTextureFromVdf(IntPtr vdf, string name)
+        {
+            var texturePtr = pxTexLoadFromVdf(vdf, name);
+
+            // Try another time with compiled texture.
+            if (texturePtr == IntPtr.Zero)
+            {
+                var compiledName = name.Replace(".TGA", "-C.TEX");
+                texturePtr = pxTexLoadFromVdf(vdf, compiledName);
+            }
+
+            return texturePtr;
+        }
+
+        private static PxTextureMipmapData LoadMipmap(IntPtr texturePtr, uint level)
+        {
+            var mipmapPtr = pxTexGetMipmap(texturePtr, out uint length, level, out uint mipmapWidth, out uint mipmapHeight);
+
+            if (length > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
+
+            var mipmapArray = new byte[length];
+            Marshal.Copy(mipmapPtr, mipmapArray, 0, (int)length);
+
+            return new PxTextureMipmapData()
+            {
+                level = level,
+                width = mipmapWidth,
+                height = mipmapHeight,
+                mipmap = mipmapArray
+            };
+        }
     }
 }

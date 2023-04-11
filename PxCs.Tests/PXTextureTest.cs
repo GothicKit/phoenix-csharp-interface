@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using PxCs;
 using Xunit;
 
 namespace PxCs.Tests
@@ -30,6 +29,21 @@ namespace PxCs.Tests
             Assert.True(mipMapArray[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
 
             PxTexture.pxTexDestroy(texPtr);
+        }
+
+        [Fact]
+        public void Test_load_Texture_via_wrapper()
+        {
+            var vdfPtr = LoadVdf("Data/textures.VDF");
+
+            var texture = PxTexture.GetTextureFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX");
+
+            Assert.True(texture.format == PxTexture.Format.tex_dxt1, "format >tex_dxt1< doesn't match.");
+            Assert.True(texture.width == 256u, "width >256u< doesn't match.");
+            Assert.True(texture.height == 256u, "height >256u< doesn't match.");
+            Assert.True(texture.mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
+
+            Assert.True(texture.mipmaps[0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
         }
     }
 }
