@@ -1,7 +1,7 @@
 # _phoenix csharp interface_
 
 ![License](https://img.shields.io/github/license/GothicKit/phoenix-java-interface?label=License&color=important)
-![.NET](https://img.shields.io/static/v1?label=.NET&message=6&color=informational)
+![.NET](https://img.shields.io/static/v1?label=.NET+Standard&message=2.1&color=informational)
 ![C#](https://img.shields.io/static/v1?label=C%23&message=8&color=informational)
 ![Version](https://img.shields.io/github/v/tag/GothicKit/phoenix-csharp-interface?label=Version&sort=semver)
 
@@ -13,7 +13,7 @@ and [Gothic II](https://en.wikipedia.org/wiki/Gothic_II). This library is based 
 
 You will need:
 
-* .NET 6.x, anything onward should work as well (tested with 7.x)
+* .NET Standard 2.1 (for PxCs) and .NET 6 (for PxCs.Tests), anything onward should work as well (tested with 7.x)
 * Git
 
 To build _phoenix-csharp-interface_ from scratch, just open a terminal in a directory of your choice and run
