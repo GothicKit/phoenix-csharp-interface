@@ -1,5 +1,7 @@
-﻿using PxCs.Marshaller;
+﻿using PxCs.Data.Vm;
+using PxCs.Marshaller;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace PxCs
@@ -55,12 +57,77 @@ namespace PxCs
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index /*, ...*/ );
 
-        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocate(IntPtr vm, string name, PxVmInstanceType type);
-        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitialize(IntPtr vm, string name, PxVmInstanceType type, IntPtr existing);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByIndex(IntPtr vm, uint index, PxVmInstanceType type);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByName(IntPtr vm, string name, PxVmInstanceType type);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByIndex(IntPtr vm, uint index, PxVmInstanceType type, IntPtr existing);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByName(IntPtr vm, string name, PxVmInstanceType type, IntPtr existing);
 
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
-        // FIXME - will it work to get a string back from C? At least it's on heap there...
+
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
         [DllImport(DLLNAME)] public static extern string pxVmInstanceNpcGetName(IntPtr instance, uint i);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetRoutine(IntPtr instance);
+
+
+        public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
+        {
+            StackPushParameters(vmPtr, parameters);
+            return pxVmCallFunction(vmPtr, methodName);
+        }
+
+        public static bool CallFunction(IntPtr vmPtr, uint index, params object[] parameters)
+        {
+            StackPushParameters(vmPtr, parameters);
+            return pxVmCallFunctionByIndex(vmPtr, index);
+        }
+
+        public static PxVmNpcData InitializeNpc(IntPtr vmPtr, string name)
+        {
+            var npcPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeNpc, IntPtr.Zero);
+
+            return GetNpcByInstancePtr(npcPtr);
+        }
+
+        public static PxVmNpcData InitializeNpc(IntPtr vmPtr, uint index)
+        {
+            var npcPtr = pxVmInstanceInitializeByIndex(vmPtr, index, PxVmInstanceType.PxVmInstanceTypeNpc, IntPtr.Zero);
+
+            return GetNpcByInstancePtr(npcPtr);
+        }
+
+        private static PxVmNpcData GetNpcByInstancePtr(IntPtr instancePtr)
+        {
+            return new PxVmNpcData()
+            {
+                npcPtr = instancePtr,
+                routine = pxVmInstanceNpcGetRoutine(instancePtr)
+            };
+        }
+
+
+        private static void StackPushParameters(IntPtr vmPtr, params object[] parameters)
+        {
+            // As we're working with a stack, we need to add parameters in reverse order.
+            foreach (var param in parameters.Reverse())
+            {
+                switch (param)
+                {
+                    case string _:
+                        pxVmStackPushString(vmPtr, (string)param);
+                        break;
+                    case float _:
+                        pxVmStackPushFloat(vmPtr, (float)param);
+                        break;
+                    case int _:
+                        pxVmStackPushInt(vmPtr, (int)param);
+                        break;
+                    case IntPtr _:
+                        pxVmStackPushInstance(vmPtr, (IntPtr)param);
+                        break;
+                    default:
+                        throw new ArgumentException($"VM doesn't support argument of type {param.GetType()}");
+                }
+            }
+        }
     }
 }

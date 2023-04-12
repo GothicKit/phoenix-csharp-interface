@@ -38,13 +38,50 @@ namespace PxCs.Tests
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "Wld_InsertNpc", Wld_InsertNpc);
 
-            var called = PxVm.pxVmCallFunction(vmPtr, "STARTUP_OLDCAMP");
+            var called = PxVm.CallFunction(vmPtr, "STARTUP_OLDCAMP");
 
             Assert.True(called, "Function wasn't called successfully.");
 
             PxVm.pxVmDestroy(vmPtr);
         }
 
+        [Fact]
+        public void Test_instanciate_Npc_by_name()
+        {
+            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+
+            var hero = PxVm.InitializeNpc(vmPtr, "hero");
+
+            Assert.NotEqual(hero.npcPtr, IntPtr.Zero);
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        //[Fact]
+        // FIXME Not working right now
+        //public void Test_instanciate_Npc_by_index()
+        //{
+        //    var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+        //    PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
+
+        //    // FIXME: I need to check what's a real index of an NPC.
+        //    var npc = PxVm.InitializeNpc(vmPtr, 7656);
+
+        //    Assert.NotEqual(npc.npcPtr, IntPtr.Zero);
+
+        //    PxVm.pxVmDestroy(vmPtr);
+        //}
+
+        [Fact]
+        public void Test_call_routine_on_Npc()
+        {
+            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
+
+            var pxNpc = PxVm.InitializeNpc(vmPtr, 7656);
+
+            PxVm.CallFunction(vmPtr, (uint)pxNpc.routine);
+        }
 
         // The below test has two purposes:
         // 1. Show how to return a value from an External. ConcatStrings() --> PushString()
