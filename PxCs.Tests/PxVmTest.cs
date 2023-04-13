@@ -57,28 +57,36 @@ namespace PxCs.Tests
             PxVm.pxVmDestroy(vmPtr);
         }
 
+        [Fact]
+        public void Test_instanciate_Npc_by_index()
+        {
+            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
+
+            // FIXME: I need to check what's a real index of an NPC.
+            var npc = PxVm.InitializeNpc(vmPtr, 7656);
+
+            Assert.NotEqual(npc.npcPtr, IntPtr.Zero);
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
 
         public static void TA_MIN(IntPtr vmPtr)
         {
-            int a = 2;
+            var waypoint = PxVm.pxVmStackPopString(vmPtr); // OCR_HUT_33
+            var action = PxVm.pxVmStackPopInt(vmPtr); // 5903
+            var stop_m = PxVm.pxVmStackPopInt(vmPtr);
+            var stop_h = PxVm.pxVmStackPopInt(vmPtr);
+            var start_m = PxVm.pxVmStackPopInt(vmPtr);  // 30
+            var start_h = PxVm.pxVmStackPopInt(vmPtr);  // 22
+            var npc = PxVm.pxVmStackPopInstance(vmPtr);
 
+            Assert.True(waypoint == "OCR_HUT_33", $"Waypoint >{waypoint}< is wrong.");
+            Assert.True(start_h == 22, $"Start_h >{start_h}< is wrong.");
+            Assert.True(npc != IntPtr.Zero, "Npc is IntPtr.Zero.");
         }
-            //[Fact]
-            // FIXME Not working right now
-            //public void Test_instanciate_Npc_by_index()
-            //{
-            //    var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
-            //    PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
-            //    // FIXME: I need to check what's a real index of an NPC.
-            //    var npc = PxVm.InitializeNpc(vmPtr, 7656);
-
-            //    Assert.NotEqual(npc.npcPtr, IntPtr.Zero);
-
-            //    PxVm.pxVmDestroy(vmPtr);
-            //}
-
-            [Fact]
+        [Fact]
         public void Test_call_routine_on_Npc()
         {
             var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
