@@ -63,6 +63,9 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByIndex(IntPtr vm, uint index, PxVmInstanceType type, IntPtr existing);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByName(IntPtr vm, string name, PxVmInstanceType type, IntPtr existing);
 
+        // HINT: Won't work as it will print to std::cerr which isn't shared with the managed C# side.
+        // [DllImport(DLLNAME)] public static extern void pxVmPrintStackTrace(IntPtr vm);
+
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
 
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
@@ -80,6 +83,31 @@ namespace PxCs
         {
             StackPushParameters(vmPtr, parameters);
             return pxVmCallFunctionByIndex(vmPtr, index, IntPtr.Zero);
+        }
+
+        public static bool CallFunction(IntPtr vmPtr, string methodName, IntPtr self, params object[] parameters)
+        {
+            var prevSelf = pxVmSetGlobalSelf(vmPtr, self);
+
+            StackPushParameters(vmPtr, parameters);
+            var success = pxVmCallFunction(vmPtr, methodName, IntPtr.Zero);
+
+            pxVmSetGlobalSelf(vmPtr, prevSelf);
+
+            return success;
+
+        }
+
+        public static bool CallFunction(IntPtr vmPtr, uint index, IntPtr self, params object[] parameters)
+        {
+            var prevSelf = pxVmSetGlobalSelf(vmPtr, self);
+
+            StackPushParameters(vmPtr, parameters);
+            var success = pxVmCallFunctionByIndex(vmPtr, index, IntPtr.Zero);
+
+            pxVmSetGlobalSelf(vmPtr, prevSelf);
+
+            return success;
         }
 
         public static PxVmNpcData InitializeNpc(IntPtr vmPtr, string name)

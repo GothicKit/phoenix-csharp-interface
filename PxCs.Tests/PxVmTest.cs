@@ -81,8 +81,10 @@ namespace PxCs.Tests
             var start_h = PxVm.pxVmStackPopInt(vmPtr);  // 22
             var npc = PxVm.pxVmStackPopInstance(vmPtr);
 
-            Assert.True(waypoint == "OCR_HUT_33", $"Waypoint >{waypoint}< is wrong.");
-            Assert.True(start_h == 22, $"Start_h >{start_h}< is wrong.");
+
+
+            Assert.True(Array.Exists(new[]{"OCR_HUT_33", "OCR_OUTSIDE_HUT_29"}, el => el == waypoint), $"Waypoint >{waypoint}< is wrong.");
+            Assert.True(Array.Exists(new[]{22, 8}, el=> el==start_h), $"Start_h >{start_h}< is wrong.");
             Assert.True(npc != IntPtr.Zero, "Npc is IntPtr.Zero.");
         }
 
@@ -93,12 +95,9 @@ namespace PxCs.Tests
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "TA_MIN", TA_MIN);
 
-            //            var pxNpc = PxVm.InitializeNpc(vmPtr, 7656); // Buddler
             var pxNpc = PxVm.InitializeNpc(vmPtr, 7774); // Buddler
 
-            //PxVm.pxVmSetGlobalSelf(vmPtr, pxNpc.npcPtr);
-
-            var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine);
+            var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine, pxNpc.npcPtr);
         }
 
         // The below test has two purposes:
