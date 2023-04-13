@@ -73,14 +73,20 @@ namespace PxCs
         /// </summary>
         private static IntPtr LoadTextureFromVdf(IntPtr vdf, string name)
         {
-            var texturePtr = pxTexLoadFromVdf(vdf, name);
+            IntPtr texturePtr;
 
-            // Try another time with compiled texture.
-            if (texturePtr == IntPtr.Zero)
+            // Based on experience, textures are compiled most of the time.
+            // Therefore start with the -C.TEX version to load.
+            if (name.EndsWith(".TGA"))
             {
                 var compiledName = name.Replace(".TGA", "-C.TEX");
                 texturePtr = pxTexLoadFromVdf(vdf, compiledName);
+
+                if (texturePtr != IntPtr.Zero)
+                    return texturePtr;
             }
+
+            texturePtr = pxTexLoadFromVdf(vdf, name);
 
             return texturePtr;
         }

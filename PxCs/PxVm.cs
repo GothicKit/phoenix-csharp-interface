@@ -52,10 +52,11 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern IntPtr pxVmSetGlobalItem(IntPtr vm, IntPtr instance);
 
         // Hint: Varargs aren't possible from C# -> C. We therefore need to push stack entries manually before calling the method (e.g. pxVmPushString())
+        // Hint: We need to send a nullptr as the vararg parameter to tell Phoenix "this method isn't sending you varargs".
         [return: MarshalAs(UnmanagedType.U1)]
-        [DllImport(DLLNAME)] public static extern bool pxVmCallFunction(IntPtr vm, string functionName /*, ...*/);
+        [DllImport(DLLNAME)] public static extern bool pxVmCallFunction(IntPtr vm, string functionName, IntPtr zero /*==IntPtr.Zero*/);
         [return: MarshalAs(UnmanagedType.U1)]
-        [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index /*, ...*/ );
+        [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index, IntPtr zero /*==IntPtr.Zero*/);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByIndex(IntPtr vm, uint index, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByName(IntPtr vm, string name, PxVmInstanceType type);
@@ -72,13 +73,13 @@ namespace PxCs
         public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
         {
             StackPushParameters(vmPtr, parameters);
-            return pxVmCallFunction(vmPtr, methodName);
+            return pxVmCallFunction(vmPtr, methodName, IntPtr.Zero);
         }
 
         public static bool CallFunction(IntPtr vmPtr, uint index, params object[] parameters)
         {
             StackPushParameters(vmPtr, parameters);
-            return pxVmCallFunctionByIndex(vmPtr, index);
+            return pxVmCallFunctionByIndex(vmPtr, index, IntPtr.Zero);
         }
 
         public static PxVmNpcData InitializeNpc(IntPtr vmPtr, string name)
@@ -97,9 +98,15 @@ namespace PxCs
 
         private static PxVmNpcData GetNpcByInstancePtr(IntPtr instancePtr)
         {
+            var nameCount = pxVmInstanceNpcGetNameLength(instancePtr);
+            string[] names = new string[nameCount];
+            for (var i = 0u; i < nameCount; i++)
+                names[i] = pxVmInstanceNpcGetName(instancePtr, i);
+
             return new PxVmNpcData()
             {
                 npcPtr = instancePtr,
+                names = names,
                 routine = pxVmInstanceNpcGetRoutine(instancePtr)
             };
         }

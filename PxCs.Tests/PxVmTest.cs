@@ -57,30 +57,40 @@ namespace PxCs.Tests
             PxVm.pxVmDestroy(vmPtr);
         }
 
-        //[Fact]
-        // FIXME Not working right now
-        //public void Test_instanciate_Npc_by_index()
-        //{
-        //    var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
-        //    PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
-        //    // FIXME: I need to check what's a real index of an NPC.
-        //    var npc = PxVm.InitializeNpc(vmPtr, 7656);
+        public static void TA_MIN(IntPtr vmPtr)
+        {
+            int a = 2;
 
-        //    Assert.NotEqual(npc.npcPtr, IntPtr.Zero);
+        }
+            //[Fact]
+            // FIXME Not working right now
+            //public void Test_instanciate_Npc_by_index()
+            //{
+            //    var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            //    PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
-        //    PxVm.pxVmDestroy(vmPtr);
-        //}
+            //    // FIXME: I need to check what's a real index of an NPC.
+            //    var npc = PxVm.InitializeNpc(vmPtr, 7656);
 
-        [Fact]
+            //    Assert.NotEqual(npc.npcPtr, IntPtr.Zero);
+
+            //    PxVm.pxVmDestroy(vmPtr);
+            //}
+
+            [Fact]
         public void Test_call_routine_on_Npc()
         {
             var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
+            PxVm.pxVmRegisterExternal(vmPtr, "TA_MIN", TA_MIN);
 
-            var pxNpc = PxVm.InitializeNpc(vmPtr, 7656);
+            //            var pxNpc = PxVm.InitializeNpc(vmPtr, 7656); // Buddler
+            var pxNpc = PxVm.InitializeNpc(vmPtr, 7774); // Buddler
 
-            PxVm.CallFunction(vmPtr, (uint)pxNpc.routine);
+            //PxVm.pxVmSetGlobalSelf(vmPtr, pxNpc.npcPtr);
+
+            var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine);
         }
 
         // The below test has two purposes:
@@ -116,7 +126,7 @@ namespace PxCs.Tests
             // Calling method: func void PrintDebugString (var int channel, var string preText, var string text)
             // Hint: This method will not work as we can't call Methods in VM with multiple strings (not implemented).
             // But this example can be used as reference for real implementations.
-            var called = PxVm.pxVmCallFunction(vmPtr, "PrintDebugString");
+            var called = PxVm.pxVmCallFunction(vmPtr, "PrintDebugString", IntPtr.Zero);
             Assert.True(called, "Function wasn't called successfully.");
 
             PxVm.pxVmDestroy(vmPtr);
