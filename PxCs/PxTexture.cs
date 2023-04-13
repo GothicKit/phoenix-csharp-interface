@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using static PxCs.PxLogging;
@@ -36,10 +37,12 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern void pxTexDestroy(IntPtr tex);
 
         [DllImport(DLLNAME)] public static extern void pxTexGetMeta(IntPtr tex, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
-        [DllImport(DLLNAME)] public static extern IntPtr pxTexGetMipmap(IntPtr tex, out uint length, uint level, out uint width, out uint height);
+        [DllImport(DLLNAME)] public static extern IntPtr pxTexGetMipmap(IntPtr tex, uint level, out uint size, out uint width, out uint height);
+        [DllImport(DLLNAME)] public static extern IntPtr pxTexGetDecompressedMipmap(IntPtr tex, uint level, out uint size, out uint width, out uint height);
+        [DllImport(DLLNAME)] public static extern void pxTexFreeDecompressedMipmap(IntPtr data);
 
 
-        public static PxTextureData? GetTextureFromVdf(IntPtr vdf, string name)
+        public static PxTextureData? GetTextureFromVdf(IntPtr vdf, string name, params Format[] supportedFormats)
         {
             var texturePtr = LoadTextureFromVdf(vdf, name);
 
@@ -51,10 +54,18 @@ namespace PxCs
 
             for (var level = 0u; level < mipmapCount; level++)
             {
-                mipmaps[level] = LoadMipmap(texturePtr, level);
+                // a) it's already uncompressed or b) the texture format is a supported one from the caller.
+                if (format.HasFlag(Format.tex_B8G8R8A8) || supportedFormats.Contains(format))
+                    mipmaps[level] = LoadMipmap(texturePtr, level);
+                else
+                    mipmaps[level] = LoadMipmapUncompressed(texturePtr, level);
             }
 
             pxTexDestroy(texturePtr);
+
+            // If we loaded the uncompressed value, we need to change the format.
+            if (!supportedFormats.Contains(format))
+                format = Format.tex_B8G8R8A8;
 
             return new PxTextureData()
             {
@@ -93,13 +104,13 @@ namespace PxCs
 
         private static PxTextureMipmapData LoadMipmap(IntPtr texturePtr, uint level)
         {
-            var mipmapPtr = pxTexGetMipmap(texturePtr, out uint length, level, out uint mipmapWidth, out uint mipmapHeight);
+            var mipmapPtr = pxTexGetMipmap(texturePtr, level, out uint size, out uint mipmapWidth, out uint mipmapHeight);
 
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
+            if (size > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{size}< was given.");
 
-            var mipmapArray = new byte[length];
-            Marshal.Copy(mipmapPtr, mipmapArray, 0, (int)length);
+            var mipmapArray = new byte[size];
+            Marshal.Copy(mipmapPtr, mipmapArray, 0, (int)size);
 
             return new PxTextureMipmapData()
             {
@@ -108,6 +119,28 @@ namespace PxCs
                 height = mipmapHeight,
                 mipmap = mipmapArray
             };
+        }
+
+        private static PxTextureMipmapData LoadMipmapUncompressed(IntPtr texturePtr, uint level)
+        {
+            var mipmapPtr = pxTexGetDecompressedMipmap(texturePtr, level, out uint size, out uint mipmapWidth, out uint mipmapHeight);
+
+            if (size > int.MaxValue)
+                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{size}< was given.");
+
+            var mipmapArray = new byte[size];
+            Marshal.Copy(mipmapPtr, mipmapArray, 0, (int)size);
+
+            pxTexFreeDecompressedMipmap(mipmapPtr);
+
+            return new PxTextureMipmapData()
+            {
+                level = level,
+                width = mipmapWidth,
+                height = mipmapHeight,
+                mipmap = mipmapArray
+            };
+
         }
     }
 }

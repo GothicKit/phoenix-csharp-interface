@@ -21,7 +21,7 @@ namespace PxCs.Tests
             Assert.True(height == 256u, "height >256u< doesn't match.");
             Assert.True(mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
 
-            var mipMapArrayPtr = PxTexture.pxTexGetMipmap(texPtr, out uint lengthMip0, 0, out uint widthMip0, out uint heightMip0);
+            var mipMapArrayPtr = PxTexture.pxTexGetMipmap(texPtr, 0, out uint lengthMip0, out uint _, out uint _);
             var mipMapArray = new byte[lengthMip0];
 
             Marshal.Copy(mipMapArrayPtr, mipMapArray, 0, (int)lengthMip0);
@@ -36,9 +36,28 @@ namespace PxCs.Tests
         {
             var vdfPtr = LoadVdf("Data/textures.VDF");
 
-            var texture = PxTexture.GetTextureFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX");
+            var texture = PxTexture.GetTextureFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX", PxTexture.Format.tex_dxt1);
 
-            Assert.True(texture.format == PxTexture.Format.tex_dxt1, "format >tex_dxt1< doesn't match.");
+            Assert.NotNull(texture);
+
+            Assert.True(texture.format == PxTexture.Format.tex_dxt1, $"format >{texture.format}< doesn't match expected >{PxTexture.Format.tex_dxt1}<.");
+            Assert.True(texture.width == 256u, "width >256u< doesn't match.");
+            Assert.True(texture.height == 256u, "height >256u< doesn't match.");
+            Assert.True(texture.mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
+
+            Assert.True(texture.mipmaps[0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
+        }
+
+        [Fact]
+        public void Test_load_Texture_via_wrapper_unsupported_format()
+        {
+            var vdfPtr = LoadVdf("Data/textures.VDF");
+
+            var texture = PxTexture.GetTextureFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX", PxTexture.Format.tex_p8, PxTexture.Format.tex_dxt5);
+
+            Assert.NotNull(texture);
+
+            Assert.True(texture.format == PxTexture.Format.tex_B8G8R8A8, $"format >{texture.format}< doesn't match expected >{PxTexture.Format.tex_B8G8R8A8}<.");
             Assert.True(texture.width == 256u, "width >256u< doesn't match.");
             Assert.True(texture.height == 256u, "height >256u< doesn't match.");
             Assert.True(texture.mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
