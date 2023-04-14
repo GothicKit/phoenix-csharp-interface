@@ -3,8 +3,6 @@ using PxCs.Marshaller;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Xml.Linq;
 
 namespace PxCs
 {
@@ -145,9 +143,14 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern bool pxVobGetAmbient(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetAnimationStrength(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetFarClipScale(IntPtr vob);
+
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
         [DllImport(DLLNAME)] public static extern string pxVobGetPresetName(IntPtr vob);
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
         [DllImport(DLLNAME)] public static extern string pxVobGetVobName(IntPtr vob);
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
         [DllImport(DLLNAME)] public static extern string pxVobGetVisualName(IntPtr vob);
+
         [DllImport(DLLNAME)] public static extern PxVobVisualType pxVobGetVisualType(IntPtr vob);
 
         [DllImport(DLLNAME)] public static extern uint pxVobGetChildCount(IntPtr vob);
@@ -197,6 +200,49 @@ namespace PxCs
                     a = a,
                     b = b
                 };
+            }
+
+            return array;
+        }
+
+
+        public static PxVobData[] GetVobs(IntPtr worldPtr)
+        {
+            var count = pxWorldGetRootVobCount(worldPtr);
+            var array = new PxVobData[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                var vobPtr = pxWorldGetRootVob(worldPtr, i);
+
+                array[i] = new PxVobData()
+                {
+                    id = pxVobGetId(vobPtr),
+                    type = pxVobGetType(vobPtr),
+
+                    presetName = pxVobGetPresetName(vobPtr),
+                    vobName = pxVobGetVobName(vobPtr),
+                    visualName = pxVobGetVisualName(vobPtr),
+
+                    animationMode = pxVobGetAnimationMode(vobPtr),
+                    shadowMode = pxVobGetShadowMode(vobPtr),
+                    spriteAlignment = pxVobGetSpriteAlignment(vobPtr),
+                    visualType = pxVobGetVisualType(vobPtr),
+
+                    ambient = pxVobGetAmbient(vobPtr),
+                    cdDynamic = pxVobGetCdDynamic(vobPtr),
+                    cdStatic = pxVobGetCdStatic(vobPtr),
+                    vobStatic = pxVobGetVobStatic(vobPtr),
+                    showVisual = pxVobGetShowVisual(vobPtr),
+                    physicsEnabled = pxVobGetPhysicsEnabled(vobPtr),
+
+                    bias = pxVobGetBias(vobPtr),
+
+                    animationStrength = pxVobGetAnimationStrength(vobPtr),
+                    farClipScale = pxVobGetFarClipScale(vobPtr)
+                };
+
+                // FIXME - add subVobs in a recursive way
             }
 
             return array;
