@@ -3,6 +3,7 @@ using PxCs.Marshaller;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using static PxCs.PxTexture;
 
 namespace PxCs
 {
@@ -21,22 +22,31 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern void pxFntGetGlyph(IntPtr fnt, uint i, out uint width, out Vector2 upper, out Vector2 lower);
 
 
-        public static PxFontData? LoadFont(IntPtr vdfPtr, string fontname)
+        public static PxFontData? LoadFont(IntPtr vdfPtr, string fontname, params Format[] supportedTextureFormats)
         {
             var fontPtr = pxFntLoadFromVdf(vdfPtr, "FONT_DEFAULT.FNT");
 
             if (fontPtr == IntPtr.Zero)
                 return null;
 
+            var fontName = pxFntGetName(fontPtr);
             var font = new PxFontData()
             {
-                name = pxFntGetName(fontPtr),
+                name = fontName,
                 height = pxFntGetHeight(fontPtr),
+                glyphs = GetGlyphs(fontPtr),
+                texture = PxTexture.GetTextureFromVdf(vdfPtr, fontName, supportedTextureFormats)
             };
 
+            pxFntDestroy(fontPtr);
+
+            return font;
+        }
+
+        private static PxFontGlyphData[] GetGlyphs(IntPtr fontPtr)
+        {
             var glyphCount = pxFntGetGlyphCount(fontPtr);
             var glyphs = new PxFontGlyphData[glyphCount];
-
             for (var i = 0u; i < glyphCount; i++)
             {
                 pxFntGetGlyph(fontPtr, i, out uint width, out Vector2 upper, out Vector2 lower);
@@ -49,11 +59,7 @@ namespace PxCs
                 };
             }
 
-            font.glyphs = glyphs;
-
-            pxFntDestroy(fontPtr);
-
-            return font;
+            return glyphs;
         }
     }
 }

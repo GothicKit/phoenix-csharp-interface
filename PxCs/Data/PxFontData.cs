@@ -2,9 +2,11 @@
 {
     public class PxFontData
     {
-        public string name = "";
+        public string name = default!;
         public uint height;
 
-        public PxFontGlyphData[] glyphs = new PxFontGlyphData[0];
+        public PxTextureData? texture;
+
+        public PxFontGlyphData[] glyphs = default!;
     }
 }
