@@ -3,7 +3,7 @@ using Xunit;
 
 namespace PxCs.Tests
 {
-    public class MiscOverflowTest
+    public class MiscTest
     {
 
         /// <summary>
