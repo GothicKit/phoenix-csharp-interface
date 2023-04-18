@@ -30,7 +30,7 @@ namespace PxCs
 
         public static int[] GetPolygonVertexIndices(IntPtr msh)
         {
-            var arrayPtr = PxMesh.pxMshGetPolygonVertexIndices(msh, out uint length);
+            var arrayPtr = pxMshGetPolygonVertexIndices(msh, out uint length);
             var array = new int[length];
 
             if (length > int.MaxValue)
@@ -43,7 +43,7 @@ namespace PxCs
 
         public static int[] GetPolygonMaterialIndices(IntPtr msh)
         {
-            var arrayPtr = PxMesh.pxMshGetPolygonMaterialIndices(msh, out uint length);
+            var arrayPtr = pxMshGetPolygonMaterialIndices(msh, out uint length);
             var array = new int[length];
 
             if (length > int.MaxValue)
@@ -56,7 +56,7 @@ namespace PxCs
 
         public static int[] GetPolygonFeatureIndices(IntPtr msh)
         {
-            var arrayPtr = PxMesh.pxMshGetPolygonFeatureIndices(msh, out uint length);
+            var arrayPtr = pxMshGetPolygonFeatureIndices(msh, out uint length);
             var array = new int[length];
 
             if (length > int.MaxValue)
