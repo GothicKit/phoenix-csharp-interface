@@ -14,7 +14,7 @@ namespace PxCs.Tests
         public static void Wld_InsertNpc(IntPtr vmPtr)
         {
             // As the values are added to a Stack, we need to pop them in reversed order.
-            var waypointName = PxVm.pxVmStackPopString(vmPtr);
+            var waypointName = PxVm.VmStackPopString(vmPtr);
             var instance = PxVm.pxVmStackPopInt(vmPtr);
 
             Assert.True(waypointName != string.Empty, "Empty waypoint. Maybe string parsing for pxVmStackPopString() is broken?");
@@ -73,7 +73,7 @@ namespace PxCs.Tests
 
         public static void TA_MIN(IntPtr vmPtr)
         {
-            var waypoint = PxVm.pxVmStackPopString(vmPtr); // OCR_HUT_33
+            var waypoint = PxVm.VmStackPopString(vmPtr); // OCR_HUT_33
             var action = PxVm.pxVmStackPopInt(vmPtr); // 5903
             var stop_m = PxVm.pxVmStackPopInt(vmPtr);
             var stop_h = PxVm.pxVmStackPopInt(vmPtr);
@@ -106,8 +106,8 @@ namespace PxCs.Tests
         // Right now I didn't find a small method to call with these TODOs in mind. But I will keep it as reference.
         public static void ConcatStrings(IntPtr vmPtr)
         {
-            var str2 = PxVm.pxVmStackPopString(vmPtr);
-            var str1 = PxVm.pxVmStackPopString(vmPtr);
+            var str2 = PxVm.VmStackPopString(vmPtr);
+            var str1 = PxVm.VmStackPopString(vmPtr);
 
             Assert.True(str1 == "preText", "String with wrong value of >" + str1 + "<");
             Assert.True(str2 == "text", "String with wrong value of >" + str2 + "<");

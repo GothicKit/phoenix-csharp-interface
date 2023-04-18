@@ -11,14 +11,12 @@ namespace PxCs
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxMatGetName(IntPtr mat);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMatGetName(IntPtr mat);
         [DllImport(DLLNAME)] public static extern byte pxMatGetGroup(IntPtr mat);
         [DllImport(DLLNAME)] public static extern uint pxMatGetColor(IntPtr mat);
         [DllImport(DLLNAME)] public static extern float pxMatGetSmoothAngle(IntPtr mat);
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxMatGetTexture(IntPtr mat);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMatGetTexture(IntPtr mat);
         [DllImport(DLLNAME)] public static extern Vector2 pxMatGetTextureScale(IntPtr mat);
         [DllImport(DLLNAME)] public static extern float pxMatGetTextureAnimFps(IntPtr mat);
         [DllImport(DLLNAME)] public static extern byte pxMatGetTextureAnimMapMode(IntPtr mat);
@@ -33,8 +31,7 @@ namespace PxCs
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetDontCollapse(IntPtr mat);
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxMatGetDetailObject(IntPtr mat);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMatGetDetailObject(IntPtr mat);
         [DllImport(DLLNAME)] public static extern Vector2 pxMatGetDetailTextureScale(IntPtr mat);
 
         [return: MarshalAs(UnmanagedType.U1)]
@@ -57,8 +54,8 @@ namespace PxCs
         public static PxMaterialData GetMaterial(IntPtr mat)
         {
             return new PxMaterialData() {
-                name = pxMatGetName(mat),
-                texture = pxMatGetTexture(mat),
+                name = PxPhoenix.MarshalString(pxMatGetName(mat)),
+                texture = PxPhoenix.MarshalString(pxMatGetTexture(mat)),
                 color = pxMatGetColor(mat)
             };
         }
