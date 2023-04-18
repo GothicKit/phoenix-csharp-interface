@@ -15,8 +15,7 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern IntPtr pxFntLoadFromVdf(IntPtr vdf, string name);
         [DllImport(DLLNAME)] public static extern void pxFntDestroy(IntPtr fnt);
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxFntGetName(IntPtr fnt);
+        [DllImport(DLLNAME)] public static extern IntPtr pxFntGetName(IntPtr fnt);
         [DllImport(DLLNAME)] public static extern uint pxFntGetHeight(IntPtr fnt);
         [DllImport(DLLNAME)] public static extern uint pxFntGetGlyphCount(IntPtr fnt);
         [DllImport(DLLNAME)] public static extern void pxFntGetGlyph(IntPtr fnt, uint i, out uint width, out Vector2 upper, out Vector2 lower);
@@ -29,7 +28,7 @@ namespace PxCs
             if (fontPtr == IntPtr.Zero)
                 return null;
 
-            var fontName = pxFntGetName(fontPtr);
+            var fontName = PxPhoenix.MarshalString(pxFntGetName(fontPtr));
             var font = new PxFontData()
             {
                 name = fontName,
