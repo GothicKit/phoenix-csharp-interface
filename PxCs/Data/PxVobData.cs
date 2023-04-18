@@ -8,6 +8,8 @@ namespace PxCs.Data
         public uint id;
         public PxVobType type;
 
+        public PxVobData[]? childVobs;
+
         public string presetName = "";
         public string vobName = "";
         public string visualName = "";

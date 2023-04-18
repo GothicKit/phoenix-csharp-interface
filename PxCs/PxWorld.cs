@@ -209,43 +209,55 @@ namespace PxCs
         public static PxVobData[] GetVobs(IntPtr worldPtr)
         {
             var count = pxWorldGetRootVobCount(worldPtr);
-            var array = new PxVobData[count];
+            var vobs = new PxVobData[count];
 
             for (var i = 0u; i < count; i++)
             {
                 var vobPtr = pxWorldGetRootVob(worldPtr, i);
-
-                array[i] = new PxVobData()
-                {
-                    id = pxVobGetId(vobPtr),
-                    type = pxVobGetType(vobPtr),
-
-                    presetName = pxVobGetPresetName(vobPtr),
-                    vobName = pxVobGetVobName(vobPtr),
-                    visualName = pxVobGetVisualName(vobPtr),
-
-                    animationMode = pxVobGetAnimationMode(vobPtr),
-                    shadowMode = pxVobGetShadowMode(vobPtr),
-                    spriteAlignment = pxVobGetSpriteAlignment(vobPtr),
-                    visualType = pxVobGetVisualType(vobPtr),
-
-                    ambient = pxVobGetAmbient(vobPtr),
-                    cdDynamic = pxVobGetCdDynamic(vobPtr),
-                    cdStatic = pxVobGetCdStatic(vobPtr),
-                    vobStatic = pxVobGetVobStatic(vobPtr),
-                    showVisual = pxVobGetShowVisual(vobPtr),
-                    physicsEnabled = pxVobGetPhysicsEnabled(vobPtr),
-
-                    bias = pxVobGetBias(vobPtr),
-
-                    animationStrength = pxVobGetAnimationStrength(vobPtr),
-                    farClipScale = pxVobGetFarClipScale(vobPtr)
-                };
-
-                // FIXME - add subVobs in a recursive way
+                vobs[i] = GetVobData(vobPtr);
             }
 
-            return array;
+            return vobs;
+        }
+
+        private static PxVobData GetVobData(IntPtr vobPtr)
+        {
+            var vob = new PxVobData()
+            {
+                id = pxVobGetId(vobPtr),
+                type = pxVobGetType(vobPtr),
+
+                presetName = pxVobGetPresetName(vobPtr),
+                vobName = pxVobGetVobName(vobPtr),
+                visualName = pxVobGetVisualName(vobPtr),
+
+                animationMode = pxVobGetAnimationMode(vobPtr),
+                shadowMode = pxVobGetShadowMode(vobPtr),
+                spriteAlignment = pxVobGetSpriteAlignment(vobPtr),
+                visualType = pxVobGetVisualType(vobPtr),
+
+                ambient = pxVobGetAmbient(vobPtr),
+                cdDynamic = pxVobGetCdDynamic(vobPtr),
+                cdStatic = pxVobGetCdStatic(vobPtr),
+                vobStatic = pxVobGetVobStatic(vobPtr),
+                showVisual = pxVobGetShowVisual(vobPtr),
+                physicsEnabled = pxVobGetPhysicsEnabled(vobPtr),
+
+                bias = pxVobGetBias(vobPtr),
+
+                animationStrength = pxVobGetAnimationStrength(vobPtr),
+                farClipScale = pxVobGetFarClipScale(vobPtr)
+            };
+
+            var childCount = pxVobGetChildCount(vobPtr);
+            vob.childVobs = new PxVobData[childCount];
+            for (var ii = 0u; ii < childCount; ii++)
+            {
+                var childVobPtr = pxVobGetChild(vobPtr, ii);
+                vob.childVobs[ii] = GetVobData(childVobPtr);
+            }
+
+            return vob;
         }
     }
 }
