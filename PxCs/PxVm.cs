@@ -26,8 +26,7 @@ namespace PxCs
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmStackPopInstance(IntPtr vm);
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxVmStackPopString(IntPtr vm);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmStackPopString(IntPtr vm);
         [DllImport(DLLNAME)] public static extern float pxVmStackPopFloat(IntPtr vm);
         [DllImport(DLLNAME)] public static extern int pxVmStackPopInt(IntPtr vm);
 
@@ -68,8 +67,7 @@ namespace PxCs
 
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
 
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxVmInstanceNpcGetName(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetName(IntPtr instance, uint i);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetRoutine(IntPtr instance);
 
 
@@ -95,7 +93,6 @@ namespace PxCs
             pxVmSetGlobalSelf(vmPtr, prevSelf);
 
             return success;
-
         }
 
         public static bool CallFunction(IntPtr vmPtr, uint index, IntPtr self, params object[] parameters)
@@ -108,6 +105,12 @@ namespace PxCs
             pxVmSetGlobalSelf(vmPtr, prevSelf);
 
             return success;
+        }
+
+        public static string VmStackPopString(IntPtr vmPtr)
+        {
+            var strPtr = pxVmStackPopString(vmPtr);
+            return PxPhoenix.MarshalString(strPtr);
         }
 
         public static PxVmNpcData InitializeNpc(IntPtr vmPtr, string name)
@@ -129,7 +132,7 @@ namespace PxCs
             var nameCount = pxVmInstanceNpcGetNameLength(instancePtr);
             string[] names = new string[nameCount];
             for (var i = 0u; i < nameCount; i++)
-                names[i] = pxVmInstanceNpcGetName(instancePtr, i);
+                names[i] = PxPhoenix.MarshalString(pxVmInstanceNpcGetName(instancePtr, i));
 
             return new PxVmNpcData()
             {

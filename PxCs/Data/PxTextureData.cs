@@ -10,7 +10,6 @@ namespace PxCs.Data
         public uint mipmapCount;
         public uint averageColor;
 
-        public PxTextureMipmapData[] mipmaps = new PxTextureMipmapData[0];
-        
+        public PxTextureMipmapData[] mipmaps = default!;
     }
 }

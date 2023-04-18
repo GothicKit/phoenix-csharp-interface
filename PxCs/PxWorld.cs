@@ -103,8 +103,7 @@ namespace PxCs
         public static extern void pxWorldGetWayPoint(
             IntPtr world,
             uint i,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-                out string name,
+            out IntPtr namePtr,
             out Vector3 position,
             out Vector3 direction,
             [MarshalAs(UnmanagedType.U1)] out bool freePoint,
@@ -165,7 +164,7 @@ namespace PxCs
             for (var i = 0u; i < count; i++)
             {
                 pxWorldGetWayPoint(worldPtr, i,
-                    out string name,
+                    out IntPtr namePtr,
                     out Vector3 position,
                     out Vector3 direction,
                     out bool freePoint,
@@ -174,7 +173,7 @@ namespace PxCs
                 );
 
                 array[i] = new PxWayPointData() {
-                    name = name,
+                    name = PxPhoenix.MarshalString(namePtr),
                     position = position,
                     direction = direction,
                     freePoint = freePoint,
