@@ -1,4 +1,5 @@
 ﻿using PxCs.Data;
+using PxCs.Extensions;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -53,8 +54,8 @@ namespace PxCs
         public static PxMaterialData GetMaterial(IntPtr mat)
         {
             return new PxMaterialData() {
-                name = PxPhoenix.MarshalString(pxMatGetName(mat)),
-                texture = PxPhoenix.MarshalString(pxMatGetTexture(mat)),
+                name = pxMatGetName(mat).MarshalAsString(),
+                texture = pxMatGetTexture(mat).MarshalAsString(),
                 color = pxMatGetColor(mat)
             };
         }

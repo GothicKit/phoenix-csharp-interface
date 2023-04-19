@@ -1,4 +1,5 @@
 ﻿using PxCs.Data;
+using PxCs.Extensions;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -27,7 +28,7 @@ namespace PxCs
             if (fontPtr == IntPtr.Zero)
                 return null;
 
-            var fontName = PxPhoenix.MarshalString(pxFntGetName(fontPtr));
+            var fontName = pxFntGetName(fontPtr).MarshalAsString();
             var font = new PxFontData()
             {
                 name = fontName,
