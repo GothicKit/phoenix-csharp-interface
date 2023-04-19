@@ -33,7 +33,7 @@ namespace PxCs
 
         public static PxMRMData? GetMRMFromVdf(IntPtr vdfPtr, string name)
         {
-            var mrmPtr = pxMrmLoadFromVdf(vdfPtr, "ITFO_PLANTS_BERRYS_01.MRM");
+            var mrmPtr = pxMrmLoadFromVdf(vdfPtr, name);
 
             if (mrmPtr == IntPtr.Zero)
                 return null;
