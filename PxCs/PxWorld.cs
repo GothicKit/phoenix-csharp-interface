@@ -119,6 +119,9 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern PxVobType pxVobGetType(IntPtr vob);
         [DllImport(DLLNAME)] public static extern uint pxVobGetId(IntPtr vob);
 
+        [DllImport(DLLNAME)] public static extern Vector3 pxVobGetPosition(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobGetRotation(IntPtr vob); // IMPORTANT: float[3][3] - This matrix is column-major column order!
+
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetShowVisual(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobSpriteAlignment pxVobGetSpriteAlignment(IntPtr vob);
@@ -220,6 +223,10 @@ namespace PxCs
             {
                 id = pxVobGetId(vobPtr),
                 type = pxVobGetType(vobPtr),
+
+                position = pxVobGetPosition(vobPtr),
+                // FIXME implement
+                //rotation = pxVobGetRotation(vobPtr),
 
                 presetName = pxVobGetPresetName(vobPtr).MarshalAsString(),
                 vobName = pxVobGetVobName(vobPtr).MarshalAsString(),

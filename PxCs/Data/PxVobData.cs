@@ -1,5 +1,5 @@
-﻿using static PxCs.PxWorld;
-using System;
+﻿using System.Numerics;
+using static PxCs.PxWorld;
 
 namespace PxCs.Data
 {
@@ -9,6 +9,9 @@ namespace PxCs.Data
         public PxVobType type;
 
         public PxVobData[]? childVobs;
+
+        public Vector3 position;
+        public float[][] rotation = default!; // 3x3 matrix
 
         public string presetName = "";
         public string vobName = "";
