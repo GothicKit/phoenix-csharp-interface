@@ -1,4 +1,5 @@
 ﻿using PxCs.Data;
+using PxCs.Extensions;
 using PxCs.Types;
 using System;
 using System.Numerics;
@@ -30,41 +31,17 @@ namespace PxCs
 
         public static int[] GetPolygonVertexIndices(IntPtr msh)
         {
-            var arrayPtr = PxMesh.pxMshGetPolygonVertexIndices(msh, out uint length);
-            var array = new int[length];
-
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
-
-            return array;
+            return pxMshGetPolygonVertexIndices(msh, out uint length).MarshalAsIntArray(length);
         }
 
         public static int[] GetPolygonMaterialIndices(IntPtr msh)
         {
-            var arrayPtr = PxMesh.pxMshGetPolygonMaterialIndices(msh, out uint length);
-            var array = new int[length];
-
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
-
-            return array;
+            return pxMshGetPolygonMaterialIndices(msh, out uint length).MarshalAsIntArray(length);
         }
 
         public static int[] GetPolygonFeatureIndices(IntPtr msh)
         {
-            var arrayPtr = PxMesh.pxMshGetPolygonFeatureIndices(msh, out uint length);
-            var array = new int[length];
-
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
-
-            return array;
+            return pxMshGetPolygonFeatureIndices(msh, out uint length).MarshalAsIntArray(length);
         }
 
         public static Vector3[] GetVertices(IntPtr msh)
