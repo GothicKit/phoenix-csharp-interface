@@ -1,4 +1,5 @@
 ﻿using PxCs.Data.Vm;
+using PxCs.Extensions;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -109,7 +110,7 @@ namespace PxCs
         public static string VmStackPopString(IntPtr vmPtr)
         {
             var strPtr = pxVmStackPopString(vmPtr);
-            return PxPhoenix.MarshalString(strPtr);
+            return strPtr.MarshalAsString();
         }
 
         public static PxVmNpcData InitializeNpc(IntPtr vmPtr, string name)
@@ -131,7 +132,7 @@ namespace PxCs
             var nameCount = pxVmInstanceNpcGetNameLength(instancePtr);
             string[] names = new string[nameCount];
             for (var i = 0u; i < nameCount; i++)
-                names[i] = PxPhoenix.MarshalString(pxVmInstanceNpcGetName(instancePtr, i));
+                names[i] = pxVmInstanceNpcGetName(instancePtr, i).MarshalAsString();
 
             return new PxVmNpcData()
             {
