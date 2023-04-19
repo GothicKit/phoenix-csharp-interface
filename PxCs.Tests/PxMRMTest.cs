@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Linq;
+using Xunit;
 
 namespace PxCs.Tests
 {
@@ -13,7 +14,12 @@ namespace PxCs.Tests
             var mrm = PxMRM.GetMRMFromVdf(vdfPtr, "ITFO_PLANTS_BERRYS_01.MRM");
 
             Assert.NotNull(mrm);
-
+            Assert.Single(mrm.materials);
+            Assert.Equal("ITFOOD", mrm.materials.First().name);
+            Assert.Equal(30, mrm.positions.Length);
+            Assert.Single(mrm.subMeshes);
+            Assert.Equal(54, mrm.subMeshes.First().triangles.Length);
+            
             DestroyVdf(vdfPtr);
         }
     }
