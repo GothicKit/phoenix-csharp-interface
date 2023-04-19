@@ -221,9 +221,9 @@ namespace PxCs
                 id = pxVobGetId(vobPtr),
                 type = pxVobGetType(vobPtr),
 
-                presetName = pxVobGetPresetName(vobPtr),
-                vobName = pxVobGetVobName(vobPtr),
-                visualName = pxVobGetVisualName(vobPtr),
+                presetName = pxVobGetPresetName(vobPtr).MarshalAsString(),
+                vobName = pxVobGetVobName(vobPtr).MarshalAsString(),
+                visualName = pxVobGetVisualName(vobPtr).MarshalAsString(),
 
                 animationMode = pxVobGetAnimationMode(vobPtr),
                 shadowMode = pxVobGetShadowMode(vobPtr),

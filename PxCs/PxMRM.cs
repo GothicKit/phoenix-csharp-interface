@@ -1,9 +1,11 @@
 ﻿using PxCs.Data;
+using PxCs.Extensions;
 using PxCs.Types;
 using System;
 using System.Collections;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using static PxCs.Data.PxMRMSubMeshData;
 
 namespace PxCs
 {
@@ -28,25 +30,6 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern byte pxMrmGetAlphaTest(IntPtr mrm);
         [DllImport(DLLNAME)] public static extern PxAABB pxMrmGetBbox(IntPtr mrm);
 
-        [DllImport(DLLNAME)] public static extern uint pxMrmGetSubMeshCount(IntPtr mrm);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmGetSubMesh(IntPtr mrm, uint i);
-
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmSubMeshGetMaterial(IntPtr sub);
-        [DllImport(DLLNAME)] public static extern uint pxMrmSubMeshGetTriangleCount(IntPtr sub);
-        [DllImport(DLLNAME)] public static extern void pxMrmSubMeshGetTriangle(IntPtr sub, uint i, out ushort a, out ushort b, out ushort c);
-        [DllImport(DLLNAME)] public static extern uint pxMrmSubMeshGetWedgeCount(IntPtr sub);
-        [DllImport(DLLNAME)] public static extern void pxMrmSubMeshGetWedge(IntPtr sub, uint i, out Vector3 normal, out Vector2 texture, out ushort index);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmSubMeshGetColors(IntPtr sub, out uint length);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmSubMeshGetTrianglePlaneIndices(IntPtr sub, out uint length);
-        [DllImport(DLLNAME)] public static extern uint pxMrmSubMeshGetTrianglePlaneCount(IntPtr sub);
-        [DllImport(DLLNAME)] public static extern void pxMrmSubMeshGetTrianglePlane(IntPtr sub, uint i, out float distance, out Vector3 normal);
-        [DllImport(DLLNAME)] public static extern uint pxMrmSubMeshGetTriangleEdgeCount(IntPtr sub);
-        [DllImport(DLLNAME)] public static extern void pxMrmSubMeshGetTriangleEdge(IntPtr sub, uint i, out ushort a, out ushort b, out ushort c);
-        [DllImport(DLLNAME)] public static extern uint pxMrmSubMeshGetEdgeCount(IntPtr sub);
-        [DllImport(DLLNAME)] public static extern void pxMrmSubMeshGetEdge(IntPtr sub, uint i, out ushort a, out ushort b);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmSubMeshGetEdgeScores(IntPtr sub, out uint length);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmSubMeshGetWedgeMap(IntPtr sub, out uint length);
-
 
         public static PxMRMData? GetMRMFromVdf(IntPtr vdfPtr, string name)
         {
@@ -61,12 +44,18 @@ namespace PxCs
             var alphaTest = pxMrmGetAlphaTest(mrmPtr);
             var bbox = pxMrmGetBbox(mrmPtr);
 
+            var materials = GetMaterials(mrmPtr);
+            var subMeshes = PxMRMSubMesh.GetSubMeshes(mrmPtr);
+
             var data = new PxMRMData()
             {
                 positions = positions,
                 normals = normals,
                 alphaTest = alphaTest,
-                bbox = bbox
+                bbox = bbox,
+
+                materials = materials,
+                subMeshes = subMeshes
             };
 
             pxMrmDestroy(mrmPtr);
@@ -96,60 +85,18 @@ namespace PxCs
             return array;
         }
 
-        public static float[] GetSubMeshColors(IntPtr msh)
+        public static PxMaterialData[] GetMaterials(IntPtr mrmPtr)
         {
-            var arrayPtr = pxMrmSubMeshGetColors(msh, out uint length);
-            var array = new float[length];
+            var count = pxMrmGetMaterialCount(mrmPtr);
+            var array = new PxMaterialData[count];
 
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
+            for (var i = 0u; i < count; i++)
+            {
+                var materialPtr = pxMrmGetMaterial(mrmPtr, i);
+                array[i] = PxMaterial.GetMaterial(materialPtr);
+            }
 
             return array;
-        }
-
-        public static float[] GetSubMeshEdgeScores(IntPtr msh)
-        {
-            var arrayPtr = pxMrmSubMeshGetEdgeScores(msh, out uint length);
-            var array = new float[length];
-
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
-
-            return array;
-        }
-
-        public static ushort[] GetSubMeshTrianglePlaneIndices(IntPtr msh)
-        {
-            var arrayPtr = pxMrmSubMeshGetTrianglePlaneIndices(msh, out uint length);
-            var array = new short[length];
-
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
-
-            // If there's any negative value inside the array, at runtime it will just be "wrapped around" and no binary change will happen on the data.
-            // https://www.c-sharpcorner.com/uploadfile/b942f9/how-to-convert-unsigned-integer-arrays-to-signed-arrays-and-vice-versa/
-            return (ushort[])(object)array;
-        }
-
-        public static ushort[] GetSubMeshWedgeMap(IntPtr msh)
-        {
-            var arrayPtr = pxMrmSubMeshGetWedgeMap(msh, out uint length);
-            var array = new short[length];
-
-            if (length > int.MaxValue)
-                throw new ArgumentOutOfRangeException($"We can only handle int.MaxValue of elements but >{length}< was given.");
-
-            Marshal.Copy(arrayPtr, array, 0, (int)length);
-
-            // If there's any negative value inside the array, at runtime it will just be "wrapped around" and no binary change will happen on the data.
-            // https://www.c-sharpcorner.com/uploadfile/b942f9/how-to-convert-unsigned-integer-arrays-to-signed-arrays-and-vice-versa/
-            return (ushort[])(object)array;
         }
     }
 }
