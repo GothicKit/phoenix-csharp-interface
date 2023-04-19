@@ -90,29 +90,99 @@ namespace PxCs
         public static Triangle[] GetSubMeshTriangles(IntPtr subMeshPtr)
         {
             var length = pxMrmSubMeshGetTriangleCount(subMeshPtr);
-            var array = new T[length];
+            var array = new Triangle[length];
 
-            return null;
+            for (var i = 0u; i < length; i++)
+            {
+                pxMrmSubMeshGetTriangle(subMeshPtr, i, out ushort a, out ushort b, out ushort c);
+
+                array[i] = new Triangle()
+                {
+                    a = a,
+                    b = b,
+                    c = c
+                };
+            }
+
+            return array;
         }
 
         public static TrianglePlane[] GetSubMeshTrianglePlanes(IntPtr subMeshPtr)
         {
-            return null;
+            var length = pxMrmSubMeshGetTrianglePlaneCount(subMeshPtr);
+            var array = new TrianglePlane[length];
+
+            for (var i = 0u; i < length; i++)
+            {
+                pxMrmSubMeshGetTrianglePlane(subMeshPtr, i, out float distance, out Vector3 normal);
+
+                array[i] = new TrianglePlane()
+                {
+                    distance = distance,
+                    normal = normal
+                };
+            }
+
+            return array;
         }
 
         public static  TriangleEdge[] GetSubMeshTriangleEdges(IntPtr subMeshPtr)
         {
-            return null;
+            var length = pxMrmSubMeshGetTriangleEdgeCount(subMeshPtr);
+            var array = new TriangleEdge[length];
+
+            for (var i = 0u; i < length; i++)
+            {
+                pxMrmSubMeshGetTriangleEdge(subMeshPtr, i, out ushort a, out ushort b, out ushort c);
+
+                array[i] = new TriangleEdge()
+                {
+                    a = a,
+                    b = b,
+                    c = c
+                };
+            }
+
+            return array;
         }
 
         public static Wedge[] GetSubMeshWedges(IntPtr subMeshPtr)
         {
-            return null;
+            var length = pxMrmSubMeshGetWedgeCount(subMeshPtr);
+            var array = new Wedge[length];
+
+            for (var i = 0u; i < length; i++)
+            {
+                pxMrmSubMeshGetWedge(subMeshPtr, i, out Vector3 normal, out Vector2 texture, out ushort index);
+
+                array[i] = new Wedge()
+                {
+                    normal = normal,
+                    texture = texture,
+                    index = index
+                };
+            }
+
+            return array;
         }
 
         public static Edge[] GetSubMeshEdges(IntPtr subMeshPtr)
         {
-            return null;
+            var length = pxMrmSubMeshGetTriangleEdgeCount(subMeshPtr);
+            var array = new Edge[length];
+
+            for (var i = 0u; i < length; i++)
+            {
+                pxMrmSubMeshGetEdge(subMeshPtr, i, out ushort a, out ushort b);
+
+                array[i] = new Edge()
+                {
+                    a = a,
+                    b = b
+                };
+            }
+
+            return array;
         }
 
         public static float[] GetSubMeshColors(IntPtr subMeshPtr)

@@ -22,6 +22,9 @@ namespace PxCs.Extensions
         /// </summary>
         public static T[] MarshalAsArray<T>(this IntPtr arrPtr, uint length)
         {
+            if (arrPtr == IntPtr.Zero)
+                return new T[0];
+
             var array = new T[length];
 
             if (length > int.MaxValue)
@@ -30,12 +33,12 @@ namespace PxCs.Extensions
             // Marshal
             switch (array)
             {
-                case byte _:
-                case sbyte _:
+                case byte[] _:
+                case sbyte[] _:
                     Marshal.Copy(arrPtr, (byte[])(object)array, 0, (int)length);
                     break;
-                case short _:
-                case ushort _:
+                case short[] _:
+                case ushort[] _:
                     Marshal.Copy(arrPtr, (short[])(object)array, 0, (int)length);
                     break;
                 case int[] _:
