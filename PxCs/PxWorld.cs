@@ -1,5 +1,4 @@
 using PxCs.Data;
-using PxCs.Marshaller;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -142,14 +141,9 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern bool pxVobGetAmbient(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetAnimationStrength(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetFarClipScale(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxVobGetPresetName(IntPtr vob);
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxVobGetVobName(IntPtr vob);
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PxHeapStringMarshaller))]
-        [DllImport(DLLNAME)] public static extern string pxVobGetVisualName(IntPtr vob);
-
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobGetPresetName(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobGetVobName(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobGetVisualName(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobVisualType pxVobGetVisualType(IntPtr vob);
 
         [DllImport(DLLNAME)] public static extern uint pxVobGetChildCount(IntPtr vob);
