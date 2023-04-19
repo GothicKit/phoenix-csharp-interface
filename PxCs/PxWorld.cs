@@ -1,4 +1,5 @@
 using PxCs.Data;
+using PxCs.Extensions;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -167,7 +168,7 @@ namespace PxCs
                 );
 
                 array[i] = new PxWayPointData() {
-                    name = PxPhoenix.MarshalString(namePtr),
+                    name = namePtr.MarshalAsString(),
                     position = position,
                     direction = direction,
                     freePoint = freePoint,
