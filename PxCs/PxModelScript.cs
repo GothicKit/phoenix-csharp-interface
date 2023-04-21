@@ -38,19 +38,17 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern uint pxMdsGetDisabledAnimationsCount(IntPtr mds);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetDisabledAnimation(IntPtr mds, uint i);
         [DllImport(DLLNAME)] public static extern uint pxMdsGetModelTagCount(IntPtr mds);
-        [DllImport(DLLNAME)] public static extern void pxMdsGetModelTag(IntPtr mds, uint i, out IntPtr bone);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetModelTagBone(IntPtr mds, uint i);
 
         [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimationCombinationCount(IntPtr mds);
-        [DllImport(DLLNAME)]
-        public static extern void pxMdsGetAnimationCombination(IntPtr mds, uint i,
-            out IntPtr name,
-            out uint layer,
-            out IntPtr next,
-            out float blend_in,
-            out float blend_out,
-            out PxAnimationFlags flags,
-            out IntPtr model,
-            out int last_frame);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationCombinationName(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimationCombinationLayer(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationCombinationNext(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationCombinationBlendIn(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationCombinationBlendOut(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern PxAnimationFlags pxMdsGetAnimationCombinationFlags(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationCombinationModel(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimationCombinationLastFrame(IntPtr mds, uint i);
 
         [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimationBlendingCount(IntPtr mds);
         [DllImport(DLLNAME)]
@@ -127,26 +125,16 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                pxMdsGetAnimationCombination(mdsPtr, i,
-                    out IntPtr name,
-                    out uint layer,
-                    out IntPtr next,
-                    out float blend_in,
-                    out float blend_out,
-                    out PxAnimationFlags flags,
-                    out IntPtr model,
-                    out int last_frame);
-
                 array[i] = new PxAnimationCombination()
                 {
-                    name = name.MarshalAsString(),
-                    layer = layer,
-                    next = next.MarshalAsString(),
-                    blend_in = blend_in,
-                    blend_out = blend_out,
-                    flags = flags,
-                    model = model.MarshalAsString(),
-                    last_frame = last_frame
+                    name = pxMdsGetAnimationCombinationName(mdsPtr, i).MarshalAsString(),
+                    layer = pxMdsGetAnimationCombinationLayer(mdsPtr, i),
+                    next = pxMdsGetAnimationCombinationNext(mdsPtr, i).MarshalAsString(),
+                    blend_in = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i),
+                    blend_out = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i),
+                    flags = pxMdsGetAnimationCombinationFlags(mdsPtr, i),
+                    model = pxMdsGetAnimationCombinationModel(mdsPtr, i).MarshalAsString(),
+                    last_frame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i)
                 };
             }
 
@@ -218,11 +206,9 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                pxMdsGetModelTag(mdsPtr, i, out IntPtr bone);
-
                 array[i] = new PxModelTag()
                 {
-                    bone = bone.MarshalAsString()
+                    bone = pxMdsGetModelTagBone(mdsPtr, i).MarshalAsString()
                 };
             }
 
