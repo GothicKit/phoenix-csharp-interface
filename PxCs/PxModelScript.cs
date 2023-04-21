@@ -2,9 +2,13 @@
 using PxCs.Extensions;
 using System;
 using System.Numerics;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 using static PxCs.Data.PxModelScriptData;
 using static PxCs.PxTexture;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PxCs
 {
@@ -28,6 +32,44 @@ namespace PxCs
             backward = 1
         };
 
+        public enum PxEventTagType
+        {
+            unknown,
+            create_item,
+            insert_item,
+            remove_item,
+            destroy_item,
+            place_item,
+            exchange_item,
+            fight_mode,
+            place_munition,
+            remove_munition,
+            draw_sound,
+            undraw_sound,
+            swap_mesh,
+            draw_torch,
+            inventory_torch,
+            drop_torch,
+            hit_limb,
+            hit_direction,
+            dam_multiply,
+            par_frame,
+            opt_frame,
+            hit_end,
+            window
+        };
+
+        public enum PxEventFightMode
+        {
+            fist,       // The player fights with his fists.
+            one_handed, // The player wields a one-handed weapon.
+            two_handed, // The player wields a two-handed weapon.
+            bow,        // The player wields a bow.
+            crossbow,   // The player wields a crossbow.
+            magic,      // The player casts a magic spell.
+            none,       // The player is not in a fighting stance.
+            invalid     // A fight mode which acts as an `unset` marker. Added for OpenGothic compatibility.
+        };
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsLoadFromVdf(IntPtr vdf, string name);
@@ -35,9 +77,9 @@ namespace PxCs
 
         // Misc parameters
         [return: MarshalAs(UnmanagedType.U1)]
-        [DllImport(DLLNAME)] public static extern bool pxMdsGetskeletonDisableMesh(IntPtr mds);
+        [DllImport(DLLNAME)] public static extern bool pxMdsGetSkeletonDisableMesh(IntPtr mds);
 
-        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetskeletonName(IntPtr mds);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetSkeletonName(IntPtr mds);
         [DllImport(DLLNAME)] public static extern uint pxMdsGetMeshCount(IntPtr mds);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetMesh(IntPtr mds, uint i);
         [DllImport(DLLNAME)] public static extern uint pxMdsGetDisabledAnimationsCount(IntPtr mds);
@@ -74,6 +116,82 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationAliasAlias(IntPtr mds, uint i);
         [DllImport(DLLNAME)] public static extern PxAnimationDirection pxMdsGetAnimationAliasDirection(IntPtr mds, uint i);
 
+        // Animations
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimationCount(IntPtr mds);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationName(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimationLayer(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationNext(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationBlendIn(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationBlendOut(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern PxAnimationFlags pxMdsGetAnimationFlags(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimationModel(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern PxAnimationDirection pxMdsGetAnimationDirection(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimationFirstFrame(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimationLastFrame(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationFps(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationSpeed(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimationCollisionVolumeScale(IntPtr mds, uint i);
+
+        // Animations -> EventTags
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimation_EventTagCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventTagFrame(IntPtr mds, uint animIndex, uint eventTagIndex);
+        [DllImport(DLLNAME)] public static extern PxEventTagType pxMdsGetAnimation_EventTagType(IntPtr mds, uint animIndex, uint eventTagIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventTagSlot(IntPtr mds, uint animIndex, uint eventTagIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventTagSlot2(IntPtr mds, uint animIndex, uint eventTagIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventTagItem(IntPtr mds, uint animIndex, uint eventTagIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventTagFrames(IntPtr mds, uint animIndex, uint eventTagIndex, out uint size);
+        [DllImport(DLLNAME)] public static extern PxEventFightMode pxMdsGetAnimation_EventTagFightMode(IntPtr mds, uint animIndex, uint eventTagIndex);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventTagAttached(IntPtr mds, uint animIndex, uint eventTagIndex);
+
+        // Animations -> EventPfx
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimation_EventPfxCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventPfxFrame(IntPtr mds, uint animIndex, uint eventIndex);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventPfxIndex(IntPtr mds, uint animIndex, uint eventIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventPfxName(IntPtr mds, uint animIndex, uint eventIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventPfxPosition(IntPtr mds, uint animIndex, uint eventIndex);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventPfxAttached(IntPtr mds, uint animIndex, uint eventIndex);
+
+        // Animations -> PfxStop
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimation_EventPfxStopCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern void pxMdsGetAnimation_EventPfxStop(IntPtr mds, uint animIndex, uint pfxStopIndex,
+            out int frame,
+            out int index);
+
+        // Animations -> Sfx
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimation_EventSfxCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventSfxFrame(IntPtr mds, uint animIndex, uint sfxIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventSfxName(IntPtr mds, uint animIndex, uint sfxIndex);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimation_EventSfxRange(IntPtr mds, uint animIndex, uint sfxIndex);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventSfxEmptySlot(IntPtr mds, uint animIndex, uint sfxIndex);
+
+        // Animations -> SfxGround
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimationEventSfxGroundCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventSfxGroundFrame(IntPtr mds, uint animIndex, uint sfxIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventSfxGroundName(IntPtr mds, uint animIndex, uint sfxIndex);
+        [DllImport(DLLNAME)] public static extern float pxMdsGetAnimation_EventSfxGroundRange(IntPtr mds, uint animIndex, uint sfxIndex);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventSfxGroundEmptySlot(IntPtr mds, uint animIndex, uint sfxIndex);
+
+        // Animations -> EventMorphAnimate
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimation_EventMorphAnimateCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventMorphAnimateFrame(IntPtr mds, uint animIndex, uint morphIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventMorphAnimateAnimation(IntPtr mds, uint animIndex, uint morphIndex);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventMorphAnimateNode(IntPtr mds, uint animIndex, uint morphIndex);
+
+        // Animations -> EventCameraTremor
+        [DllImport(DLLNAME)] public static extern uint pxMdsGetAnimation_EventCameraTremorCount(IntPtr mds, uint i);
+        [DllImport(DLLNAME)]
+        public static extern void pxMdsGetAnimation_EventCameraTremor(IntPtr mds, uint animIndex, uint tremorIndex,
+            out int frame,
+            out int field1,
+            out int field2,
+            out int field3,
+            out int field4);
+
+
 
 
         public static PxModelScriptData? GetModelScriptFromVdf(IntPtr vdfPtr, string name)
@@ -87,11 +205,12 @@ namespace PxCs
             {
                 skeleton = GetSkeleton(mdsPtr),
                 meshes = GetMeshes(mdsPtr),
-                disabled_animations = GetDisabledAnimations(mdsPtr),
+                disabledAnimations = GetDisabledAnimations(mdsPtr),
                 combinations = GetCombinations(mdsPtr),
                 blends = GetAnimationBlendings(mdsPtr),
                 aliases = GetAnimationAliases(mdsPtr),
-                model_tags = GetModelTags(mdsPtr)
+                model_tags = GetModelTags(mdsPtr),
+                animations = GetAnimations(mdsPtr)
             };
 
             pxMdsDestroy(mdsPtr);
@@ -102,8 +221,8 @@ namespace PxCs
         {
             return new PxSkeleton()
             {
-                name = pxMdsGetskeletonName(mdsPtr).MarshalAsString(),
-                disable_mesh = pxMdsGetskeletonDisableMesh(mdsPtr)
+                name = pxMdsGetSkeletonName(mdsPtr).MarshalAsString(),
+                disableMesh = pxMdsGetSkeletonDisableMesh(mdsPtr)
             };
         }
 
@@ -197,6 +316,171 @@ namespace PxCs
             for (var i = 0u; i < count; i++)
             {
                 array[i].bone = pxMdsGetModelTagBone(mdsPtr, i).MarshalAsString();
+            }
+
+            return array;
+        }
+
+        public static PxAnimation[] GetAnimations(IntPtr mdsPtr)
+        {
+            var count = pxMdsGetAnimationCount(mdsPtr);
+            var array = new PxAnimation[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                array[i] = GetAnimation(mdsPtr, i);
+            }
+
+            return array;
+        }
+
+        public static PxAnimation GetAnimation(IntPtr mdsPtr, uint index)
+        {
+            return new PxAnimation()
+            {
+                name = pxMdsGetAnimationName(mdsPtr, index).MarshalAsString(),
+                layer = pxMdsGetAnimationLayer(mdsPtr, index),
+                next = pxMdsGetAnimationNext(mdsPtr, index).MarshalAsString(),
+                blendIn = pxMdsGetAnimationBlendIn(mdsPtr, index),
+                blendOut = pxMdsGetAnimationBlendOut(mdsPtr, index),
+                flags = pxMdsGetAnimationFlags(mdsPtr, index),
+                model = pxMdsGetAnimationModel(mdsPtr, index).MarshalAsString(),
+                direction = pxMdsGetAnimationDirection(mdsPtr, index),
+                firstFrame = pxMdsGetAnimationFirstFrame(mdsPtr, index),
+                lastFrame = pxMdsGetAnimationLastFrame(mdsPtr, index),
+                fps = pxMdsGetAnimationFps(mdsPtr, index),
+                speed = pxMdsGetAnimationSpeed(mdsPtr, index),
+                collisionVolumeScale = pxMdsGetAnimationCollisionVolumeScale(mdsPtr, index),
+
+                events = GetAnimationEventTags(mdsPtr, index),
+                pfx = GetAnimationPfx(mdsPtr, index),
+                pfx_stop = GetAnimationPfxStop(mdsPtr, index),
+                sfx = GetAnimationSfx(mdsPtr, index),
+                sfx_ground = GetAnimationSfxGrounds(mdsPtr, index),
+                morph = GetAnimationMorps(mdsPtr, index),
+                tremors = GetAnimationTremors(mdsPtr, index)
+            };
+        }
+
+        public static PxEventTag[] GetAnimationEventTags(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimation_EventTagCount(mdsPtr, index);
+            var array = new PxEventTag[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                array[i].frame = pxMdsGetAnimation_EventTagFrame(mdsPtr, index, i);
+                array[i].type = pxMdsGetAnimation_EventTagType(mdsPtr, index, i);
+                array[i].slot = pxMdsGetAnimation_EventTagSlot(mdsPtr, index, i).MarshalAsString();
+                array[i].slot2 = pxMdsGetAnimation_EventTagSlot2(mdsPtr, index, i).MarshalAsString();
+                array[i].item = pxMdsGetAnimation_EventTagItem(mdsPtr, index, i).MarshalAsString();
+                array[i].fightMode = pxMdsGetAnimation_EventTagFightMode(mdsPtr, index, i);
+                array[i].attached = pxMdsGetAnimation_EventTagAttached(mdsPtr, index, i);
+                array[i].frames = pxMdsGetAnimation_EventTagFrames(mdsPtr, index, i, out uint size).MarshalAsArray<int>(size);
+            }
+
+            return array;
+        }
+
+        public static PxEventPfx[] GetAnimationPfx(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimation_EventPfxCount(mdsPtr, index);
+            var array = new PxEventPfx[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                array[i].frame = pxMdsGetAnimation_EventPfxFrame(mdsPtr, index, i);
+                array[i].index = pxMdsGetAnimation_EventPfxIndex(mdsPtr, index, i);
+                array[i].name = pxMdsGetAnimation_EventPfxName(mdsPtr, index, i).MarshalAsString();
+                array[i].position = pxMdsGetAnimation_EventPfxPosition(mdsPtr, index, i).MarshalAsString();
+                array[i].attached = pxMdsGetAnimation_EventPfxAttached(mdsPtr, index, i);
+            }
+
+            return array;
+        }
+
+        public static PxEventPfxStop[] GetAnimationPfxStop(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimation_EventPfxStopCount(mdsPtr, index);
+            var array = new PxEventPfxStop[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                pxMdsGetAnimation_EventPfxStop(mdsPtr, index, i, out int frame, out int stopIndex);
+
+                array[i].frame = frame;
+                array[i].index = stopIndex;
+            }
+
+            return array;
+        }
+
+        public static PxEventSfx[] GetAnimationSfx(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimation_EventSfxCount(mdsPtr, index);
+            var array = new PxEventSfx[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                array[i].frame = pxMdsGetAnimation_EventSfxFrame(mdsPtr, index, i);
+                array[i].name = pxMdsGetAnimation_EventSfxName(mdsPtr, index, i).MarshalAsString();
+                array[i].range = pxMdsGetAnimation_EventSfxRange(mdsPtr, index, i);
+                array[i].emptySlot = pxMdsGetAnimation_EventSfxEmptySlot(mdsPtr, index, i);
+            }
+
+            return array;
+        }
+
+        public static PxEventSfxGround[] GetAnimationSfxGrounds(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimationEventSfxGroundCount(mdsPtr, index);
+            var array = new PxEventSfxGround[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                array[i].frame = pxMdsGetAnimation_EventSfxGroundFrame(mdsPtr, index, i);
+                array[i].name = pxMdsGetAnimation_EventSfxGroundName(mdsPtr, index, i).MarshalAsString();
+                array[i].range = pxMdsGetAnimation_EventSfxGroundRange(mdsPtr, index, i);
+                array[i].emptySlot = pxMdsGetAnimation_EventSfxGroundEmptySlot(mdsPtr, index, i);
+            }
+
+            return array;
+        }
+
+        public static PxEventMorphAnimate[] GetAnimationMorps(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimation_EventMorphAnimateCount(mdsPtr, index);
+            var array = new PxEventMorphAnimate[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                array[i].frame = pxMdsGetAnimation_EventMorphAnimateFrame(mdsPtr, index, i);
+                array[i].animation = pxMdsGetAnimation_EventMorphAnimateAnimation(mdsPtr, index, i).MarshalAsString();
+                array[i].node = pxMdsGetAnimation_EventMorphAnimateNode(mdsPtr, index, i).MarshalAsString();
+    }
+
+            return array;
+        }
+
+        public static PxEventCameraTremor[] GetAnimationTremors(IntPtr mdsPtr, uint index)
+        {
+            var count = pxMdsGetAnimation_EventCameraTremorCount(mdsPtr, index);
+            var array = new PxEventCameraTremor[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                pxMdsGetAnimation_EventCameraTremor(mdsPtr, index, i,
+                    out int frame,
+                    out int field1,
+                    out int field2,
+                    out int field3,
+                    out int field4);
+
+                array[i].frame = frame;
+                array[i].field1 = field1;
+                array[i].field2 = field2;
+                array[i].field3 = field3;
+                array[i].field4 = field4;
             }
 
             return array;
