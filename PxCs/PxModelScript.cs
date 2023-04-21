@@ -125,17 +125,14 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i] = new PxAnimationCombination()
-                {
-                    name = pxMdsGetAnimationCombinationName(mdsPtr, i).MarshalAsString(),
-                    layer = pxMdsGetAnimationCombinationLayer(mdsPtr, i),
-                    next = pxMdsGetAnimationCombinationNext(mdsPtr, i).MarshalAsString(),
-                    blend_in = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i),
-                    blend_out = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i),
-                    flags = pxMdsGetAnimationCombinationFlags(mdsPtr, i),
-                    model = pxMdsGetAnimationCombinationModel(mdsPtr, i).MarshalAsString(),
-                    last_frame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i)
-                };
+                array[i].name = pxMdsGetAnimationCombinationName(mdsPtr, i).MarshalAsString();
+                array[i].layer = pxMdsGetAnimationCombinationLayer(mdsPtr, i);
+                array[i].next = pxMdsGetAnimationCombinationNext(mdsPtr, i).MarshalAsString();
+                array[i].blend_in = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i);
+                array[i].blend_out = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i);
+                array[i].flags = pxMdsGetAnimationCombinationFlags(mdsPtr, i);
+                array[i].model = pxMdsGetAnimationCombinationModel(mdsPtr, i).MarshalAsString();
+                array[i].last_frame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i);
             }
 
             return array;
@@ -154,13 +151,10 @@ namespace PxCs
                 out float blend_in,
                 out float blend_out);
 
-                array[i] = new PxAnimationBlending()
-                {
-                    name = name.MarshalAsString(),
-                    next = next.MarshalAsString(),
-                    blend_in = blend_in,
-                    blend_out = blend_out
-                };
+                array[i].name = name.MarshalAsString();
+                array[i].next = next.MarshalAsString();
+                array[i].blend_in = blend_in;
+                array[i].blend_out = blend_out;
             }
 
             return array;
@@ -183,17 +177,14 @@ namespace PxCs
                 out IntPtr alias,
                 out PxAnimationDirection direction);
 
-                array[i] = new PxAnimationAlias()
-                {
-                    name = name.MarshalAsString(),
-                    layer = layer,
-                    next = next.MarshalAsString(),
-                    blend_in = blend_in,
-                    blend_out = blend_out,
-                    flags = flags,
-                    alias = alias.MarshalAsString(),
-                    direction = direction
-                };
+                array[i].name = name.MarshalAsString();
+                array[i].layer = layer;
+                array[i].next = next.MarshalAsString();
+                array[i].blend_in = blend_in;
+                array[i].blend_out = blend_out;
+                array[i].flags = flags;
+                array[i].alias = alias.MarshalAsString();
+                array[i].direction = direction;
             }
 
             return array;
@@ -206,10 +197,7 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i] = new PxModelTag()
-                {
-                    bone = pxMdsGetModelTagBone(mdsPtr, i).MarshalAsString()
-                };
+                array[i].bone = pxMdsGetModelTagBone(mdsPtr, i).MarshalAsString();
             }
 
             return array;
