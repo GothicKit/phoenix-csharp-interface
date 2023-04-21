@@ -34,6 +34,10 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern void pxMdsDestroy(IntPtr mdm);
 
         // Misc parameters
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxMdsGetskeletonDisableMesh(IntPtr mds);
+
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetskeletonName(IntPtr mds);
         [DllImport(DLLNAME)] public static extern uint pxMdsGetMeshCount(IntPtr mds);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetMesh(IntPtr mds, uint i);
         [DllImport(DLLNAME)] public static extern uint pxMdsGetDisabledAnimationsCount(IntPtr mds);
@@ -81,6 +85,7 @@ namespace PxCs
 
             var data = new PxModelScriptData()
             {
+                skeleton = GetSkeleton(mdsPtr),
                 meshes = GetMeshes(mdsPtr),
                 disabled_animations = GetDisabledAnimations(mdsPtr),
                 combinations = GetCombinations(mdsPtr),
@@ -91,6 +96,15 @@ namespace PxCs
 
             pxMdsDestroy(mdsPtr);
             return data;
+        }
+
+        public static PxSkeleton GetSkeleton(IntPtr mdsPtr)
+        {
+            return new PxSkeleton()
+            {
+                name = pxMdsGetskeletonName(mdsPtr).MarshalAsString(),
+                disable_mesh = pxMdsGetskeletonDisableMesh(mdsPtr)
+            };
         }
 
         public static string[] GetMeshes(IntPtr mdsPtr)

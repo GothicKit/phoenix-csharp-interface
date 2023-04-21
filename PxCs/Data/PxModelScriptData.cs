@@ -2,6 +2,13 @@
 {
     public class PxModelScriptData
     {
+
+        public struct PxSkeleton
+        {
+            public string name;
+            public bool disable_mesh;
+        }
+
         public struct PxAnimationCombination
         {
             public string name;
@@ -40,6 +47,7 @@
         }
 
 
+        public PxSkeleton skeleton;
         public string[] meshes = default!;
         public string[] disabled_animations = default!;
         public PxAnimationCombination[] combinations = default!;
