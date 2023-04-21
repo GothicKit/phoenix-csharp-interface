@@ -36,5 +36,18 @@ namespace PxCs.Tests
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
         }
+
+        [Fact]
+        public void Test_load_Vobs()
+        {
+            var vdfPtr = LoadVdf("Data/worlds.VDF");
+            var worldPtr = PxWorld.pxWorldLoadFromVdf(vdfPtr, "world.zen");
+
+            var vobs = PxWorld.GetVobs(worldPtr);
+
+
+            PxWorld.pxWorldDestroy(worldPtr);
+            DestroyVdf(vdfPtr);
+        }
     }
 }

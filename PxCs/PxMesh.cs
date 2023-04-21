@@ -31,17 +31,17 @@ namespace PxCs
 
         public static int[] GetPolygonVertexIndices(IntPtr msh)
         {
-            return pxMshGetPolygonVertexIndices(msh, out uint length).MarshalAsIntArray(length);
+            return pxMshGetPolygonVertexIndices(msh, out uint length).MarshalAsArray<int>(length);
         }
 
         public static int[] GetPolygonMaterialIndices(IntPtr msh)
         {
-            return pxMshGetPolygonMaterialIndices(msh, out uint length).MarshalAsIntArray(length);
+            return pxMshGetPolygonMaterialIndices(msh, out uint length).MarshalAsArray<int>(length);
         }
 
         public static int[] GetPolygonFeatureIndices(IntPtr msh)
         {
-            return pxMshGetPolygonFeatureIndices(msh, out uint length).MarshalAsIntArray(length);
+            return pxMshGetPolygonFeatureIndices(msh, out uint length).MarshalAsArray<int>(length);
         }
 
         public static Vector3[] GetVertices(IntPtr msh)

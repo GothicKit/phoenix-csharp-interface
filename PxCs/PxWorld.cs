@@ -1,6 +1,8 @@
 using PxCs.Data;
 using PxCs.Extensions;
+using PxCs.Types;
 using System;
+using System.Collections;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -119,6 +121,9 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern PxVobType pxVobGetType(IntPtr vob);
         [DllImport(DLLNAME)] public static extern uint pxVobGetId(IntPtr vob);
 
+        [DllImport(DLLNAME)] public static extern Vector3 pxVobGetPosition(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern PxMatrix3x3 pxVobGetRotation(IntPtr vob);
+
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetShowVisual(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobSpriteAlignment pxVobGetSpriteAlignment(IntPtr vob);
@@ -197,6 +202,64 @@ namespace PxCs
             }
 
             return array;
+        }
+
+
+        public static PxVobData[] GetVobs(IntPtr worldPtr)
+        {
+            var count = pxWorldGetRootVobCount(worldPtr);
+            var vobs = new PxVobData[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                var vobPtr = pxWorldGetRootVob(worldPtr, i);
+                vobs[i] = GetVobData(vobPtr);
+            }
+
+            return vobs;
+        }
+
+        private static PxVobData GetVobData(IntPtr vobPtr)
+        {
+            var vob = new PxVobData()
+            {
+                id = pxVobGetId(vobPtr),
+                type = pxVobGetType(vobPtr),
+
+                position = pxVobGetPosition(vobPtr),
+                rotation = pxVobGetRotation(vobPtr),
+
+                presetName = pxVobGetPresetName(vobPtr).MarshalAsString(),
+                vobName = pxVobGetVobName(vobPtr).MarshalAsString(),
+                visualName = pxVobGetVisualName(vobPtr).MarshalAsString(),
+
+                animationMode = pxVobGetAnimationMode(vobPtr),
+                shadowMode = pxVobGetShadowMode(vobPtr),
+                spriteAlignment = pxVobGetSpriteAlignment(vobPtr),
+                visualType = pxVobGetVisualType(vobPtr),
+
+                ambient = pxVobGetAmbient(vobPtr),
+                cdDynamic = pxVobGetCdDynamic(vobPtr),
+                cdStatic = pxVobGetCdStatic(vobPtr),
+                vobStatic = pxVobGetVobStatic(vobPtr),
+                showVisual = pxVobGetShowVisual(vobPtr),
+                physicsEnabled = pxVobGetPhysicsEnabled(vobPtr),
+
+                bias = pxVobGetBias(vobPtr),
+
+                animationStrength = pxVobGetAnimationStrength(vobPtr),
+                farClipScale = pxVobGetFarClipScale(vobPtr)
+            };
+
+            var childCount = pxVobGetChildCount(vobPtr);
+            vob.childVobs = new PxVobData[childCount];
+            for (var ii = 0u; ii < childCount; ii++)
+            {
+                var childVobPtr = pxVobGetChild(vobPtr, ii);
+                vob.childVobs[ii] = GetVobData(childVobPtr);
+            }
+
+            return vob;
         }
     }
 }
