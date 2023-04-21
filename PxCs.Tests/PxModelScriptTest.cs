@@ -10,11 +10,10 @@ namespace PxCs.Tests
         {
             var vdfPtr = LoadVdf("Data/anims.VDF");
 
-            var mdsPtr = PxModelScript.pxMdsLoadFromVdf(vdfPtr, "HUMANS.MDS");
+            var mds = PxModelScript.GetModelScriptFromVdf(vdfPtr, "HUMANS.MDS");
 
-            Assert.True(mdsPtr != System.IntPtr.Zero);
+            Assert.NotNull(mds);
 
-            PxModelScript.pxMdsDestroy(mdsPtr);
             DestroyVdf(vdfPtr);
         }
     }
