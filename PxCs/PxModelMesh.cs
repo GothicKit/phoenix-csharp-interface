@@ -75,7 +75,6 @@ namespace PxCs
             return new PxSoftSkinMeshData()
             {
                 mesh = PxMultiResolutionMesh.GetMRMFromPtr(multiResolutionMeshPtr),
-                bboxes = null, // FIXME - not loaded from phoenix as of now!
                 wedgeNormals = GetSoftSkinMeshWedgeNormals(softSkinMeshPtr),
                 nodes = pxSsmGetNodes(softSkinMeshPtr, out uint length).MarshalAsArray<int>(length),
                 weights = GetSoftSkinMeshWeights(softSkinMeshPtr)
@@ -124,9 +123,6 @@ namespace PxCs
 
             return array;
         }
-
-
-
 
         public static Dictionary<string, PxMultiResolutionMeshData> GetAttachments(IntPtr mdmPtr)
         {

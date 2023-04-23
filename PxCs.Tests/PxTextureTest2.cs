@@ -4,7 +4,7 @@ using Xunit;
 
 namespace PxCs.Tests
 {
-    public class PXTextureTest : PxPhoenixTest
+    public class PxTextureTest : PxPhoenixTest
     {
         [Fact]
         public void Test_load_Texture()
@@ -45,7 +45,7 @@ namespace PxCs.Tests
             Assert.True(texture.height == 256u, "height >256u< doesn't match.");
             Assert.True(texture.mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
 
-            Assert.True(texture.mipmaps[0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
+            Assert.True(texture.mipmaps![0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace PxCs.Tests
             Assert.True(texture.height == 256u, "height >256u< doesn't match.");
             Assert.True(texture.mipmapCount == 6u, "mipmapCount >6u< doesn't match.");
 
-            Assert.True(texture.mipmaps[0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
+            Assert.True(texture.mipmaps![0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
         }
     }
 }
