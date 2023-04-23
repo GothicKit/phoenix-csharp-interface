@@ -1,11 +1,12 @@
 ﻿using PxCs.Data;
+using PxCs.Data.Mesh;
+using PxCs.Data.Misc;
 using PxCs.Extensions;
-using PxCs.Types;
 using System;
 using System.Collections;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using static PxCs.Data.PxMRMSubMeshData;
+using static PxCs.Data.Mesh.PxMRMSubMeshData;
 
 namespace PxCs
 {
@@ -28,7 +29,7 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern uint pxMrmGetMaterialCount(IntPtr mrm);
         [DllImport(DLLNAME)] public static extern IntPtr pxMrmGetMaterial(IntPtr mrm, uint i);
         [DllImport(DLLNAME)] public static extern byte pxMrmGetAlphaTest(IntPtr mrm);
-        [DllImport(DLLNAME)] public static extern PxAABB pxMrmGetBbox(IntPtr mrm);
+        [DllImport(DLLNAME)] public static extern PxAABBData pxMrmGetBbox(IntPtr mrm);
 
 
         public static PxMRMData? GetMRMFromVdf(IntPtr vdfPtr, string name)

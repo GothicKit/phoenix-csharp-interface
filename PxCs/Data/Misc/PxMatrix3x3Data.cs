@@ -1,6 +1,6 @@
-﻿namespace PxCs.Types
+﻿namespace PxCs.Data.Misc
 {
-    public struct PxMatrix3x3
+    public struct PxMatrix3x3Data
     {
         // IMPORTANT: float[3][3] - This matrix is column-major column order!
         public float m00;

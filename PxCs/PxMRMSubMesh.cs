@@ -1,11 +1,9 @@
-﻿using PxCs.Data;
+﻿using PxCs.Data.Mesh;
+using PxCs.Data.Mesh.Misc;
 using PxCs.Extensions;
-using PxCs.Types;
 using System;
-using System.Collections;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using static PxCs.Data.PxMRMSubMeshData;
 
 namespace PxCs
 {
@@ -87,16 +85,16 @@ namespace PxCs
             };
         }
 
-        public static Triangle[] GetSubMeshTriangles(IntPtr subMeshPtr)
+        public static PxTriangleData[] GetSubMeshTriangles(IntPtr subMeshPtr)
         {
             var length = pxMrmSubMeshGetTriangleCount(subMeshPtr);
-            var array = new Triangle[length];
+            var array = new PxTriangleData[length];
 
             for (var i = 0u; i < length; i++)
             {
                 pxMrmSubMeshGetTriangle(subMeshPtr, i, out ushort a, out ushort b, out ushort c);
 
-                array[i] = new Triangle()
+                array[i] = new PxTriangleData()
                 {
                     a = a,
                     b = b,
@@ -107,16 +105,16 @@ namespace PxCs
             return array;
         }
 
-        public static TrianglePlane[] GetSubMeshTrianglePlanes(IntPtr subMeshPtr)
+        public static PxTrianglePlaneData[] GetSubMeshTrianglePlanes(IntPtr subMeshPtr)
         {
             var length = pxMrmSubMeshGetTrianglePlaneCount(subMeshPtr);
-            var array = new TrianglePlane[length];
+            var array = new PxTrianglePlaneData[length];
 
             for (var i = 0u; i < length; i++)
             {
                 pxMrmSubMeshGetTrianglePlane(subMeshPtr, i, out float distance, out Vector3 normal);
 
-                array[i] = new TrianglePlane()
+                array[i] = new PxTrianglePlaneData()
                 {
                     distance = distance,
                     normal = normal
@@ -126,16 +124,16 @@ namespace PxCs
             return array;
         }
 
-        public static  TriangleEdge[] GetSubMeshTriangleEdges(IntPtr subMeshPtr)
+        public static  PxTriangleEdgeData[] GetSubMeshTriangleEdges(IntPtr subMeshPtr)
         {
             var length = pxMrmSubMeshGetTriangleEdgeCount(subMeshPtr);
-            var array = new TriangleEdge[length];
+            var array = new PxTriangleEdgeData[length];
 
             for (var i = 0u; i < length; i++)
             {
                 pxMrmSubMeshGetTriangleEdge(subMeshPtr, i, out ushort a, out ushort b, out ushort c);
 
-                array[i] = new TriangleEdge()
+                array[i] = new PxTriangleEdgeData()
                 {
                     a = a,
                     b = b,
@@ -146,16 +144,16 @@ namespace PxCs
             return array;
         }
 
-        public static Wedge[] GetSubMeshWedges(IntPtr subMeshPtr)
+        public static PxWedgeData[] GetSubMeshWedges(IntPtr subMeshPtr)
         {
             var length = pxMrmSubMeshGetWedgeCount(subMeshPtr);
-            var array = new Wedge[length];
+            var array = new PxWedgeData[length];
 
             for (var i = 0u; i < length; i++)
             {
                 pxMrmSubMeshGetWedge(subMeshPtr, i, out Vector3 normal, out Vector2 texture, out ushort index);
 
-                array[i] = new Wedge()
+                array[i] = new PxWedgeData()
                 {
                     normal = normal,
                     texture = texture,
@@ -166,16 +164,16 @@ namespace PxCs
             return array;
         }
 
-        public static Edge[] GetSubMeshEdges(IntPtr subMeshPtr)
+        public static PxEdgeData[] GetSubMeshEdges(IntPtr subMeshPtr)
         {
             var length = pxMrmSubMeshGetTriangleEdgeCount(subMeshPtr);
-            var array = new Edge[length];
+            var array = new PxEdgeData[length];
 
             for (var i = 0u; i < length; i++)
             {
                 pxMrmSubMeshGetEdge(subMeshPtr, i, out ushort a, out ushort b);
 
-                array[i] = new Edge()
+                array[i] = new PxEdgeData()
                 {
                     a = a,
                     b = b

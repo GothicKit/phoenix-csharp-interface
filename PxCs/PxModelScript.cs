@@ -1,4 +1,5 @@
 ﻿using PxCs.Data;
+using PxCs.Data.ModelScript;
 using PxCs.Extensions;
 using System;
 using System.Numerics;
@@ -209,7 +210,7 @@ namespace PxCs
                 combinations = GetCombinations(mdsPtr),
                 blends = GetAnimationBlendings(mdsPtr),
                 aliases = GetAnimationAliases(mdsPtr),
-                model_tags = GetModelTags(mdsPtr),
+                modelTags = GetModelTags(mdsPtr),
                 animations = GetAnimations(mdsPtr)
             };
 
@@ -217,9 +218,9 @@ namespace PxCs
             return data;
         }
 
-        public static PxSkeleton GetSkeleton(IntPtr mdsPtr)
+        public static PxSkeletonData GetSkeleton(IntPtr mdsPtr)
         {
-            return new PxSkeleton()
+            return new PxSkeletonData()
             {
                 name = pxMdsGetSkeletonName(mdsPtr).MarshalAsString(),
                 disableMesh = pxMdsGetSkeletonDisableMesh(mdsPtr)
@@ -252,30 +253,30 @@ namespace PxCs
             return array;
         }
 
-        public static PxAnimationCombination[] GetCombinations(IntPtr mdsPtr)
+        public static PxAnimationCombinationData[] GetCombinations(IntPtr mdsPtr)
         {
             var count = pxMdsGetAnimationCombinationCount(mdsPtr);
-            var array = new PxAnimationCombination[count];
+            var array = new PxAnimationCombinationData[count];
 
             for (var i = 0u; i < count; i++)
             {
                 array[i].name = pxMdsGetAnimationCombinationName(mdsPtr, i).MarshalAsString();
                 array[i].layer = pxMdsGetAnimationCombinationLayer(mdsPtr, i);
                 array[i].next = pxMdsGetAnimationCombinationNext(mdsPtr, i).MarshalAsString();
-                array[i].blend_in = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i);
-                array[i].blend_out = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i);
+                array[i].blendIn = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i);
+                array[i].blendOut = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i);
                 array[i].flags = pxMdsGetAnimationCombinationFlags(mdsPtr, i);
                 array[i].model = pxMdsGetAnimationCombinationModel(mdsPtr, i).MarshalAsString();
-                array[i].last_frame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i);
+                array[i].lastFrame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i);
             }
 
             return array;
         }
 
-        public static PxAnimationBlending[] GetAnimationBlendings(IntPtr mdsPtr)
+        public static PxAnimationBlendingData[] GetAnimationBlendings(IntPtr mdsPtr)
         {
             var count = pxMdsGetAnimationBlendingCount(mdsPtr);
-            var array = new PxAnimationBlending[count];
+            var array = new PxAnimationBlendingData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -288,18 +289,18 @@ namespace PxCs
             return array;
         }
 
-        public static PxAnimationAlias[] GetAnimationAliases(IntPtr mdsPtr)
+        public static PxAnimationAliasData[] GetAnimationAliases(IntPtr mdsPtr)
         {
             var count = pxMdsGetAnimationAliasCount(mdsPtr);
-            var array = new PxAnimationAlias[count];
+            var array = new PxAnimationAliasData[count];
 
             for (var i = 0u; i < count; i++)
             {
                 array[i].name = pxMdsGetAnimationAliasName(mdsPtr, i).MarshalAsString();
                 array[i].layer = pxMdsGetAnimationAliasLayer(mdsPtr, i);
                 array[i].next = pxMdsGetAnimationAliasNext(mdsPtr, i).MarshalAsString();
-                array[i].blend_in = pxMdsGetAnimationAliasBlendIn(mdsPtr, i);
-                array[i].blend_out = pxMdsGetAnimationAliasBlendOut(mdsPtr, i);
+                array[i].blendIn = pxMdsGetAnimationAliasBlendIn(mdsPtr, i);
+                array[i].blendOut = pxMdsGetAnimationAliasBlendOut(mdsPtr, i);
                 array[i].flags = pxMdsGetAnimationAliasFlags(mdsPtr, i);
                 array[i].alias = pxMdsGetAnimationAliasAlias(mdsPtr, i).MarshalAsString();
                 array[i].direction = pxMdsGetAnimationAliasDirection(mdsPtr, i);
@@ -308,10 +309,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxModelTag[] GetModelTags(IntPtr mdsPtr)
+        public static PxModelTagData[] GetModelTags(IntPtr mdsPtr)
         {
             var count = pxMdsGetModelTagCount(mdsPtr);
-            var array = new PxModelTag[count];
+            var array = new PxModelTagData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -321,10 +322,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxAnimation[] GetAnimations(IntPtr mdsPtr)
+        public static PxAnimationData[] GetAnimations(IntPtr mdsPtr)
         {
             var count = pxMdsGetAnimationCount(mdsPtr);
-            var array = new PxAnimation[count];
+            var array = new PxAnimationData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -334,9 +335,9 @@ namespace PxCs
             return array;
         }
 
-        public static PxAnimation GetAnimation(IntPtr mdsPtr, uint index)
+        public static PxAnimationData GetAnimation(IntPtr mdsPtr, uint index)
         {
-            return new PxAnimation()
+            return new PxAnimationData()
             {
                 name = pxMdsGetAnimationName(mdsPtr, index).MarshalAsString(),
                 layer = pxMdsGetAnimationLayer(mdsPtr, index),
@@ -354,18 +355,18 @@ namespace PxCs
 
                 events = GetAnimationEventTags(mdsPtr, index),
                 pfx = GetAnimationPfx(mdsPtr, index),
-                pfx_stop = GetAnimationPfxStop(mdsPtr, index),
+                pfxStop = GetAnimationPfxStop(mdsPtr, index),
                 sfx = GetAnimationSfx(mdsPtr, index),
-                sfx_ground = GetAnimationSfxGrounds(mdsPtr, index),
+                sfxGround = GetAnimationSfxGrounds(mdsPtr, index),
                 morph = GetAnimationMorps(mdsPtr, index),
                 tremors = GetAnimationTremors(mdsPtr, index)
             };
         }
 
-        public static PxEventTag[] GetAnimationEventTags(IntPtr mdsPtr, uint index)
+        public static PxEventTagData[] GetAnimationEventTags(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimation_EventTagCount(mdsPtr, index);
-            var array = new PxEventTag[count];
+            var array = new PxEventTagData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -382,10 +383,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxEventPfx[] GetAnimationPfx(IntPtr mdsPtr, uint index)
+        public static PxEventPfxData[] GetAnimationPfx(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimation_EventPfxCount(mdsPtr, index);
-            var array = new PxEventPfx[count];
+            var array = new PxEventPfxData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -399,10 +400,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxEventPfxStop[] GetAnimationPfxStop(IntPtr mdsPtr, uint index)
+        public static PxEventPfxStopData[] GetAnimationPfxStop(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimation_EventPfxStopCount(mdsPtr, index);
-            var array = new PxEventPfxStop[count];
+            var array = new PxEventPfxStopData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -415,10 +416,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxEventSfx[] GetAnimationSfx(IntPtr mdsPtr, uint index)
+        public static PxEventSfxData[] GetAnimationSfx(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimation_EventSfxCount(mdsPtr, index);
-            var array = new PxEventSfx[count];
+            var array = new PxEventSfxData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -431,10 +432,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxEventSfxGround[] GetAnimationSfxGrounds(IntPtr mdsPtr, uint index)
+        public static PxEventSfxGroundData[] GetAnimationSfxGrounds(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimationEventSfxGroundCount(mdsPtr, index);
-            var array = new PxEventSfxGround[count];
+            var array = new PxEventSfxGroundData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -447,10 +448,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxEventMorphAnimate[] GetAnimationMorps(IntPtr mdsPtr, uint index)
+        public static PxEventMorphAnimateData[] GetAnimationMorps(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimation_EventMorphAnimateCount(mdsPtr, index);
-            var array = new PxEventMorphAnimate[count];
+            var array = new PxEventMorphAnimateData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -462,10 +463,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxEventCameraTremor[] GetAnimationTremors(IntPtr mdsPtr, uint index)
+        public static PxEventCameraTremorData[] GetAnimationTremors(IntPtr mdsPtr, uint index)
         {
             var count = pxMdsGetAnimation_EventCameraTremorCount(mdsPtr, index);
-            var array = new PxEventCameraTremor[count];
+            var array = new PxEventCameraTremorData[count];
 
             for (var i = 0u; i < count; i++)
             {

@@ -1,6 +1,6 @@
 ﻿using PxCs.Data;
+using PxCs.Data.Misc;
 using PxCs.Extensions;
-using PxCs.Types;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -16,7 +16,7 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern void pxMshDestroy(IntPtr msh);
 
         [DllImport(DLLNAME)] public static extern string pxMshGetName(string msh);
-        [DllImport(DLLNAME)] public static extern PxAABB pxMshGetBbox(IntPtr msh);
+        [DllImport(DLLNAME)] public static extern PxAABBData pxMshGetBbox(IntPtr msh);
         [DllImport(DLLNAME)] public static extern uint pxMshGetMaterialCount(IntPtr msh);
         [DllImport(DLLNAME)] public static extern IntPtr pxMshGetMaterial(IntPtr msh, uint i);
         [DllImport(DLLNAME)] public static extern uint pxMshGetVertexCount(IntPtr msh);

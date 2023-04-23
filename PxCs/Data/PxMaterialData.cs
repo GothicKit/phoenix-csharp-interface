@@ -2,8 +2,8 @@
 {
     public class PxMaterialData
     {
-        public string name = default!;
-        public string texture = default!;
+        public string? name;
+        public string? texture;
         public uint color;
     }
 }

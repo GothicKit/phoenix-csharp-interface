@@ -1,6 +1,6 @@
 using PxCs.Data;
+using PxCs.Data.Misc;
 using PxCs.Extensions;
-using PxCs.Types;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -121,7 +121,7 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern uint pxVobGetId(IntPtr vob);
 
         [DllImport(DLLNAME)] public static extern Vector3 pxVobGetPosition(IntPtr vob);
-        [DllImport(DLLNAME)] public static extern PxMatrix3x3 pxVobGetRotation(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern PxMatrix3x3Data pxVobGetRotation(IntPtr vob);
 
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetShowVisual(IntPtr vob);
