@@ -260,14 +260,17 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].name = pxMdsGetAnimationCombinationName(mdsPtr, i).MarshalAsString();
-                array[i].layer = pxMdsGetAnimationCombinationLayer(mdsPtr, i);
-                array[i].next = pxMdsGetAnimationCombinationNext(mdsPtr, i).MarshalAsString();
-                array[i].blendIn = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i);
-                array[i].blendOut = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i);
-                array[i].flags = pxMdsGetAnimationCombinationFlags(mdsPtr, i);
-                array[i].model = pxMdsGetAnimationCombinationModel(mdsPtr, i).MarshalAsString();
-                array[i].lastFrame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i);
+                array[i] = new PxAnimationCombinationData()
+                {
+                    name = pxMdsGetAnimationCombinationName(mdsPtr, i).MarshalAsString(),
+                    layer = pxMdsGetAnimationCombinationLayer(mdsPtr, i),
+                    next = pxMdsGetAnimationCombinationNext(mdsPtr, i).MarshalAsString(),
+                    blendIn = pxMdsGetAnimationCombinationBlendIn(mdsPtr, i),
+                    blendOut = pxMdsGetAnimationCombinationBlendOut(mdsPtr, i),
+                    flags = pxMdsGetAnimationCombinationFlags(mdsPtr, i),
+                    model = pxMdsGetAnimationCombinationModel(mdsPtr, i).MarshalAsString(),
+                    lastFrame = pxMdsGetAnimationCombinationLastFrame(mdsPtr, i)
+                };
             }
 
             return array;
@@ -280,10 +283,13 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].name = pxMdsGetAnimationBlendingName(mdsPtr, i).MarshalAsString();
-                array[i].next = pxMdsGetAnimationBlendingNext(mdsPtr, i).MarshalAsString();
-                array[i].blend_in = pxMdsGetAnimationBlendingBlendIn(mdsPtr, i);
-                array[i].blend_out = pxMdsGetAnimationBlendingBlendOut(mdsPtr, i);
+                array[i] = new PxAnimationBlendingData()
+                {
+                    name = pxMdsGetAnimationBlendingName(mdsPtr, i).MarshalAsString(),
+                    next = pxMdsGetAnimationBlendingNext(mdsPtr, i).MarshalAsString(),
+                    blend_in = pxMdsGetAnimationBlendingBlendIn(mdsPtr, i),
+                    blend_out = pxMdsGetAnimationBlendingBlendOut(mdsPtr, i)
+                };            
             }
 
             return array;
@@ -296,14 +302,18 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].name = pxMdsGetAnimationAliasName(mdsPtr, i).MarshalAsString();
-                array[i].layer = pxMdsGetAnimationAliasLayer(mdsPtr, i);
-                array[i].next = pxMdsGetAnimationAliasNext(mdsPtr, i).MarshalAsString();
-                array[i].blendIn = pxMdsGetAnimationAliasBlendIn(mdsPtr, i);
-                array[i].blendOut = pxMdsGetAnimationAliasBlendOut(mdsPtr, i);
-                array[i].flags = pxMdsGetAnimationAliasFlags(mdsPtr, i);
-                array[i].alias = pxMdsGetAnimationAliasAlias(mdsPtr, i).MarshalAsString();
-                array[i].direction = pxMdsGetAnimationAliasDirection(mdsPtr, i);
+                array[i] = new PxAnimationAliasData()
+                {
+                    name = pxMdsGetAnimationAliasName(mdsPtr, i).MarshalAsString(),
+                    layer = pxMdsGetAnimationAliasLayer(mdsPtr, i),
+                    next = pxMdsGetAnimationAliasNext(mdsPtr, i).MarshalAsString(),
+                    blendIn = pxMdsGetAnimationAliasBlendIn(mdsPtr, i),
+                    blendOut = pxMdsGetAnimationAliasBlendOut(mdsPtr, i),
+                    flags = pxMdsGetAnimationAliasFlags(mdsPtr, i),
+                    alias = pxMdsGetAnimationAliasAlias(mdsPtr, i).MarshalAsString(),
+                    direction = pxMdsGetAnimationAliasDirection(mdsPtr, i)
+                };
+                    
             }
 
             return array;
@@ -316,7 +326,10 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].bone = pxMdsGetModelTagBone(mdsPtr, i).MarshalAsString();
+                array[i] = new PxModelTagData()
+                {
+                    bone = pxMdsGetModelTagBone(mdsPtr, i).MarshalAsString()
+                };
             }
 
             return array;
@@ -370,14 +383,18 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].frame = pxMdsGetAnimation_EventTagFrame(mdsPtr, index, i);
-                array[i].type = pxMdsGetAnimation_EventTagType(mdsPtr, index, i);
-                array[i].slot = pxMdsGetAnimation_EventTagSlot(mdsPtr, index, i).MarshalAsString();
-                array[i].slot2 = pxMdsGetAnimation_EventTagSlot2(mdsPtr, index, i).MarshalAsString();
-                array[i].item = pxMdsGetAnimation_EventTagItem(mdsPtr, index, i).MarshalAsString();
-                array[i].fightMode = pxMdsGetAnimation_EventTagFightMode(mdsPtr, index, i);
-                array[i].attached = pxMdsGetAnimation_EventTagAttached(mdsPtr, index, i);
-                array[i].frames = pxMdsGetAnimation_EventTagFrames(mdsPtr, index, i, out uint size).MarshalAsArray<int>(size);
+                array[i] = new PxEventTagData()
+                {
+                    frame = pxMdsGetAnimation_EventTagFrame(mdsPtr, index, i),
+                    type = pxMdsGetAnimation_EventTagType(mdsPtr, index, i),
+                    slot = pxMdsGetAnimation_EventTagSlot(mdsPtr, index, i).MarshalAsString(),
+                    slot2 = pxMdsGetAnimation_EventTagSlot2(mdsPtr, index, i).MarshalAsString(),
+                    item = pxMdsGetAnimation_EventTagItem(mdsPtr, index, i).MarshalAsString(),
+                    fightMode = pxMdsGetAnimation_EventTagFightMode(mdsPtr, index, i),
+                    attached = pxMdsGetAnimation_EventTagAttached(mdsPtr, index, i),
+                    frames = pxMdsGetAnimation_EventTagFrames(mdsPtr, index, i, out uint size).MarshalAsArray<int>(size)
+                };
+                    
             }
 
             return array;
@@ -390,11 +407,15 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].frame = pxMdsGetAnimation_EventPfxFrame(mdsPtr, index, i);
-                array[i].index = pxMdsGetAnimation_EventPfxIndex(mdsPtr, index, i);
-                array[i].name = pxMdsGetAnimation_EventPfxName(mdsPtr, index, i).MarshalAsString();
-                array[i].position = pxMdsGetAnimation_EventPfxPosition(mdsPtr, index, i).MarshalAsString();
-                array[i].attached = pxMdsGetAnimation_EventPfxAttached(mdsPtr, index, i);
+                array[i] = new PxEventPfxData()
+                {
+                    frame = pxMdsGetAnimation_EventPfxFrame(mdsPtr, index, i),
+                    index = pxMdsGetAnimation_EventPfxIndex(mdsPtr, index, i),
+                    name = pxMdsGetAnimation_EventPfxName(mdsPtr, index, i).MarshalAsString(),
+                    position = pxMdsGetAnimation_EventPfxPosition(mdsPtr, index, i).MarshalAsString(),
+                    attached = pxMdsGetAnimation_EventPfxAttached(mdsPtr, index, i)
+                };
+                    
             }
 
             return array;
@@ -409,8 +430,11 @@ namespace PxCs
             {
                 pxMdsGetAnimation_EventPfxStop(mdsPtr, index, i, out int frame, out int stopIndex);
 
-                array[i].frame = frame;
-                array[i].index = stopIndex;
+                array[i] = new PxEventPfxStopData()
+                {
+                    frame = frame,
+                    index = stopIndex
+                };
             }
 
             return array;
@@ -423,10 +447,15 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].frame = pxMdsGetAnimation_EventSfxFrame(mdsPtr, index, i);
-                array[i].name = pxMdsGetAnimation_EventSfxName(mdsPtr, index, i).MarshalAsString();
-                array[i].range = pxMdsGetAnimation_EventSfxRange(mdsPtr, index, i);
-                array[i].emptySlot = pxMdsGetAnimation_EventSfxEmptySlot(mdsPtr, index, i);
+                array[i] = new PxEventSfxData()
+                {
+                    frame = pxMdsGetAnimation_EventSfxFrame(mdsPtr, index, i),
+                    name = pxMdsGetAnimation_EventSfxName(mdsPtr, index, i).MarshalAsString(),
+                    range = pxMdsGetAnimation_EventSfxRange(mdsPtr, index, i),
+                    emptySlot = pxMdsGetAnimation_EventSfxEmptySlot(mdsPtr, index, i)
+                };
+                    
+                    
             }
 
             return array;
@@ -439,10 +468,15 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].frame = pxMdsGetAnimation_EventSfxGroundFrame(mdsPtr, index, i);
-                array[i].name = pxMdsGetAnimation_EventSfxGroundName(mdsPtr, index, i).MarshalAsString();
-                array[i].range = pxMdsGetAnimation_EventSfxGroundRange(mdsPtr, index, i);
-                array[i].emptySlot = pxMdsGetAnimation_EventSfxGroundEmptySlot(mdsPtr, index, i);
+                array[i] = new PxEventSfxGroundData()
+                {
+                    frame = pxMdsGetAnimation_EventSfxGroundFrame(mdsPtr, index, i),
+                    name = pxMdsGetAnimation_EventSfxGroundName(mdsPtr, index, i).MarshalAsString(),
+                    range = pxMdsGetAnimation_EventSfxGroundRange(mdsPtr, index, i),
+                    emptySlot = pxMdsGetAnimation_EventSfxGroundEmptySlot(mdsPtr, index, i)
+                };
+                    
+                    
             }
 
             return array;
@@ -455,10 +489,13 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i].frame = pxMdsGetAnimation_EventMorphAnimateFrame(mdsPtr, index, i);
-                array[i].animation = pxMdsGetAnimation_EventMorphAnimateAnimation(mdsPtr, index, i).MarshalAsString();
-                array[i].node = pxMdsGetAnimation_EventMorphAnimateNode(mdsPtr, index, i).MarshalAsString();
-    }
+                array[i] = new PxEventMorphAnimateData()
+                {
+                    frame = pxMdsGetAnimation_EventMorphAnimateFrame(mdsPtr, index, i),
+                    animation = pxMdsGetAnimation_EventMorphAnimateAnimation(mdsPtr, index, i).MarshalAsString(),
+                    node = pxMdsGetAnimation_EventMorphAnimateNode(mdsPtr, index, i).MarshalAsString()
+                };
+            }
 
             return array;
         }
@@ -477,11 +514,14 @@ namespace PxCs
                     out int field3,
                     out int field4);
 
-                array[i].frame = frame;
-                array[i].field1 = field1;
-                array[i].field2 = field2;
-                array[i].field3 = field3;
-                array[i].field4 = field4;
+                array[i] = new PxEventCameraTremorData()
+                {
+                    frame = frame,
+                    field1 = field1,
+                    field2 = field2,
+                    field3 = field3,
+                    field4 = field4
+                };
             }
 
             return array;
