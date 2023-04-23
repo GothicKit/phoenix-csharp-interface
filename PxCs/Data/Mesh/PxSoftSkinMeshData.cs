@@ -5,12 +5,12 @@ namespace PxCs.Data.Mesh
 {
     public class PxSoftSkinMeshData
     {
-        public PxProtoMeshData? mesh;
+        public PxMultiResolutionMeshData? mesh;
         public PxOBBData? bboxes;
 
         public PxWedgeNormalData[]? wedgeNormals;
         public int[]? nodes;
 
-        public PxWeightEntryData[,]? weights;
+        public PxWeightEntryData[][]? weights;
     }
 }

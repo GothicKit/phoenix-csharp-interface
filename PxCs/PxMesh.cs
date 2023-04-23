@@ -54,7 +54,7 @@ namespace PxCs
 
             for (var i = 0u; i < count; i++)
             {
-                array[i] = (pxMshGetVertex(msh, i));
+                array[i] = pxMshGetVertex(msh, i);
             }
 
             return array;

@@ -1,8 +1,13 @@
-﻿using PxCs.Data.Mesh;
+﻿using PxCs.Data;
+using PxCs.Data.Mesh;
+using PxCs.Data.Mesh.Misc;
+using PxCs.Data.Misc;
+using PxCs.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Numerics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -51,11 +56,79 @@ namespace PxCs
 
         public static PxSoftSkinMeshData[] GetMeshes(IntPtr mdmPtr)
         {
+            var count = pxMdmGetMeshCount(mdmPtr);
+            var array = new PxSoftSkinMeshData[count];
 
-            return null;
+            for (var i = 0u; i < count; i++)
+            {
+                array[i] = GetSoftSkinMesh(mdmPtr, i);
+            }
+
+            return array;
         }
 
-        public static Dictionary<string, PxProtoMeshData> GetAttachments(IntPtr mdmPtr)
+        public static PxSoftSkinMeshData GetSoftSkinMesh(IntPtr mdmPtr, uint i)
+        {
+            var softSkinMeshPtr = pxMdmGetMesh(mdmPtr, i);
+            var multiResolutionMeshPtr = pxSsmGetMesh(softSkinMeshPtr);
+
+            return new PxSoftSkinMeshData()
+            {
+                mesh = PxMultiResolutionMesh.GetMRMFromPtr(multiResolutionMeshPtr),
+                bboxes = null, // FIXME - not loaded from phoenix as of now!
+                wedgeNormals = GetSoftSkinMeshWedgeNormals(softSkinMeshPtr),
+                nodes = pxSsmGetNodes(softSkinMeshPtr, out uint length).MarshalAsArray<int>(length),
+                weights = GetSoftSkinMeshWeights(softSkinMeshPtr)
+            };
+        }
+
+        public static PxWedgeNormalData[] GetSoftSkinMeshWedgeNormals(IntPtr softSkinMeshPtr)
+        {
+            var count = pxSsmGetWedgeNormalsCount(softSkinMeshPtr);
+            var array = new PxWedgeNormalData[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                pxSsmGetWedgeNormal(softSkinMeshPtr, i, out Vector3 normal, out uint index);
+                array[i] = new PxWedgeNormalData()
+                {
+                    normal = normal,
+                    index = index
+                };
+            }
+
+            return array;
+        }
+
+        public static PxWeightEntryData[][] GetSoftSkinMeshWeights(IntPtr softSkinMeshPtr)
+        {
+            var nodeCount = pxSsmGetNodeCount(softSkinMeshPtr);
+            var array = new PxWeightEntryData[nodeCount][];
+
+            for (var i = 0u; i < nodeCount; i++)
+            {
+                var weightCount = pxSsmGetNodeWeightCount(softSkinMeshPtr, i);
+                array[i] = new PxWeightEntryData[weightCount];
+
+                for (var ii = 0u; ii < weightCount; ii++)
+                {
+                    pxSsmGetNodeWeight(softSkinMeshPtr, i, ii, out float weight, out Vector3 position, out byte index);
+                    array[i][ii] = new PxWeightEntryData()
+                    {
+                        weight = weight,
+                        position = position,
+                        nodeIndex = index
+                    };
+                }
+            }
+
+            return array;
+        }
+
+
+
+
+        public static Dictionary<string, PxMultiResolutionMeshData> GetAttachments(IntPtr mdmPtr)
         {
             return null;
         }

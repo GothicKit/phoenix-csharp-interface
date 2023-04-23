@@ -2,7 +2,7 @@
 
 namespace PxCs.Data.Mesh
 {
-    public class PxMRMSubMeshData
+    public class PxMultiResolutionMeshSubMeshData
     {
         public PxMaterialData? material;
 

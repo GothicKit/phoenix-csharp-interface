@@ -7,6 +7,6 @@ namespace PxCs.Data.Mesh
         public uint checksum;
 
         public PxSoftSkinMeshData[]? meshes;
-        public Dictionary<string, PxProtoMeshData>? attachments;
+        public Dictionary<string, PxMultiResolutionMeshData>? attachments;
     }
 }

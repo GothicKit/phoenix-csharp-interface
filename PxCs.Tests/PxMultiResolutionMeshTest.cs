@@ -3,7 +3,7 @@ using Xunit;
 
 namespace PxCs.Tests
 {
-    public class PxMRMTest : PxPhoenixTest
+    public class PxMultiResolutionMeshTest : PxPhoenixTest
     {
 
         [Fact]
@@ -11,7 +11,7 @@ namespace PxCs.Tests
         {
             var vdfPtr = LoadVdf("Data/meshes.VDF");
 
-            var mrm = PxMRM.GetMRMFromVdf(vdfPtr, "ITFO_PLANTS_BERRYS_01.MRM");
+            var mrm = PxMultiResolutionMesh.GetMRMFromVdf(vdfPtr, "ITFO_PLANTS_BERRYS_01.MRM");
 
             Assert.NotNull(mrm);
             Assert.Single(mrm.materials);

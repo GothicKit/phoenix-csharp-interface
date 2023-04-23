@@ -6,6 +6,6 @@ namespace PxCs.Data.Mesh.Misc
     {
         public float weight;
         public Vector3 position;
-        public byte node_index;
+        public byte nodeIndex;
     }
 }

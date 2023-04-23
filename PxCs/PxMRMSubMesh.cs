@@ -34,10 +34,10 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern IntPtr pxMrmSubMeshGetWedgeMap(IntPtr sub, out uint length);
 
 
-        public static PxMRMSubMeshData[] GetSubMeshes(IntPtr mrmPtr)
+        public static PxMultiResolutionMeshSubMeshData[] GetSubMeshes(IntPtr mrmPtr)
         {
             var count = pxMrmGetSubMeshCount(mrmPtr);
-            var array = new PxMRMSubMeshData[count];
+            var array = new PxMultiResolutionMeshSubMeshData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -48,7 +48,7 @@ namespace PxCs
             return array;
         }
 
-        public static PxMRMSubMeshData GetSubMesh(IntPtr subMeshPtr)
+        public static PxMultiResolutionMeshSubMeshData GetSubMesh(IntPtr subMeshPtr)
         {
             var materialPtr = pxMrmSubMeshGetMaterial(subMeshPtr);
             var material = PxMaterial.GetMaterial(materialPtr);
@@ -66,7 +66,7 @@ namespace PxCs
             
             var colors = GetSubMeshColors(subMeshPtr);
 
-            return new PxMRMSubMeshData()
+            return new PxMultiResolutionMeshSubMeshData()
             {
                 material = material,
 

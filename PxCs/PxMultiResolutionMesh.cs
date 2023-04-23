@@ -1,19 +1,16 @@
 ﻿using PxCs.Data;
 using PxCs.Data.Mesh;
 using PxCs.Data.Misc;
-using PxCs.Extensions;
 using System;
-using System.Collections;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using static PxCs.Data.Mesh.PxMRMSubMeshData;
 
 namespace PxCs
 {
     /// <summary>
     /// MRM == MultiResolutionMesh
     /// </summary>
-    public class PxMRM
+    public class PxMultiResolutionMesh
     {
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
@@ -32,13 +29,20 @@ namespace PxCs
         [DllImport(DLLNAME)] public static extern PxAABBData pxMrmGetBbox(IntPtr mrm);
 
 
-        public static PxMRMData? GetMRMFromVdf(IntPtr vdfPtr, string name)
+        public static PxMultiResolutionMeshData? GetMRMFromVdf(IntPtr vdfPtr, string name)
         {
             var mrmPtr = pxMrmLoadFromVdf(vdfPtr, name);
-
             if (mrmPtr == IntPtr.Zero)
                 return null;
 
+            var data = GetMRMFromPtr(mrmPtr);
+
+            pxMrmDestroy(mrmPtr);
+            return data;
+        }
+
+        public static PxMultiResolutionMeshData GetMRMFromPtr(IntPtr mrmPtr)
+        {
             var positions = GetPositions(mrmPtr);
             var normals = GetNormals(mrmPtr);
 
@@ -48,7 +52,7 @@ namespace PxCs
             var materials = GetMaterials(mrmPtr);
             var subMeshes = PxMRMSubMesh.GetSubMeshes(mrmPtr);
 
-            var data = new PxMRMData()
+            return new PxMultiResolutionMeshData()
             {
                 positions = positions,
                 normals = normals,
@@ -58,10 +62,6 @@ namespace PxCs
                 materials = materials,
                 subMeshes = subMeshes
             };
-
-            pxMrmDestroy(mrmPtr);
-
-            return data;
         }
 
         public static Vector3[] GetPositions(IntPtr mrmPtr)

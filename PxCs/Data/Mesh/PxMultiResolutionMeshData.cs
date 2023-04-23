@@ -3,10 +3,7 @@ using System.Numerics;
 
 namespace PxCs.Data.Mesh
 {
-    /// <summary>
-    /// MRM == MultiResolutionMesh
-    /// </summary>
-    public class PxMRMData
+    public class PxMultiResolutionMeshData
     {
         public Vector3[]? positions;
         public Vector3[]? normals;
@@ -14,6 +11,6 @@ namespace PxCs.Data.Mesh
         public PxAABBData? bbox;
 
         public PxMaterialData[]? materials;
-        public PxMRMSubMeshData[]? subMeshes;
+        public PxMultiResolutionMeshSubMeshData[]? subMeshes;
     }
 }
