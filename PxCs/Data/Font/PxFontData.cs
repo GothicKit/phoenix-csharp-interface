@@ -1,4 +1,4 @@
-﻿namespace PxCs.Data
+﻿namespace PxCs.Data.Font
 {
     public class PxFontData
     {

@@ -1,4 +1,7 @@
 ﻿using PxCs.Data;
+using PxCs.Data.Animation;
+using PxCs.Data.Event;
+using PxCs.Data.Model;
 using PxCs.Data.ModelScript;
 using PxCs.Extensions;
 using System;
@@ -7,7 +10,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
-using static PxCs.Data.PxModelScriptData;
+using static PxCs.Data.Model.PxModelScriptData;
 using static PxCs.PxTexture;
 using static System.Net.Mime.MediaTypeNames;
 

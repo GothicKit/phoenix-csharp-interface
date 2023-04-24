@@ -1,6 +1,7 @@
-﻿using PxCs.Data.ModelScript;
+﻿using PxCs.Data.Animation;
+using PxCs.Data.ModelScript;
 
-namespace PxCs.Data
+namespace PxCs.Data.Model
 {
     public class PxModelScriptData
     {

@@ -1,6 +1,6 @@
-﻿namespace PxCs.Data.ModelScript
+﻿namespace PxCs.Data.Event
 {
-    public class PxEventSfxGroundData
+    public class PxEventSfxData
     {
         public int frame;
         public string? name;

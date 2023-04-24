@@ -1,6 +1,6 @@
 ﻿using static PxCs.PxModelScript;
 
-namespace PxCs.Data.ModelScript
+namespace PxCs.Data.Event
 {
     public class PxEventTagData
     {

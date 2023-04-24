@@ -10,7 +10,9 @@ namespace PxCs.Tests
         {
             var vdfPtr = LoadVdf("Data/anims.VDF");
 
-            var animation = PxAnimation.LoadFromVdf(vdfPtr, "Hum_RunAmbient_M01.asc");
+            var animation = PxAnimation.LoadFromVdf(vdfPtr, "Humans-t_WalkR_2_Walk.MAN");
+
+            Assert.NotNull(animation);
 
             DestroyVdf(vdfPtr);
         }

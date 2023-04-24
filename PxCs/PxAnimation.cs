@@ -1,4 +1,4 @@
-﻿using PxCs.Data;
+﻿using PxCs.Data.Animation;
 using PxCs.Data.Misc;
 using PxCs.Data.ModelScript;
 using System;
@@ -30,10 +30,13 @@ namespace PxCs
         {
             var manPtr = pxManLoadFromVdf(vdfPtr, name);
 
-            if (null == manPtr)
+            if (manPtr == IntPtr.Zero)
                 return null;
 
-            var man = new PxAnimationData();
+            var man = new PxAnimationData()
+            {
+
+            };
 
             pxManDestroy(manPtr);
             return man;

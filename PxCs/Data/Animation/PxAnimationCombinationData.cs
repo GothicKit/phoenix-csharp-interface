@@ -1,8 +1,8 @@
 ﻿using static PxCs.PxModelScript;
 
-namespace PxCs.Data.ModelScript
+namespace PxCs.Data.Animation
 {
-    public class PxAnimationAliasData
+    public class PxAnimationCombinationData
     {
         public string? name;
         public uint layer;
@@ -10,7 +10,7 @@ namespace PxCs.Data.ModelScript
         public float blendIn;
         public float blendOut;
         public PxAnimationFlags flags;
-        public string? alias;
-        public PxAnimationDirection direction;
+        public string? model;
+        public int lastFrame;
     }
 }
