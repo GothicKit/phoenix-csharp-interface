@@ -1,5 +1,4 @@
-﻿using PxCs.Data.Mesh.Misc;
-using PxCs.Data.Misc;
+﻿using PxCs.Data.Struct;
 
 namespace PxCs.Data.Mesh
 {

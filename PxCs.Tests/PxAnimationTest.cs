@@ -1,4 +1,5 @@
 ﻿using System;
+using PxCs.Interface;
 using Xunit;
 
 namespace PxCs.Tests

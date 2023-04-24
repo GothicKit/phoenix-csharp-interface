@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using PxCs.Interface;
 using Xunit;
 
 namespace PxCs.Tests

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using PxCs.Interface;
 
 namespace PxCs.Extensions
 {

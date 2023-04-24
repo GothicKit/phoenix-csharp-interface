@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using PxCs.Interface;
+using Xunit;
 
 namespace PxCs.Tests
 {

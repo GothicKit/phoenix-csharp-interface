@@ -1,6 +1,6 @@
-﻿using PxCs.Data.Misc;
+﻿using PxCs.Data.Struct;
 using System.Numerics;
-using static PxCs.PxWorld;
+using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data
 {

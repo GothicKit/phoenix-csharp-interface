@@ -1,4 +1,4 @@
-﻿using static PxCs.PxModelScript;
+﻿using static PxCs.Interface.PxModelScript;
 
 namespace PxCs.Data.Animation
 {

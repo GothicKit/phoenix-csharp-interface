@@ -1,6 +1,4 @@
-﻿using PxCs.Data.Mesh.Misc;
-
-namespace PxCs.Data.Mesh
+﻿namespace PxCs.Data.Mesh
 {
     public class PxSubMeshData
     {

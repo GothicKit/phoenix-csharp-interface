@@ -1,4 +1,4 @@
-﻿using PxCs.Data.Misc;
+﻿using PxCs.Data.Struct;
 using System.Numerics;
 
 namespace PxCs.Data.Mesh

@@ -1,4 +1,6 @@
-﻿namespace PxCs.Data.Font
+﻿using PxCs.Data.Texture;
+
+namespace PxCs.Data.Font
 {
     public class PxFontData
     {
