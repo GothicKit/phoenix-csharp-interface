@@ -11,6 +11,6 @@ namespace PxCs.Data
         public PxAnimationBlendingData[]? blends;
         public PxAnimationAliasData[]? aliases;
         public PxModelTagData[]? modelTags;
-        public PxAnimationData[]? animations;
+        public PxModelScriptAnimationData[]? animations;
     }
 }

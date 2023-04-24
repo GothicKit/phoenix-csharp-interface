@@ -335,10 +335,10 @@ namespace PxCs
             return array;
         }
 
-        public static PxAnimationData[] GetAnimations(IntPtr mdsPtr)
+        public static PxModelScriptAnimationData[] GetAnimations(IntPtr mdsPtr)
         {
             var count = pxMdsGetAnimationCount(mdsPtr);
-            var array = new PxAnimationData[count];
+            var array = new PxModelScriptAnimationData[count];
 
             for (var i = 0u; i < count; i++)
             {
@@ -348,9 +348,9 @@ namespace PxCs
             return array;
         }
 
-        public static PxAnimationData GetAnimation(IntPtr mdsPtr, uint index)
+        public static PxModelScriptAnimationData GetAnimation(IntPtr mdsPtr, uint index)
         {
-            return new PxAnimationData()
+            return new PxModelScriptAnimationData()
             {
                 name = pxMdsGetAnimationName(mdsPtr, index).MarshalAsString(),
                 layer = pxMdsGetAnimationLayer(mdsPtr, index),

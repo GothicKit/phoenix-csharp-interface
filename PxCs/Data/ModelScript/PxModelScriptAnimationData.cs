@@ -1,9 +1,8 @@
-﻿using static PxCs.Data.PxModelScriptData;
-using static PxCs.PxModelScript;
+﻿using static PxCs.PxModelScript;
 
 namespace PxCs.Data.ModelScript
 {
-    public class PxAnimationData
+    public class PxModelScriptAnimationData
     {
         public string? name;
         public uint layer;
