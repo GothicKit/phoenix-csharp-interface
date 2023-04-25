@@ -1,6 +1,8 @@
 ﻿using PxCs.Data.Animation;
+using PxCs.Data.Mesh;
 using PxCs.Data.ModelScript;
 using PxCs.Data.Struct;
+using PxCs.Extensions;
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -26,6 +28,11 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxManGetSample(IntPtr man, uint i, out Vector3 position, out PxQuaternionData rotation);
         [DllImport(DLLNAME)] public static extern IntPtr pxManGetNodeIndices(IntPtr man, out uint length); // return uint[]
 
+
+        [DllImport(DLLNAME)] public static extern uint pxManGetSampleCount(IntPtr man);
+
+
+
         public static PxAnimationData? LoadFromVdf(IntPtr vdfPtr, string name)
         {
             var manPtr = pxManLoadFromVdf(vdfPtr, name);
@@ -35,11 +42,43 @@ namespace PxCs.Interface
 
             var man = new PxAnimationData()
             {
+                name = pxManGetName(manPtr).MarshalAsString(),
+                next = pxManGetNext(manPtr).MarshalAsString(),
+                layer = pxManGetLayer(manPtr),
 
+                frameCount = pxManGetFrameCount(manPtr),
+                nodeCount = pxManGetNodeCount(manPtr),
+
+                fps = pxManGetFps(manPtr),
+
+                bbox = pxManGetBbox(manPtr),
+                checksum = pxManGetChecksum(manPtr),
+
+                samples = GetSamples(manPtr),
+                node_indices = pxManGetNodeIndices(manPtr, out uint length).MarshalAsArray<uint>(length)
             };
 
             pxManDestroy(manPtr);
             return man;
+        }
+
+        // FIXME - do we always have same sample size as pxManGetFrameCount() size? If not, we need to add that method.
+        public static PxAnimationSampleData[] GetSamples(IntPtr manPtr)
+        {
+            var count = pxManGetSampleCount(manPtr);
+            var array = new PxAnimationSampleData[count];
+
+            for (var i = 0u; i < count; i++)
+            {
+                pxManGetSample(manPtr, i, out Vector3 position, out PxQuaternionData rotation);
+                array[i] = new PxAnimationSampleData()
+                {
+                    position = position,
+                    rotation = rotation
+                };
+            }
+
+            return array;
         }
     }
 }

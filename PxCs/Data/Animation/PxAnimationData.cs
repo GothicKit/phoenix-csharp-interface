@@ -1,4 +1,5 @@
 ﻿using PxCs.Data.Struct;
+using System;
 
 namespace PxCs.Data.Animation
 {
@@ -12,18 +13,25 @@ namespace PxCs.Data.Animation
         public uint nodeCount;
 
         public float fps;
-        public float fpsSource;
-
-        public float samplePositionRangeMin;
-        public float samplePositionScalar;
 
         public PxAABBData bbox;
         public uint checksum;
-        public string? sourcePath;
-        public string? sourceScript;
 
         public PxAnimationSampleData[]? samples;
-        public PxAnimationEventData[]? events;
         public uint[]? node_indices;
+
+
+        [Obsolete("Not yet delivered by phoenix.")]
+        public PxAnimationEventData[]? events;
+        [Obsolete("Not yet delivered by phoenix.")]
+        public string? sourcePath;
+        [Obsolete("Not yet delivered by phoenix.")]
+        public string? sourceScript;
+        [Obsolete("Not yet delivered by phoenix.")]
+        public float fpsSource;
+        [Obsolete("Not yet delivered by phoenix.")]
+        public float samplePositionRangeMin;
+        [Obsolete("Not yet delivered by phoenix.")]
+        public float samplePositionScalar;
     }
 }
