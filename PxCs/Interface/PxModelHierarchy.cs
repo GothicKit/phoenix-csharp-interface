@@ -24,6 +24,19 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxMdhGetNode(IntPtr mdh, uint i, out short parent, out IntPtr name /*, TODO: Node transform*/);
 
 
+        public static PxModelHierarchyData? LoadFromVdf(IntPtr vdfPtr, string name)
+        {
+            var mdhPtr = pxMdhLoadFromVdf(vdfPtr, name);
+
+            if (mdhPtr == IntPtr.Zero)
+                return null;
+
+            var data = GetFromPtr(mdhPtr);
+
+            pxMdhDestroy(mdhPtr);
+            return data;
+        }
+
         public static PxModelHierarchyData? GetFromPtr(IntPtr mdhPtr)
         {
             if (mdhPtr == IntPtr.Zero)
