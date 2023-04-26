@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using PxCs.Data.Mesh;
 
-namespace PxCs.Data.Mesh
+namespace PxCs.Data.Model
 {
     public class PxModelMeshData
     {

@@ -1,4 +1,5 @@
 ﻿using PxCs.Data.Mesh;
+using PxCs.Data.Model;
 using PxCs.Extensions;
 using System;
 using System.Collections.Generic;
@@ -34,18 +35,23 @@ namespace PxCs.Interface
         public static PxModelMeshData? LoadModelMeshFromVdf(IntPtr vdfPtr, string name)
         {
             var mdmPtr = pxMdmLoadFromVdf(vdfPtr, name);
+            var data = GetFromPtr(mdmPtr);
+
+            pxMdmDestroy(mdmPtr);
+            return data;
+        }
+
+        public static PxModelMeshData? GetFromPtr(IntPtr mdmPtr)
+        {
             if (mdmPtr == IntPtr.Zero)
                 return null;
 
-            var data = new PxModelMeshData()
+            return new PxModelMeshData()
             {
                 checksum = pxMdmGetChecksum(mdmPtr),
                 meshes = GetMeshes(mdmPtr),
                 attachments = GetAttachments(mdmPtr)
             };
-
-            pxMdmDestroy(mdmPtr);
-            return data;
         }
 
         public static PxSoftSkinMeshData[] GetMeshes(IntPtr mdmPtr)
