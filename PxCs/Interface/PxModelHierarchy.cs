@@ -21,7 +21,7 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern Vector3 pxMdhGetRootTranslation(IntPtr mdh);
         [DllImport(DLLNAME)] public static extern uint pxMdhGetChecksum(IntPtr mdh);
         [DllImport(DLLNAME)] public static extern uint pxMdhGetNodeCount(IntPtr mdh);
-        [DllImport(DLLNAME)] public static extern void pxMdhGetNode(IntPtr mdh, uint i, out short parent, out IntPtr name /*, TODO: Node transform*/);
+        [DllImport(DLLNAME)] public static extern void pxMdhGetNode(IntPtr mdh, uint i, out short parent, out IntPtr name, out PxMatrix4x4Data transform);
 
 
         public static PxModelHierarchyData? LoadFromVdf(IntPtr vdfPtr, string name)
@@ -58,11 +58,12 @@ namespace PxCs.Interface
 
             for (var i = 0u; i < count; i++)
             {
-                pxMdhGetNode(mdhPtr, i, out short parent, out IntPtr name);
+                pxMdhGetNode(mdhPtr, i, out short parent, out IntPtr name, out PxMatrix4x4Data transform);
                 array[i] = new PxModelHierarchyNodeData()
                 {
                     parentIndex = parent,
-                    name = name.MarshalAsString()
+                    name = name.MarshalAsString(),
+                    transform = transform
                 };
             }
 

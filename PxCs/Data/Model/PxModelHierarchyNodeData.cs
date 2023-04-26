@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PxCs.Data.Struct;
+using System;
 using System.Numerics;
 
 namespace PxCs.Data.Model
@@ -7,8 +8,6 @@ namespace PxCs.Data.Model
     {
         public short parentIndex;
         public string? name;
-
-        [Obsolete("Not yet exported from phoenix-shared-interface.")]
-        public Matrix4x4 transform;
+        public PxMatrix4x4Data transform;
     }
 }
