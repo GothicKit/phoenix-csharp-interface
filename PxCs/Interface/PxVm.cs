@@ -61,12 +61,12 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByName(IntPtr vm, string name, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByIndex(IntPtr vm, uint index, PxVmInstanceType type, IntPtr existing);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByName(IntPtr vm, string name, PxVmInstanceType type, IntPtr existing);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceGetSymbolIndex(IntPtr instance);
 
         // HINT: Won't work as it will print to std::cerr which isn't shared with the managed C# side.
         // [DllImport(DLLNAME)] public static extern void pxVmPrintStackTrace(IntPtr vm);
 
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetId(IntPtr instance);
-        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetSymbolIndex(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetName(IntPtr instance, uint i);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetRoutine(IntPtr instance);
@@ -139,7 +139,7 @@ namespace PxCs.Interface
             {
                 npcPtr = instancePtr,
                 id = pxVmInstanceNpcGetId(instancePtr),
-                symbolIndex = pxVmInstanceNpcGetSymbolIndex(instancePtr),
+                symbolIndex = pxVmInstanceGetSymbolIndex(instancePtr),
                 names = names,
                 routine = pxVmInstanceNpcGetRoutine(instancePtr)
             };

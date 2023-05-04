@@ -32,16 +32,16 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxSsmGetNodes(IntPtr ssm, out uint length); // ret: IntArray
 
 
-        public static PxModelMeshData? LoadModelMeshFromVdf(IntPtr vdfPtr, string name)
+        public static PxModelMeshData? LoadModelMeshFromVdf(IntPtr vdfPtr, string name, params string[] attachmentKeys)
         {
             var mdmPtr = pxMdmLoadFromVdf(vdfPtr, name);
-            var data = GetFromPtr(mdmPtr);
+            var data = GetFromPtr(mdmPtr, attachmentKeys);
 
             pxMdmDestroy(mdmPtr);
             return data;
         }
 
-        public static PxModelMeshData? GetFromPtr(IntPtr mdmPtr)
+        public static PxModelMeshData? GetFromPtr(IntPtr mdmPtr, params string[] attachmentKeys)
         {
             if (mdmPtr == IntPtr.Zero)
                 return null;
@@ -50,7 +50,7 @@ namespace PxCs.Interface
             {
                 checksum = pxMdmGetChecksum(mdmPtr),
                 meshes = GetMeshes(mdmPtr),
-                attachments = GetAttachments(mdmPtr)
+                attachments = GetAttachments(mdmPtr, attachmentKeys)
             };
         }
 
@@ -124,9 +124,21 @@ namespace PxCs.Interface
             return array;
         }
 
-        public static Dictionary<string, PxMultiResolutionMeshData> GetAttachments(IntPtr mdmPtr)
+        public static Dictionary<string, PxMultiResolutionMeshData> GetAttachments(IntPtr mdmPtr, params string[] attachmentKeys)
         {
-            return null;
+            var data = new Dictionary<string, PxMultiResolutionMeshData>();
+
+            foreach (var key in attachmentKeys)
+            {
+                var attachmentPtr = pxMdmGetAttachment(mdmPtr, key);
+                if (attachmentPtr == IntPtr.Zero)
+                    continue;
+
+                var mrm = PxMultiResolutionMesh.GetMRMFromPtr(attachmentPtr);
+                data[key] = mrm;
+            }
+
+            return data;
         }
 
     }
