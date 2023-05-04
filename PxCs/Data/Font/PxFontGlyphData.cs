@@ -1,0 +1,11 @@
+﻿using System.Numerics;
+
+namespace PxCs.Data.Font
+{
+    public class PxFontGlyphData
+    {
+        public uint width;
+        public Vector2 upper;
+        public Vector2 lower;
+    }
+}
