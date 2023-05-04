@@ -5,7 +5,7 @@ namespace PxCs.Data.Vm
     public class PxVmNpcData
     {
         public IntPtr npcPtr;
-        public uint id;
+        public int id;
         public uint symbolIndex;
         public string[] names = new string[0];
 

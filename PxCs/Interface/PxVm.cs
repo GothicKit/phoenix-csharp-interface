@@ -65,7 +65,7 @@ namespace PxCs.Interface
         // HINT: Won't work as it will print to std::cerr which isn't shared with the managed C# side.
         // [DllImport(DLLNAME)] public static extern void pxVmPrintStackTrace(IntPtr vm);
 
-        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetId(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetId(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetSymbolIndex(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetName(IntPtr instance, uint i);
