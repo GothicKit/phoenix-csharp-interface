@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using PxCs.Interface;
 using Xunit;
 
@@ -23,6 +24,21 @@ namespace PxCs.Tests
             PxVdf.pxVdfDestroy(vdfPtrWorlds);
             PxVdf.pxVdfDestroy(vdfPtrTextures);
             PxVdf.pxVdfDestroy(vdfPtrMain);
+        }
+
+        [Fact]
+        public void Test_load_Vdf_Meta_Entry_list()
+        {
+            var vdfPtr = LoadVdf("Data/meshes.VDF");
+
+            var entries = PxVdf.LoadEntryMetaDataList(vdfPtr);
+
+            Assert.Single(entries.children!);
+            Assert.True(entries.children![0].name == "_WORK", "Name of first folder is wrong.");
+            Assert.True(entries.children![0].isDirectory == true, "_Work needs to be a directory.");
+            Assert.Single(entries.children![0].children!);
+
+            DestroyVdf(vdfPtr);
         }
     }
 }
