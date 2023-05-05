@@ -16,8 +16,8 @@ namespace PxCs.Tests
             Assert.NotNull(mdl);
             Assert.NotNull(mdl.hierarchy);
             Assert.NotNull(mdl.mesh);
-
-            // FIXME - The mesh itself has no data. Seems as internally it isn't found. Need to find out why!
+            Assert.True(mdl.mesh.attachments!.Count == 1, $"Attachments need to be of size 1, but >{mdl.mesh.attachments!.Count}< given.");
+            Assert.True(mdl.mesh.attachments!.ContainsKey("ZM_BENCHOC01"), "There needs to be an attachment called >ZM_BENCHOC01<.");
 
             DestroyVdf(vdfPtr);
         }

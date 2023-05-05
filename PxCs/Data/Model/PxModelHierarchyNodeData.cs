@@ -1,6 +1,4 @@
 ﻿using PxCs.Data.Struct;
-using System;
-using System.Numerics;
 
 namespace PxCs.Data.Model
 {

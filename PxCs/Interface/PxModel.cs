@@ -1,5 +1,6 @@
 ﻿using PxCs.Data.Model;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
@@ -26,13 +27,16 @@ namespace PxCs.Interface
                 return null;
 
             var mdhPtr = pxMdlGetHierarchy(mdlPtr);
+            var hierarchy = PxModelHierarchy.GetFromPtr(mdhPtr);
+
             var mdmPtr = pxMdlGetMesh(mdlPtr);
+            var attachmentKeys = hierarchy!.nodes.Select(i => i.name).ToArray();
+            var mesh = PxModelMesh.GetFromPtr(mdmPtr, attachmentKeys!);
 
             var mdl = new PxModelData()
             {
-                hierarchy = PxModelHierarchy.GetFromPtr(mdhPtr),
-                mesh = PxModelMesh.GetFromPtr(mdmPtr)
-
+                hierarchy = hierarchy,
+                mesh = mesh
             };
 
             pxMdlDestroy(mdlPtr);
