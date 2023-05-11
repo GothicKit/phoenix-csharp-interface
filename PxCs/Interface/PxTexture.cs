@@ -1,11 +1,7 @@
 ﻿using PxCs.Data.Texture;
 using System;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
-using static PxCs.Interface.PxLogging;
 
 namespace PxCs.Interface
 {
@@ -55,7 +51,7 @@ namespace PxCs.Interface
             for (var level = 0u; level < mipmapCount; level++)
             {
                 // a) it's already uncompressed or b) the texture format is a supported one from the caller.
-                if (format.HasFlag(Format.tex_B8G8R8A8) || supportedFormats.Contains(format))
+                if (supportedFormats.Contains(Format.tex_B8G8R8A8) || supportedFormats.Contains(format))
                     mipmaps[level] = LoadMipmap(texturePtr, level);
                 else
                     mipmaps[level] = LoadMipmapUncompressed(texturePtr, level);
@@ -121,7 +117,7 @@ namespace PxCs.Interface
             };
         }
 
-        private static PxTextureMipmapData LoadMipmapUncompressed(IntPtr texturePtr, uint level)
+        public static PxTextureMipmapData LoadMipmapUncompressed(IntPtr texturePtr, uint level)
         {
             var mipmapPtr = pxTexGetDecompressedMipmap(texturePtr, level, out uint size, out uint mipmapWidth, out uint mipmapHeight);
 
