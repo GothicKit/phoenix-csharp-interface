@@ -1,19 +1,19 @@
-﻿namespace PxCs.Data.Vob
+﻿using static PxCs.Interface.PxWorld;
+
+namespace PxCs.Data.Vob
 {
     public class PxVobMobData : PxVobData
     {
-
-
         public string? name;
         public int hp;
         public int damage;
         public bool movable;
         public bool takable;
-        public bool focus_override;
-        public sound_material material;
-        public string? visual_destroyed;
+        public bool focusOverride;
+        public PxVobSoundMaterial material;
+        public string? visualDestroyed;
         public string? owner;
-        public string? owner_guild;
+        public string? ownerGuild;
         public bool destroyed;
     }
 }

@@ -49,7 +49,7 @@ namespace PxCs.Tests
             var vobs = PxWorld.GetVobs(worldPtr);
 
             var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
-            Assert.IsType<PxVobData>(chest);
+            Assert.IsType<PxVobMobContainerData>(chest);
 
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
