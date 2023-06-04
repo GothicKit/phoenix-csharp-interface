@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using PxCs.Data.Vob;
 using PxCs.Interface;
 using Xunit;
 
@@ -46,6 +48,8 @@ namespace PxCs.Tests
 
             var vobs = PxWorld.GetVobs(worldPtr);
 
+            var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
+            Assert.IsType<PxVobData>(chest);
 
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
