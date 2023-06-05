@@ -51,6 +51,10 @@ namespace PxCs.Tests
             var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
             Assert.IsType<PxVobMobContainerData>(chest);
 
+            var zoneFogDefault = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCZoneZFogDefault);
+            Assert.IsType<PxVobZoneFogData>(zoneFogDefault);
+
+
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
         }

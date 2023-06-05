@@ -3,7 +3,7 @@ using PxCs.Data.Vob;
 using PxCs.Data.WayNet;
 using PxCs.Extensions;
 using System;
-using System.Data;
+using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -205,6 +205,30 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetKey(IntPtr vobMobDoor);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetPickString(IntPtr vobMobDoor);
 
+        // Vob - ZoneMusic
+        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneMusic(
+            IntPtr zoneMusic,
+            [MarshalAs(UnmanagedType.U1)] out bool enabled,
+            out int priority,
+            [MarshalAs(UnmanagedType.U1)] out bool ellipsoid,
+            out float reverb,
+            out float volume,
+            [MarshalAs(UnmanagedType.U1)] out bool loop);
+        // Vob - ZoneFarPlane
+        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneFarPlane(
+            IntPtr zoneFarPlane,
+            out float vobFarPlaneZ,
+            out float innerRangePercentage);
+        // Vob - ZoneFog
+        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneFog(
+            IntPtr zoneFog,
+            out float rangeCenter,
+            out float innerRangePercentage,
+            out Vector4Byte color,
+            [MarshalAs(UnmanagedType.U1)] out bool fadeOutSky,
+            [MarshalAs(UnmanagedType.U1)] out bool overrideColor);
+
+
 
         public static PxWayPointData[] GetWayPoints(IntPtr worldPtr)
         {
@@ -298,6 +322,21 @@ namespace PxCs.Interface
                 case PxVobType.PxVob_oCMobDoor:
                     vob = new PxVobMobDoorData();
                     SetVobMobDoorData(vobPtr, (PxVobMobDoorData)vob);
+                    break;
+                case PxVobType.PxVob_oCZoneMusic:
+                case PxVobType.PxVob_oCZoneMusicDefault:
+                    vob = new PxVobZoneMusicData();
+                    SetVobZoneMusicData(vobPtr, (PxVobZoneMusicData)vob);
+                    break;
+                case PxVobType.PxVob_zCZoneVobFarPlane:
+                case PxVobType.PxVob_zCZoneVobFarPlaneDefault:
+                    vob = new PxVobZoneFarPlaneData();
+                    SetVobZoneFarPlaneData(vobPtr, (PxVobZoneFarPlaneData)vob);
+                    break;
+                case PxVobType.PxVob_zCZoneZFog:
+                case PxVobType.PxVob_zCZoneZFogDefault:
+                    vob = new PxVobZoneFogData();
+                    SetVobZoneFogData(vobPtr, (PxVobZoneFogData)vob);
                     break;
                 default:
                     // FIXME - As we will handle all the types, this will throw an exception in future.
@@ -401,6 +440,48 @@ namespace PxCs.Interface
             vobMobDoor.locked = pxVobMobDoorGetLocked(vobMobDoorPtr);
             vobMobDoor.key = pxVobMobDoorGetKey(vobMobDoorPtr).MarshalAsString();
             vobMobDoor.pickString = pxVobMobDoorGetPickString(vobMobDoorPtr).MarshalAsString();
+        }
+
+        private static void SetVobZoneMusicData(IntPtr vobZoneMusicPtr, PxVobZoneMusicData vobZoneMusic)
+        {
+            SetVobData(vobZoneMusicPtr, vobZoneMusic);
+
+            pxWorldVobGetZoneMusic(vobZoneMusicPtr, out bool enabled, out int priority, out bool ellipsoid, out float reverb, out float volume, out bool loop);
+            vobZoneMusic.enabled = enabled;
+            vobZoneMusic.priority = priority;
+            vobZoneMusic.ellipsoid = ellipsoid;
+            vobZoneMusic.reverb = reverb;
+            vobZoneMusic.volume = volume;
+            vobZoneMusic.loop = loop;
+        }
+
+        private static void SetVobZoneFarPlaneData(IntPtr vobZoneFarPlanePtr, PxVobZoneFarPlaneData vobZoneFarPlane)
+        {
+            SetVobData(vobZoneFarPlanePtr, vobZoneFarPlane);
+
+            pxWorldVobGetZoneFarPlane(vobZoneFarPlanePtr, out float vobFarPlaneZ, out float innerRangePercentage);
+
+            vobZoneFarPlane.vobFarPlaneZ = vobFarPlaneZ;
+            vobZoneFarPlane.innerRangePercentage = innerRangePercentage;
+        }
+
+        private static void SetVobZoneFogData(IntPtr vobZoneFogPtr, PxVobZoneFogData vobZoneFog)
+        {
+            SetVobData(vobZoneFogPtr, vobZoneFog);
+
+            pxWorldVobGetZoneFog(
+                vobZoneFogPtr,
+                out float rangeCenter,
+                out float innerRangePercentage,
+                out Vector4Byte color,
+                out bool fadeOutSky,
+                out bool overrideColor);
+
+            vobZoneFog.rangeCenter = rangeCenter;
+            vobZoneFog.innerRangePercentage = innerRangePercentage;
+            vobZoneFog.color = color;
+            vobZoneFog.fadeOutSky = fadeOutSky;
+            vobZoneFog.overrideColor = overrideColor;
         }
     }
 }
