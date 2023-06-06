@@ -1,14 +1,9 @@
-﻿using System;
-
-namespace PxCs.Data.Vm
+﻿namespace PxCs.Data.Vm
 {
-    public class PxVmNpcData
+	public class PxVmNpcData : PxVmData
     {
-        public IntPtr npcPtr;
-        public int id;
-        public uint symbolIndex;
-        public string[] names = new string[0];
-
+		public int id;
+		public string[] names = new string[0];
         public int routine;
     }
 }

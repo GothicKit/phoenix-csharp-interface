@@ -52,10 +52,24 @@ namespace PxCs.Tests
 
             var hero = PxVm.InitializeNpc(vmPtr, "hero");
 
-            Assert.NotEqual(hero.npcPtr, IntPtr.Zero);
+            Assert.NotEqual(hero.instancePtr, IntPtr.Zero);
 
             PxVm.pxVmDestroy(vmPtr);
         }
+
+        [Fact]
+        public void Test_instanciate_Item_by_name()
+        {
+			var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+
+			var lockpick = PxVm.InitializeItem(vmPtr, "ITKELOCKPICK");
+
+			Assert.NotEqual(lockpick.instancePtr, IntPtr.Zero);
+            Assert.True(lockpick.visual!.ToLower() == "ItKe_Lockpick_01.3ds".ToLower(), "Lockpick has wrong visual name.");
+
+			PxVm.pxVmDestroy(vmPtr);
+		}
+
 
         [Fact]
         public void Test_instanciate_Npc_by_index()
@@ -66,7 +80,7 @@ namespace PxCs.Tests
             // FIXME: I need to check what's a real index of an NPC.
             var npc = PxVm.InitializeNpc(vmPtr, 7656);
 
-            Assert.NotEqual(npc.npcPtr, IntPtr.Zero);
+            Assert.NotEqual(npc.instancePtr, IntPtr.Zero);
 
             PxVm.pxVmDestroy(vmPtr);
         }
@@ -97,7 +111,7 @@ namespace PxCs.Tests
 
             var pxNpc = PxVm.InitializeNpc(vmPtr, 7774); // Buddler
 
-            var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine, pxNpc.npcPtr);
+            var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine, pxNpc.instancePtr);
         }
 
         // The below test has two purposes:
