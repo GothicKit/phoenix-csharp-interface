@@ -2,6 +2,7 @@
 using PxCs.Extensions;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace PxCs.Interface
@@ -14,6 +15,7 @@ namespace PxCs.Interface
         public enum PxVmInstanceType
         {
             PxVmInstanceTypeNpc = 1,
+            PxVmInstanceTypeItem = 2
         };
 
 
@@ -66,13 +68,19 @@ namespace PxCs.Interface
         // HINT: Won't work as it will print to std::cerr which isn't shared with the managed C# side.
         // [DllImport(DLLNAME)] public static extern void pxVmPrintStackTrace(IntPtr vm);
 
+        // C_Npc
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetId(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetName(IntPtr instance, uint i);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetRoutine(IntPtr instance);
 
+		// C_Item
+		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceItemGetName(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceItemGetDescription(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceItemGetVisual(IntPtr instance);
 
-        public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
+
+		public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
         {
             StackPushParameters(vmPtr, parameters);
             return pxVmCallFunction(vmPtr, methodName, IntPtr.Zero);
@@ -114,39 +122,74 @@ namespace PxCs.Interface
             return strPtr.MarshalAsString();
         }
 
-        public static PxVmNpcData InitializeNpc(IntPtr vmPtr, string name)
+        public static PxVmNpcData? InitializeNpc(IntPtr vmPtr, string name)
         {
             var npcPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeNpc, IntPtr.Zero);
 
-            return GetNpcByInstancePtr(npcPtr);
+			if (npcPtr == IntPtr.Zero)
+				return null;
+
+			return GetNpcByInstancePtr(npcPtr);
         }
 
-        public static PxVmNpcData InitializeNpc(IntPtr vmPtr, uint index)
+        public static PxVmNpcData? InitializeNpc(IntPtr vmPtr, uint index)
         {
             var npcPtr = pxVmInstanceInitializeByIndex(vmPtr, index, PxVmInstanceType.PxVmInstanceTypeNpc, IntPtr.Zero);
 
-            return GetNpcByInstancePtr(npcPtr);
+			if (npcPtr == IntPtr.Zero)
+				return null;
+
+			return GetNpcByInstancePtr(npcPtr);
         }
 
-        private static PxVmNpcData GetNpcByInstancePtr(IntPtr instancePtr)
+		public static PxVmItemData? InitializeItem(IntPtr vmPtr, string name)
+		{
+			var itemPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeItem, IntPtr.Zero);
+
+            if (itemPtr == IntPtr.Zero)
+                return null;
+
+			return GetItemByInstancePtr(itemPtr);
+		}
+
+		private static PxVmNpcData GetNpcByInstancePtr(IntPtr instancePtr)
         {
+            var npc = new PxVmNpcData();
+            AddInstanceData(npc, instancePtr);
+
             var nameCount = pxVmInstanceNpcGetNameLength(instancePtr);
             string[] names = new string[nameCount];
             for (var i = 0u; i < nameCount; i++)
                 names[i] = pxVmInstanceNpcGetName(instancePtr, i).MarshalAsString();
 
-            return new PxVmNpcData()
-            {
-                npcPtr = instancePtr,
-                id = pxVmInstanceNpcGetId(instancePtr),
-                symbolIndex = pxVmInstanceGetSymbolIndex(instancePtr),
-                names = names,
-                routine = pxVmInstanceNpcGetRoutine(instancePtr)
-            };
-        }
+            npc.id = pxVmInstanceNpcGetId(instancePtr);
+			npc.symbolIndex = pxVmInstanceGetSymbolIndex(instancePtr);
+			npc.names = names;
+			npc.routine = pxVmInstanceNpcGetRoutine(instancePtr);
+
+            return npc;
+		}
+
+		private static PxVmItemData GetItemByInstancePtr(IntPtr instancePtr)
+		{
+            var item = new PxVmItemData();
+            AddInstanceData(item, instancePtr);
+
+			item.name = pxVmInstanceItemGetName(instancePtr).MarshalAsString();
+			item.description = pxVmInstanceItemGetDescription(instancePtr).MarshalAsString();
+			item.visual = pxVmInstanceItemGetVisual(instancePtr).MarshalAsString();
+
+			return item;
+		}
+
+        private static void AddInstanceData(PxVmData instanceData, IntPtr instancePtr)
+        {
+            instanceData.instancePtr = instancePtr;
+			instanceData.symbolIndex = pxVmInstanceGetSymbolIndex(instancePtr);
+		}
 
 
-        private static void StackPushParameters(IntPtr vmPtr, params object[] parameters)
+		private static void StackPushParameters(IntPtr vmPtr, params object[] parameters)
         {
             // As we're working with a stack, we need to add parameters in reverse order.
             foreach (var param in parameters.Reverse())

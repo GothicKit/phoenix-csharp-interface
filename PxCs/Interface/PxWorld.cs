@@ -1,8 +1,9 @@
-using PxCs.Data;
 using PxCs.Data.Struct;
+using PxCs.Data.Vob;
 using PxCs.Data.WayNet;
 using PxCs.Extensions;
 using System;
+using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -94,6 +95,15 @@ namespace PxCs.Interface
             PxVobVisualUnknown = 7,             // The VOb presents an unknown visual or no visual at all.
         };
 
+        public enum PxVobSoundMaterial {
+            PxVobMobSoundWood = 0,
+            PxVobMobSoundStone = 1,
+            PxVobMobSoundMetal = 2,
+            PxVobMobSoundLeather = 3,
+            PxVobMobSoundClay = 4,
+            PxVobMobSoundGlass = 5,
+        };
+
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVdf(IntPtr vdf, string name);
@@ -156,6 +166,70 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobGetChild(IntPtr vob, uint i);
 
 
+        // Vob - Mob
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetName(IntPtr vobMob);
+        [DllImport(DLLNAME)] public static extern int pxVobMobGetHp(IntPtr vobMob);
+        [DllImport(DLLNAME)] public static extern int pxVobMobGetDamage(IntPtr vobMob);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobGetMovable(IntPtr vobMob);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobGetTakable(IntPtr vobMob);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobGetFocusOverride(IntPtr vobMob);
+        [DllImport(DLLNAME)] public static extern PxVobSoundMaterial pxVobMobGetMaterial(IntPtr vobMob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetVisualDestroyed(IntPtr vobMob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetOwner(IntPtr vobMob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetOwnerGuild(IntPtr vobMob);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobGetDestroyed(IntPtr vobMob);
+        //Vob - MobInter
+        [DllImport(DLLNAME)] public static extern int pxVobMobInterGetState(IntPtr vobMobInter);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetTarget(IntPtr vobMobInter);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetItem(IntPtr vobMobInter);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetConditionFunction(IntPtr vobMobInter);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetOnStateChangeFunction(IntPtr vobMobInter);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobInterGetRewind(IntPtr vobMobInter);
+        // Vob - MobFire
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobFireGetSlot(IntPtr vobMobFire);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobFireGetVobTree(IntPtr vobMobFire);
+        // Vob - MobContainer
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobContainerGetLocked(IntPtr vobMobContainer);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobContainerGetKey(IntPtr vobMobContainer);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobContainerGetPickString(IntPtr vobMobContainer);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobContainerGetContents(IntPtr vobMobContainer);
+        // Vob - MobDoor
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobMobDoorGetLocked(IntPtr vobMobDoor);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetKey(IntPtr vobMobDoor);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetPickString(IntPtr vobMobDoor);
+
+        // Vob - ZoneMusic
+        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneMusic(
+            IntPtr zoneMusic,
+            [MarshalAs(UnmanagedType.U1)] out bool enabled,
+            out int priority,
+            [MarshalAs(UnmanagedType.U1)] out bool ellipsoid,
+            out float reverb,
+            out float volume,
+            [MarshalAs(UnmanagedType.U1)] out bool loop);
+        // Vob - ZoneFarPlane
+        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneFarPlane(
+            IntPtr zoneFarPlane,
+            out float vobFarPlaneZ,
+            out float innerRangePercentage);
+        // Vob - ZoneFog
+        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneFog(
+            IntPtr zoneFog,
+            out float rangeCenter,
+            out float innerRangePercentage,
+            out Vector4Byte color,
+            [MarshalAs(UnmanagedType.U1)] out bool fadeOutSky,
+            [MarshalAs(UnmanagedType.U1)] out bool overrideColor);
+
+
+
         public static PxWayPointData[] GetWayPoints(IntPtr worldPtr)
         {
             var count = pxWorldGetWayPointCount(worldPtr);
@@ -214,53 +288,200 @@ namespace PxCs.Interface
             for (var i = 0u; i < count; i++)
             {
                 var vobPtr = pxWorldGetRootVob(worldPtr, i);
-                vobs[i] = GetVobData(vobPtr);
+                vobs[i] = GetVobTypeData(vobPtr);
             }
 
             return vobs;
         }
 
-        private static PxVobData GetVobData(IntPtr vobPtr)
+        private static PxVobData GetVobTypeData(IntPtr vobPtr)
         {
-            var vob = new PxVobData()
+            var vobType = pxVobGetType(vobPtr);
+
+            PxVobData vob;
+
+            // Instanciate right class object.
+            switch (vobType)
             {
-                id = pxVobGetId(vobPtr),
-                type = pxVobGetType(vobPtr),
-
-                position = pxVobGetPosition(vobPtr),
-                rotation = pxVobGetRotation(vobPtr),
-
-                presetName = pxVobGetPresetName(vobPtr).MarshalAsString(),
-                vobName = pxVobGetVobName(vobPtr).MarshalAsString(),
-                visualName = pxVobGetVisualName(vobPtr).MarshalAsString(),
-
-                animationMode = pxVobGetAnimationMode(vobPtr),
-                shadowMode = pxVobGetShadowMode(vobPtr),
-                spriteAlignment = pxVobGetSpriteAlignment(vobPtr),
-                visualType = pxVobGetVisualType(vobPtr),
-
-                ambient = pxVobGetAmbient(vobPtr),
-                cdDynamic = pxVobGetCdDynamic(vobPtr),
-                cdStatic = pxVobGetCdStatic(vobPtr),
-                vobStatic = pxVobGetVobStatic(vobPtr),
-                showVisual = pxVobGetShowVisual(vobPtr),
-                physicsEnabled = pxVobGetPhysicsEnabled(vobPtr),
-
-                bias = pxVobGetBias(vobPtr),
-
-                animationStrength = pxVobGetAnimationStrength(vobPtr),
-                farClipScale = pxVobGetFarClipScale(vobPtr)
-            };
+                case PxVobType.PxVob_oCMOB:
+                    vob = new PxVobMobData();
+                    SetVobMobData(vobPtr, (PxVobMobData)vob);
+                    break;
+                case PxVobType.PxVob_oCMobInter:
+                    vob = new PxVobMobInterData();
+                    SetVobMobInterData(vobPtr, (PxVobMobInterData)vob);
+                    break;
+                case PxVobType.PxVob_oCMobFire:
+                    vob = new PxVobMobFireData();
+                    SetVobMobFireData(vobPtr, (PxVobMobFireData)vob);
+                    break;
+                case PxVobType.PxVob_oCMobContainer:
+                    vob = new PxVobMobContainerData();
+                    SetVobMobContainerData(vobPtr, (PxVobMobContainerData)vob);
+                    break;
+                case PxVobType.PxVob_oCMobDoor:
+                    vob = new PxVobMobDoorData();
+                    SetVobMobDoorData(vobPtr, (PxVobMobDoorData)vob);
+                    break;
+                case PxVobType.PxVob_oCZoneMusic:
+                case PxVobType.PxVob_oCZoneMusicDefault:
+                    vob = new PxVobZoneMusicData();
+                    SetVobZoneMusicData(vobPtr, (PxVobZoneMusicData)vob);
+                    break;
+                case PxVobType.PxVob_zCZoneVobFarPlane:
+                case PxVobType.PxVob_zCZoneVobFarPlaneDefault:
+                    vob = new PxVobZoneFarPlaneData();
+                    SetVobZoneFarPlaneData(vobPtr, (PxVobZoneFarPlaneData)vob);
+                    break;
+                case PxVobType.PxVob_zCZoneZFog:
+                case PxVobType.PxVob_zCZoneZFogDefault:
+                    vob = new PxVobZoneFogData();
+                    SetVobZoneFogData(vobPtr, (PxVobZoneFogData)vob);
+                    break;
+                default:
+                    // FIXME - As we will handle all the types, this will throw an exception in future.
+                    vob = new PxVobData();
+                    SetVobData(vobPtr, vob);
+                    break;
+            }
 
             var childCount = pxVobGetChildCount(vobPtr);
             vob.childVobs = new PxVobData[childCount];
             for (var ii = 0u; ii < childCount; ii++)
             {
                 var childVobPtr = pxVobGetChild(vobPtr, ii);
-                vob.childVobs[ii] = GetVobData(childVobPtr);
+                vob.childVobs[ii] = GetVobTypeData(childVobPtr);
             }
 
             return vob;
+        }
+
+        private static void SetVobData(IntPtr vobPtr, PxVobData vob)
+        {
+            vob.id = pxVobGetId(vobPtr);
+            vob.type = pxVobGetType(vobPtr);
+
+            vob.position = pxVobGetPosition(vobPtr);
+            vob.rotation = pxVobGetRotation(vobPtr);
+
+            vob.presetName = pxVobGetPresetName(vobPtr).MarshalAsString();
+            vob.vobName = pxVobGetVobName(vobPtr).MarshalAsString();
+            vob.visualName = pxVobGetVisualName(vobPtr).MarshalAsString();
+
+            vob.animationMode = pxVobGetAnimationMode(vobPtr);
+            vob.shadowMode = pxVobGetShadowMode(vobPtr);
+            vob.spriteAlignment = pxVobGetSpriteAlignment(vobPtr);
+            vob.visualType = pxVobGetVisualType(vobPtr);
+
+            vob.ambient = pxVobGetAmbient(vobPtr);
+            vob.cdDynamic = pxVobGetCdDynamic(vobPtr);
+            vob.cdStatic = pxVobGetCdStatic(vobPtr);
+            vob.vobStatic = pxVobGetVobStatic(vobPtr);
+            vob.showVisual = pxVobGetShowVisual(vobPtr);
+            vob.physicsEnabled = pxVobGetPhysicsEnabled(vobPtr);
+
+            vob.bias = pxVobGetBias(vobPtr);
+
+            vob.animationStrength = pxVobGetAnimationStrength(vobPtr);
+            vob.farClipScale = pxVobGetFarClipScale(vobPtr);
+        }
+
+        private static void SetVobMobData(IntPtr vobMobPtr, PxVobMobData vobMob)
+        {
+            SetVobData(vobMobPtr, vobMob);
+
+            vobMob.name = pxVobMobGetName(vobMobPtr).MarshalAsString();
+            vobMob.hp = pxVobMobGetHp(vobMobPtr);
+            vobMob.damage = pxVobMobGetDamage(vobMobPtr);
+            vobMob.movable = pxVobMobGetMovable(vobMobPtr);
+            vobMob.takable = pxVobMobGetTakable(vobMobPtr);
+            vobMob.focusOverride = pxVobMobGetFocusOverride(vobMobPtr);
+            vobMob.material = pxVobMobGetMaterial(vobMobPtr);
+            vobMob.visualDestroyed = pxVobMobGetVisualDestroyed(vobMobPtr).MarshalAsString();
+            vobMob.owner = pxVobMobGetOwner(vobMobPtr).MarshalAsString();
+            vobMob.ownerGuild = pxVobMobGetOwnerGuild(vobMobPtr).MarshalAsString();
+            vobMob.destroyed = pxVobMobGetDestroyed(vobMobPtr);
+        }
+
+        private static void SetVobMobInterData(IntPtr vobMobInterPtr, PxVobMobInterData vobMobInter)
+        {
+            SetVobMobData(vobMobInterPtr, vobMobInter);
+
+            vobMobInter.state = pxVobMobInterGetState(vobMobInterPtr);
+            vobMobInter.target = pxVobMobInterGetTarget(vobMobInterPtr).MarshalAsString();
+            vobMobInter.item = pxVobMobInterGetItem(vobMobInterPtr).MarshalAsString();
+            vobMobInter.conditionFunction = pxVobMobInterGetConditionFunction(vobMobInterPtr).MarshalAsString();
+            vobMobInter.onStateChangeFunction = pxVobMobInterGetOnStateChangeFunction(vobMobInterPtr).MarshalAsString();
+            vobMobInter.rewind = pxVobMobInterGetRewind(vobMobInterPtr);
+        }
+
+        private static void SetVobMobFireData(IntPtr vobMobFirePtr, PxVobMobFireData vobMobFire)
+        {
+            SetVobMobInterData(vobMobFirePtr, vobMobFire);
+
+            vobMobFire.slot = pxVobMobFireGetSlot(vobMobFirePtr).MarshalAsString();
+            vobMobFire.vobTree = pxVobMobFireGetVobTree(vobMobFirePtr).MarshalAsString();
+        }
+
+        private static void SetVobMobContainerData(IntPtr vobMobContainerPtr, PxVobMobContainerData vobMobContainer)
+        {
+            SetVobMobInterData(vobMobContainerPtr, vobMobContainer);
+
+            vobMobContainer.locked = pxVobMobContainerGetLocked(vobMobContainerPtr);
+            vobMobContainer.key = pxVobMobContainerGetKey(vobMobContainerPtr).MarshalAsString();
+            vobMobContainer.pickString = pxVobMobContainerGetPickString(vobMobContainerPtr).MarshalAsString();
+            vobMobContainer.contents = pxVobMobContainerGetContents(vobMobContainerPtr).MarshalAsString();
+        }
+
+        private static void SetVobMobDoorData(IntPtr vobMobDoorPtr, PxVobMobDoorData vobMobDoor)
+        {
+            SetVobMobInterData(vobMobDoorPtr, vobMobDoor);
+        
+            vobMobDoor.locked = pxVobMobDoorGetLocked(vobMobDoorPtr);
+            vobMobDoor.key = pxVobMobDoorGetKey(vobMobDoorPtr).MarshalAsString();
+            vobMobDoor.pickString = pxVobMobDoorGetPickString(vobMobDoorPtr).MarshalAsString();
+        }
+
+        private static void SetVobZoneMusicData(IntPtr vobZoneMusicPtr, PxVobZoneMusicData vobZoneMusic)
+        {
+            SetVobData(vobZoneMusicPtr, vobZoneMusic);
+
+            pxWorldVobGetZoneMusic(vobZoneMusicPtr, out bool enabled, out int priority, out bool ellipsoid, out float reverb, out float volume, out bool loop);
+            vobZoneMusic.enabled = enabled;
+            vobZoneMusic.priority = priority;
+            vobZoneMusic.ellipsoid = ellipsoid;
+            vobZoneMusic.reverb = reverb;
+            vobZoneMusic.volume = volume;
+            vobZoneMusic.loop = loop;
+        }
+
+        private static void SetVobZoneFarPlaneData(IntPtr vobZoneFarPlanePtr, PxVobZoneFarPlaneData vobZoneFarPlane)
+        {
+            SetVobData(vobZoneFarPlanePtr, vobZoneFarPlane);
+
+            pxWorldVobGetZoneFarPlane(vobZoneFarPlanePtr, out float vobFarPlaneZ, out float innerRangePercentage);
+
+            vobZoneFarPlane.vobFarPlaneZ = vobFarPlaneZ;
+            vobZoneFarPlane.innerRangePercentage = innerRangePercentage;
+        }
+
+        private static void SetVobZoneFogData(IntPtr vobZoneFogPtr, PxVobZoneFogData vobZoneFog)
+        {
+            SetVobData(vobZoneFogPtr, vobZoneFog);
+
+            pxWorldVobGetZoneFog(
+                vobZoneFogPtr,
+                out float rangeCenter,
+                out float innerRangePercentage,
+                out Vector4Byte color,
+                out bool fadeOutSky,
+                out bool overrideColor);
+
+            vobZoneFog.rangeCenter = rangeCenter;
+            vobZoneFog.innerRangePercentage = innerRangePercentage;
+            vobZoneFog.color = color;
+            vobZoneFog.fadeOutSky = fadeOutSky;
+            vobZoneFog.overrideColor = overrideColor;
         }
     }
 }

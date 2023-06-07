@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using PxCs.Data.Vob;
 using PxCs.Interface;
 using Xunit;
 
@@ -45,6 +47,12 @@ namespace PxCs.Tests
             var worldPtr = PxWorld.pxWorldLoadFromVdf(vdfPtr, "world.zen");
 
             var vobs = PxWorld.GetVobs(worldPtr);
+
+            var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
+            Assert.IsType<PxVobMobContainerData>(chest);
+
+            var zoneFogDefault = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCZoneZFogDefault);
+            Assert.IsType<PxVobZoneFogData>(zoneFogDefault);
 
 
             PxWorld.pxWorldDestroy(worldPtr);

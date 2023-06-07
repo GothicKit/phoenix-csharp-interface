@@ -2,7 +2,7 @@
 using System.Numerics;
 using static PxCs.Interface.PxWorld;
 
-namespace PxCs.Data
+namespace PxCs.Data.Vob
 {
     public class PxVobData
     {
