@@ -10,7 +10,7 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxBufferCreate(out IntPtr bytes, ulong size);
         [DllImport(DLLNAME)] public static extern IntPtr pxBufferMmap(string filePath);
         [DllImport(DLLNAME)] public static extern void pxBufferDestroy(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxBufferLoadArray(IntPtr buffer);
+        [DllImport(DLLNAME)] public static extern IntPtr pxBufferArray(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern ulong pxBufferSize(IntPtr buffer);
     }
 }
