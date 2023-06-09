@@ -1,27 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PxCs.Interface;
+using System.Text;
 
 namespace PxCs.Extensions
 {
-    /// <summary>
-    /// ATTENTION: These methods should be called ASAP after fetching the IntPtr from extern method before the pointer gets lost.
-    /// </summary>
-    public static class IntPtrExtension
+	/// <summary>
+	/// ATTENTION: These methods should be called ASAP after fetching the IntPtr from extern method before the pointer gets lost.
+	/// </summary>
+	public static class IntPtrExtension
     {
-        /// <summary>
-        /// Convenient method to marshal heap string IntPtr to C#-String.
-        /// </summary>
-        public static string MarshalAsString(this IntPtr strPtr)
-        {
-            return PxPhoenix.MarshalString(strPtr);
-        }
+		private static bool isEncodingProviderRegistered = false;
 
-        /// <summary>
-        /// Convenient method to marshal heap array IntPtr to C#-array values.
-        /// The types are generic and will be handled by C# during runtime.
-        /// </summary>
-        public static T[] MarshalAsArray<T>(this IntPtr arrPtr, uint length)
+		/// <summary>
+		/// Important: This method handles heap strings by byte-copying values until (char)'\0' is found.
+		/// Important: No memory clean up done.
+		/// </summary>
+		/// <exception cref="ArgumentNullException"></exception>
+		public static string MarshalAsString(this IntPtr strPtr)
+		{
+			// As PxCs is with .netstandard2.1 we need to register the coding provider once.
+			if (!isEncodingProviderRegistered)
+			{
+				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+				isEncodingProviderRegistered = true;
+			}
+
+			if (strPtr == IntPtr.Zero)
+				throw new ArgumentNullException("String parameter is zero.");
+
+			var byteSize = sizeof(byte);
+			var byteArray = new List<byte>();
+
+			while (true)
+			{
+				var curPtr = IntPtr.Add(strPtr, byteSize * byteArray.Count);
+				var curByte = Marshal.ReadByte(curPtr);
+
+				if (curByte == 0)
+					break;
+				else
+					byteArray.Add(curByte);
+			}
+
+			if (byteArray.Count == 0)
+				return string.Empty;
+			else
+				return Encoding.GetEncoding(1252).GetString(byteArray.ToArray(), 0, byteArray.Count);
+		}
+
+		/// <summary>
+		/// Convenient method to marshal heap array IntPtr to C#-array values.
+		/// The types are generic and will be handled by C# during runtime.
+		/// </summary>
+		public static T[] MarshalAsArray<T>(this IntPtr arrPtr, uint length)
         {
             if (arrPtr == IntPtr.Zero)
                 return new T[0];
