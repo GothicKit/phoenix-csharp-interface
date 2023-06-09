@@ -23,6 +23,9 @@ namespace PxCs.Tests
 
         public static void PxLogMessage(PxLogging.Level level, string message)
         {
+            // Hint: Phoenix also throws error logs when e.g. a file isn't found. Therefore we can't use it for every test.
+            // But we can leave it here for specific debugging purposes.
+
             //Assert.True(level != PxLogging.Level.error, "VM error logged: >" + message + "<");
         }
 
