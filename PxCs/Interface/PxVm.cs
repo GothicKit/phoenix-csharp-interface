@@ -1,13 +1,13 @@
 ﻿using PxCs.Data.Vm;
 using PxCs.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace PxCs.Interface
 {
-    public static class PxVm
+	public static class PxVm
     {
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
@@ -69,6 +69,9 @@ namespace PxCs.Interface
         // [DllImport(DLLNAME)] public static extern void pxVmPrintStackTrace(IntPtr vm);
 
         // C_Npc
+        public delegate void PxVmEnumerateInstancesCallback(string itemName);
+        [DllImport(DLLNAME)] public static extern void pxVmEnumerateInstancesByClassName(IntPtr vm, string name, PxVmEnumerateInstancesCallback cb);
+
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetId(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetName(IntPtr instance, uint i);
@@ -152,7 +155,21 @@ namespace PxCs.Interface
 			return GetItemByInstancePtr(itemPtr);
 		}
 
-		private static PxVmNpcData GetNpcByInstancePtr(IntPtr instancePtr)
+        public static string[] GetInstancesByClassName(IntPtr vmPtr, string name)
+        {
+            var names = new List<string>();
+
+            PxVmEnumerateInstancesCallback callback = (string name) =>
+			{
+				names.Add(name);
+            };
+
+            pxVmEnumerateInstancesByClassName(vmPtr, name, callback);
+
+            return names.ToArray();
+		}
+
+        private static PxVmNpcData GetNpcByInstancePtr(IntPtr instancePtr)
         {
             var npc = new PxVmNpcData();
             AddInstanceData(npc, instancePtr);
