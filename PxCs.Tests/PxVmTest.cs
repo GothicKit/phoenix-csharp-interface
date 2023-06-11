@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using PxCs.Interface;
 using Xunit;
 
@@ -46,13 +47,25 @@ namespace PxCs.Tests
         }
 
         [Fact]
+        public void Test_get_all_C_Item_Instances()
+        {
+			var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+
+            var elements = PxVm.GetInstancesByClassName(vmPtr, "C_Item");
+            var exampleItem = elements.FirstOrDefault(i => i.ToUpper() == "ITARSCROLLHEAL");
+            
+            Assert.NotNull(exampleItem);
+			PxVm.pxVmDestroy(vmPtr);
+		}
+
+		[Fact]
         public void Test_instanciate_Npc_by_name()
         {
             var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
 
             var hero = PxVm.InitializeNpc(vmPtr, "hero");
 
-            Assert.NotEqual(hero.instancePtr, IntPtr.Zero);
+            Assert.NotEqual(hero!.instancePtr, IntPtr.Zero);
 
             PxVm.pxVmDestroy(vmPtr);
         }
@@ -64,7 +77,7 @@ namespace PxCs.Tests
 
 			var lockpick = PxVm.InitializeItem(vmPtr, "ITKELOCKPICK");
 
-			Assert.NotEqual(lockpick.instancePtr, IntPtr.Zero);
+			Assert.NotEqual(lockpick!.instancePtr, IntPtr.Zero);
             Assert.True(lockpick.visual!.ToLower() == "ItKe_Lockpick_01.3ds".ToLower(), "Lockpick has wrong visual name.");
 
 			PxVm.pxVmDestroy(vmPtr);
@@ -93,7 +106,7 @@ namespace PxCs.Tests
             // FIXME: I need to check what's a real index of an NPC.
             var npc = PxVm.InitializeNpc(vmPtr, 7656);
 
-            Assert.NotEqual(npc.instancePtr, IntPtr.Zero);
+            Assert.NotEqual(npc!.instancePtr, IntPtr.Zero);
 
             PxVm.pxVmDestroy(vmPtr);
         }
