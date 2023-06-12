@@ -3,7 +3,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 
-namespace PxCs.Extensions
+namespace PxCs.Helper
 {
     internal enum WAVE_FORMAT
     {
@@ -13,7 +13,7 @@ namespace PxCs.Extensions
         IMA_ADPCM = 0x11,
     }
 
-    internal class Ima
+    internal class IMAADPCMDecoder
     {
         public static byte[] CreatePCMHeader(int sampleRate, int channels, int bitsPerSample, int dataSize)
         {
@@ -160,7 +160,7 @@ namespace PxCs.Extensions
             // Clean up resources here if needed
         }
 
-        private byte[] DecodeBlock(Stream stream, int source)
+        private byte[]? DecodeBlock(Stream stream, int source)
         {
             if (source >= dataSize / blockAlign)
                 return null;
@@ -291,7 +291,7 @@ namespace PxCs.Extensions
         private ushort blockAlign;
         private int offset;
         private int dataSize;
-        private byte[] header;
+        private byte[]? header;
         private int cacheNo = -1;
         private byte[] cache;
 

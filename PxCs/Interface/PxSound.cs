@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using PxCs.Extensions;
+using PxCs.Helper;
 
 
 namespace PxCs.Interface
@@ -78,8 +79,8 @@ namespace PxCs.Interface
 
             if (formatCode == "IMA ADPCM")
             {
-                var ima = new Ima();
-                return ConvertWAVByteArrayToFloatArray(ima.Decode(fileBytesCopy));
+                var decoder = new IMAADPCMDecoder();
+                return ConvertWAVByteArrayToFloatArray(decoder.Decode(fileBytes));
             }
 
             switch (bitDepth)
