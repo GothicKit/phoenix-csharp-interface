@@ -11,10 +11,11 @@ namespace PxCs.Interface
     {
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
-        public static byte[] GetSoundByteArrayFromVDF(IntPtr vdfPtr, string name)
+        public enum BitDepth
         {
-            if (!name.Contains(".WAV"))
-            {
+            bit_8 = 8,
+            bit_16 = 16,
+        }
                 name += ".WAV";
             }
             var vdfEntrySound = PxVdf.pxVdfGetEntryByName(vdfPtr, name);
