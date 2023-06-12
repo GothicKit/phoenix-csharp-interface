@@ -1,6 +1,7 @@
 using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using System.Text;
+using PxCs.Data.Sound;
 using PxCs.Extensions;
 using PxCs.Helper;
 
@@ -16,8 +17,9 @@ namespace PxCs.Interface
             bit_8 = 8,
             bit_16 = 16,
         }
-                name += ".WAV";
-            }
+
+        public static PxSoundData<T>? GetSoundArrayFromVDF<T>(IntPtr vdfPtr, string name) where T : struct
+        {
             var vdfEntrySound = PxVdf.pxVdfGetEntryByName(vdfPtr, name);
 
             if (vdfEntrySound == IntPtr.Zero)
@@ -38,21 +40,33 @@ namespace PxCs.Interface
 
                 var arrayPtr = IntPtr.Zero;
                 arrayPtr = PxBuffer.pxBufferArray(wavSound);
-                byte[] wavFile = new byte[size];
 
-                Marshal.Copy(arrayPtr, wavFile, 0, (int)size);
-                return wavFile;
+                if (typeof(T) == typeof(byte))
+                {
+                    var wavFile = arrayPtr.MarshalAsArray<T>((uint)size);
+                    return new PxSoundData<T>()
+                    {
+                        sound = new List<T>(wavFile)
+                    };
+                }
+                else if (typeof(T) == typeof(float))
+                {
+                    var wavFile = arrayPtr.MarshalAsArray<byte>((uint)size);
+                    var floatArray = ConvertWAVByteArrayToFloatArray(wavFile);
+                    return new PxSoundData<T>()
+                    {
+                        sound = new List<T>(Array.ConvertAll(floatArray, x => (T)Convert.ChangeType(x, typeof(T))))
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
             finally
             {
                 PxBuffer.pxBufferDestroy(wavSound);
             }
-        }
-
-        public static float[] GetSoundFloatArrayFromVDF(IntPtr vdfPtr, string name)
-        {
-            byte[] wavFile = GetSoundByteArrayFromVDF(vdfPtr, name);
-            return ConvertWAVByteArrayToFloatArray(wavFile);
         }
 
         private static float[] ConvertWAVByteArrayToFloatArray(byte[] fileBytes)
