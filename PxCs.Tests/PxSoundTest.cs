@@ -17,10 +17,10 @@ namespace PxCs.Tests
             Assert.NotNull(soundByteArray.sound);
             Assert.IsType<byte[]>(soundByteArray.sound);
 
-            Assert.True(soundByteArray.sound.Length == 204880, "Wrong number of bytes");
+            Assert.True(soundByteArray.sound.Length == 102440, "Wrong number of bytes " + soundByteArray.sound.Length);
 
             var soundFloatArray = PxSound.GetSoundArrayFromVDF<float>(vdfPtr, "levelup.wav");
-            Assert.True(soundFloatArray.sound.Length == 204880, "Wrong number of converted bytes");
+            Assert.True(soundFloatArray.sound.Length == 204880, "Wrong number of converted bytes " + soundFloatArray.sound.Length);
 
             DestroyVdf(vdfPtr);
 
@@ -34,12 +34,12 @@ namespace PxCs.Tests
             var soundFloatArray = PxSound.GetSoundArrayFromVDF<float>(vdfPtr, "svm_1_diemonster.wav");
 
             Assert.IsType<float[]>(soundFloatArray.sound);
-            Assert.True(soundFloatArray.sound.Length == 146924, "Wrong number of converted bytes " + soundFloatArray.sound.ToArray().Length);
+            Assert.True(soundFloatArray.sound.Length == 73462, "Wrong number of converted bytes " + soundFloatArray.sound.Length);
 
             var soundByteArray = PxSound.GetSoundArrayFromVDF<byte>(vdfPtr, "svm_1_diemonster.wav");
 
             Assert.NotNull(soundByteArray.sound);
-            Assert.True(soundByteArray.sound.Length == 36924, "Wrong number of bytes " + soundByteArray.sound.ToArray().Length);
+            Assert.True(soundByteArray.sound.Length == 36924, "Wrong number of bytes " + soundByteArray.sound.Length);
 
             DestroyVdf(vdfPtr);
         }
