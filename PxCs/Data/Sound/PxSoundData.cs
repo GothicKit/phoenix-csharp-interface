@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 
 namespace PxCs.Data.Sound
 {
     public class PxSoundData<T>
     {
         public Type arrayType;
-        public List<T> sound;
+        public T[] sound;
 
         public PxSoundData()
         {

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using PxCs.Data.Sound;
 using PxCs.Extensions;
@@ -46,16 +45,18 @@ namespace PxCs.Interface
                     var wavFile = arrayPtr.MarshalAsArray<T>((uint)size);
                     return new PxSoundData<T>()
                     {
-                        sound = new List<T>(wavFile)
+                        sound = wavFile
                     };
                 }
                 else if (typeof(T) == typeof(float))
                 {
                     var wavFile = arrayPtr.MarshalAsArray<byte>((uint)size);
                     var floatArray = ConvertWAVByteArrayToFloatArray(wavFile);
+                    T[] soundArray = new T[floatArray.Length];
+                    Array.Copy(floatArray, soundArray, floatArray.Length);
                     return new PxSoundData<T>()
                     {
-                        sound = new List<T>(Array.ConvertAll(floatArray, x => (T)Convert.ChangeType(x, typeof(T))))
+                        sound = soundArray
                     };
                 }
                 else
@@ -71,9 +72,6 @@ namespace PxCs.Interface
 
         private static float[] ConvertWAVByteArrayToFloatArray(byte[] fileBytes)
         {
-            byte[] fileBytesCopy = new byte[fileBytes.Length];
-            Array.Copy(fileBytes, fileBytesCopy, fileBytes.Length);
-
             string riff = Encoding.ASCII.GetString(fileBytes, 0, 4);
             string wave = Encoding.ASCII.GetString(fileBytes, 8, 4);
             int subchunk1 = BitConverter.ToInt32(fileBytes, 16);
