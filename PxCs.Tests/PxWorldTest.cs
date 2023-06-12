@@ -54,8 +54,13 @@ namespace PxCs.Tests
             var zoneFogDefault = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCZoneZFogDefault);
             Assert.IsType<PxVobZoneFogData>(zoneFogDefault);
 
+            var sound = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobSound);
+			Assert.IsType<PxVobSoundData>(sound);
+			
+            var soundDaytime = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobSoundDaytime);
+			Assert.IsType<PxVobSoundDaytimeData>(soundDaytime);
 
-            PxWorld.pxWorldDestroy(worldPtr);
+			PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
         }
     }

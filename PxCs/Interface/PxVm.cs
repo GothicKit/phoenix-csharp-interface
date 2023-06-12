@@ -15,8 +15,9 @@ namespace PxCs.Interface
         public enum PxVmInstanceType
         {
             PxVmInstanceTypeNpc = 1,
-            PxVmInstanceTypeItem = 2
-        };
+            PxVmInstanceTypeItem = 2,
+			PxVmInstanceTypeSfx = 3,
+		};
 
 
         public delegate void PxVmExternalDefaultCallback(IntPtr vmPtr, string missingCallbackName);
@@ -82,6 +83,16 @@ namespace PxCs.Interface
 		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceItemGetDescription(IntPtr instance);
 		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceItemGetVisual(IntPtr instance);
 
+		// C_Sfx
+		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceSfxGetFile(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetPitchOff(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetPitchVar(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetVol(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetLoop(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetLoopStartOffset(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetLoopEndOffset(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern float pxVmInstanceSfxGetReverbLevel(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceSfxGetPfxName(IntPtr instance);
 
 		public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
         {
@@ -155,6 +166,16 @@ namespace PxCs.Interface
 			return GetItemByInstancePtr(itemPtr);
 		}
 
+		public static PxVmSfxData? InitializeSfx(IntPtr vmPtr, string name)
+		{
+			var sfxPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeSfx, IntPtr.Zero);
+
+			if (sfxPtr == IntPtr.Zero)
+				return null;
+
+			return GetSfxByInstancePtr(sfxPtr);
+		}
+
         public static string[] GetInstancesByClassName(IntPtr vmPtr, string name)
         {
             var names = new List<string>();
@@ -199,7 +220,25 @@ namespace PxCs.Interface
 			return item;
 		}
 
-        private static void AddInstanceData(PxVmData instanceData, IntPtr instancePtr)
+		private static PxVmSfxData GetSfxByInstancePtr(IntPtr instancePtr)
+		{
+			var sfx = new PxVmSfxData();
+			AddInstanceData(sfx, instancePtr);
+
+			sfx.file = pxVmInstanceSfxGetFile(instancePtr).MarshalAsString();
+		    sfx.pitchOff = pxVmInstanceSfxGetPitchOff(instancePtr);
+		    sfx.pitchVar = pxVmInstanceSfxGetPitchVar(instancePtr);
+		    sfx.vol = pxVmInstanceSfxGetVol(instancePtr);
+		    sfx.loop = pxVmInstanceSfxGetLoop(instancePtr);
+		    sfx.loopStartOffset = pxVmInstanceSfxGetLoopStartOffset(instancePtr);
+		    sfx.loopEndOffset = pxVmInstanceSfxGetLoopEndOffset(instancePtr);
+		    sfx.reverbLevel = pxVmInstanceSfxGetReverbLevel(instancePtr);
+		    sfx.pfxName = pxVmInstanceSfxGetPfxName(instancePtr).MarshalAsString();
+
+			return sfx;
+		}
+
+		private static void AddInstanceData(PxVmData instanceData, IntPtr instancePtr)
         {
             instanceData.instancePtr = instancePtr;
 			instanceData.symbolIndex = pxVmInstanceGetSymbolIndex(instancePtr);

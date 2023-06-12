@@ -104,6 +104,21 @@ namespace PxCs.Interface
             PxVobMobSoundGlass = 5,
         };
 
+        public enum PxVobSoundMode
+        {
+			PxVobSoundModeLoop = 0,   // The sound should be player forever until the player exits the trigger volume.
+			PxVobSoundModeOnce = 1,   // The sound should be played once when the player enters the trigger volume.
+			PxVobSoundModeRandom = 2, // While the player is in the trigger volume, the should should play randomly.
+		};
+
+        public enum PxVobSoundTriggerVolume
+        {
+			PxVobSoundTriggerVolumeSpherical = 0, // The sound is triggered when the player enters a spherical area around the
+												  // VOb indicated by its radius setting.
+			PxVobSoundTriggerVolumeEllipsoidal = 1, // The sound is triggered when the player enters a ellipsoidal area around
+													// the VOb indicated by its radius setting.
+		};
+
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVdf(IntPtr vdf, string name);
@@ -205,8 +220,28 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetKey(IntPtr vobMobDoor);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetPickString(IntPtr vobMobDoor);
 
-        // Vob - ZoneMusic
-        [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneMusic(
+		// Vob - Sound
+		[DllImport(DLLNAME)] public static extern float pxVobSoundGetVolume(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern PxVobSoundMode pxVobSoundGetSoundMode(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRandomDelay(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRandomDelayVar(IntPtr sound);
+		[return: MarshalAs(UnmanagedType.U1)]
+		[DllImport(DLLNAME)] public static extern bool pxVobSoundGetInitiallyPlaying(IntPtr sound);
+		[return: MarshalAs(UnmanagedType.U1)]
+		[DllImport(DLLNAME)] public static extern bool pxVobSoundGetAmbient3d(IntPtr sound);
+		[return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobSoundGetObstruction(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern float pxVobSoundGetConeAngle(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern PxVobSoundTriggerVolume pxVobSoundGetSoundTriggerVolume(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRadius(IntPtr sound);
+		[DllImport(DLLNAME)] public static extern IntPtr pxVobSoundGetSoundName(IntPtr sound);
+		// Vob - SoundDaytime
+		[DllImport(DLLNAME)] public static extern float pxVobSoundDaytimeStartTime(IntPtr soundDaytime);
+		[DllImport(DLLNAME)] public static extern float pxVobSoundDaytimeEndTime(IntPtr soundDaytime);
+		[DllImport(DLLNAME)] public static extern IntPtr pxVobSoundDaytimeSoundName2(IntPtr soundDaytime);
+
+		// Vob - ZoneMusic
+		[DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneMusic(
             IntPtr zoneMusic,
             [MarshalAs(UnmanagedType.U1)] out bool enabled,
             out int priority,
@@ -323,7 +358,15 @@ namespace PxCs.Interface
                     vob = new PxVobMobDoorData();
                     SetVobMobDoorData(vobPtr, (PxVobMobDoorData)vob);
                     break;
-                case PxVobType.PxVob_oCZoneMusic:
+                case PxVobType.PxVob_zCVobSound:
+					vob = new PxVobSoundData();
+                    SetVobSoundData(vobPtr, (PxVobSoundData)vob);
+					break;
+				case PxVobType.PxVob_zCVobSoundDaytime:
+					vob = new PxVobSoundDaytimeData();
+					SetVobSoundDaytimeData(vobPtr, (PxVobSoundDaytimeData)vob);
+					break;
+				case PxVobType.PxVob_oCZoneMusic:
                 case PxVobType.PxVob_oCZoneMusicDefault:
                     vob = new PxVobZoneMusicData();
                     SetVobZoneMusicData(vobPtr, (PxVobZoneMusicData)vob);
@@ -442,7 +485,33 @@ namespace PxCs.Interface
             vobMobDoor.pickString = pxVobMobDoorGetPickString(vobMobDoorPtr).MarshalAsString();
         }
 
-        private static void SetVobZoneMusicData(IntPtr vobZoneMusicPtr, PxVobZoneMusicData vobZoneMusic)
+		private static void SetVobSoundData(IntPtr vobSoundPtr, PxVobSoundData vobSound)
+		{
+			SetVobData(vobSoundPtr, vobSound);
+
+			vobSound.volume = pxVobSoundGetVolume(vobSoundPtr);
+			vobSound.mode = pxVobSoundGetSoundMode(vobSoundPtr);
+			vobSound.randomDelay = pxVobSoundGetRandomDelay(vobSoundPtr);
+			vobSound.randomDelayVar = pxVobSoundGetRandomDelayVar(vobSoundPtr);
+			vobSound.initiallyPlaying = pxVobSoundGetInitiallyPlaying(vobSoundPtr);
+			vobSound.ambient3d = pxVobSoundGetAmbient3d(vobSoundPtr);
+			vobSound.obstruction = pxVobSoundGetObstruction(vobSoundPtr);
+			vobSound.coneAngle = pxVobSoundGetConeAngle(vobSoundPtr);
+			vobSound.volumeType = pxVobSoundGetSoundTriggerVolume(vobSoundPtr);
+			vobSound.radius = pxVobSoundGetRadius(vobSoundPtr);
+			vobSound.soundName = pxVobSoundGetSoundName(vobSoundPtr).MarshalAsString();
+		}
+
+		private static void SetVobSoundDaytimeData(IntPtr vobSoundDaytimePtr, PxVobSoundDaytimeData vobSoundDaytime)
+		{
+			SetVobSoundData(vobSoundDaytimePtr, vobSoundDaytime);
+
+			vobSoundDaytime.startTime = pxVobSoundDaytimeStartTime(vobSoundDaytimePtr);
+			vobSoundDaytime.endTime = pxVobSoundDaytimeEndTime(vobSoundDaytimePtr);
+			vobSoundDaytime.soundName2 = pxVobSoundDaytimeSoundName2(vobSoundDaytimePtr).MarshalAsString();
+		}
+
+		private static void SetVobZoneMusicData(IntPtr vobZoneMusicPtr, PxVobZoneMusicData vobZoneMusic)
         {
             SetVobData(vobZoneMusicPtr, vobZoneMusic);
 

@@ -1,6 +1,4 @@
 ﻿using PxCs.Data.Animation;
-using PxCs.Data.Mesh;
-using PxCs.Data.ModelScript;
 using PxCs.Data.Struct;
 using PxCs.Extensions;
 using System;
@@ -9,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace PxCs.Interface
 {
-    public class PxAnimation
+	public class PxAnimation
     {
         private const string DLLNAME = PxPhoenix.DLLNAME;
 

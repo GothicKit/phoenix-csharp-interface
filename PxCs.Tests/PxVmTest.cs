@@ -83,8 +83,21 @@ namespace PxCs.Tests
 			PxVm.pxVmDestroy(vmPtr);
 		}
 
+		[Fact]
+		public void Test_instanciate_Sfx_by_name()
+		{
+			var vmPtr = LoadVm("_work/DATA/scripts/_compiled/SFX.DAT");
 
-        [Fact]
+			var fireSfx = PxVm.InitializeSfx(vmPtr, "FIRE_LARGE");
+
+			Assert.NotEqual(fireSfx!.instancePtr, IntPtr.Zero);
+			Assert.True(fireSfx.file!.ToLower() == "fire_large01.wav".ToLower(), "FireLarge has wrong file name.");
+
+			PxVm.pxVmDestroy(vmPtr);
+		}
+
+
+		[Fact]
         public void Test_instanciate_Npc_by_index()
         {
             var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
