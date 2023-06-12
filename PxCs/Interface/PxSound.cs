@@ -84,63 +84,52 @@ namespace PxCs.Interface
                 return ConvertWAVByteArrayToFloatArray(decoder.Decode(fileBytes));
             }
 
-            switch (bitDepth)
-            {
-                case 8:
-                    data = Convert8BitByteArrayToFloatArray(fileBytes, headerOffset, subchunk2);
-                    break;
-                case 16:
-                    data = Convert16BitByteArrayToFloatArray(fileBytes, headerOffset, subchunk2);
-                    break;
-                default:
-                    throw new Exception(bitDepth + " bit depth is not supported.");
-            }
-
+            data = ConvertByteArrayToFloatArray(fileBytes, headerOffset, (BitDepth)bitDepth);
             return data;
         }
 
-        #region wav file bytes to Unity AudioClip conversion methods
 
-        private static float[] Convert8BitByteArrayToFloatArray(byte[] source, int headerOffset, int dataSize)
+        private static float[] ConvertByteArrayToFloatArray(byte[] source, int headerOffset, BitDepth bit)
         {
-            int wavSize = BitConverter.ToInt32(source, headerOffset);
-            headerOffset += sizeof(int);
-
-            float[] data = new float[wavSize];
-
-            sbyte maxValue = sbyte.MaxValue;
-
-            int i = 0;
-            while (i < wavSize)
+            if (bit == BitDepth.bit_8)
             {
-                data[i] = (float)source[i] / maxValue;
-                ++i;
+                int wavSize = BitConverter.ToInt32(source, headerOffset);
+                headerOffset += sizeof(int);
+
+                float[] data = new float[wavSize];
+
+                sbyte maxValue = sbyte.MaxValue;
+
+                for (int i = 0; i < wavSize; i++)
+                    data[i] = (float)source[i] / maxValue;
+
+                return data;
+
             }
-
-            return data;
-        }
-
-        private static float[] Convert16BitByteArrayToFloatArray(byte[] source, int headerOffset, int dataSize)
-        {
-            int bytesPerSample = sizeof(Int16); // block size = 2
-            int sampleCount = source.Length / bytesPerSample;
-
-            float[] data = new float[sampleCount];
-
-            Int16 maxValue = Int16.MaxValue;
-
-            for (int i = 0; i < sampleCount; i++)
+            else if (bit == BitDepth.bit_16)
             {
-                int offset = i * bytesPerSample;
-                Int16 sample = BitConverter.ToInt16(source, offset);
-                float floatSample = (float)sample / maxValue;
-                data[i] = floatSample;
+                int bytesPerSample = sizeof(Int16); // block size = 2
+                int sampleCount = source.Length / bytesPerSample;
+
+                float[] data = new float[sampleCount];
+
+                Int16 maxValue = Int16.MaxValue;
+
+                for (int i = 0; i < sampleCount; i++)
+                {
+                    int offset = i * bytesPerSample;
+                    Int16 sample = BitConverter.ToInt16(source, offset);
+                    float floatSample = (float)sample / maxValue;
+                    data[i] = floatSample;
+                }
+
+                return data;
             }
-
-            return data;
+            else
+            {
+                throw new Exception(bit + " bit depth is not supported.");
+            }
         }
-
-        #endregion
 
         private static string FormatCode(UInt16 code)
         {
