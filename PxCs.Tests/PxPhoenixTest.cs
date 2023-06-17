@@ -13,7 +13,7 @@ namespace PxCs.Tests
         {
             string? dir = Environment.GetEnvironmentVariable("GOTHIC1_ASSET_DIR");
 
-            Assert.True(dir != null, "Please start test with dotnet test --environment GOTHIC1_ASSET_DIR=...");
+            Assert.True(dir != null, "Please start test with dotnet test --environment GOTHIC1_ASSET_DIR=... or configure ./.runsettings to be used by your IDE runner.");
             Assert.True(Directory.Exists(dir), "Path not exists");
 
             G1_ASSET_DIR = dir;
