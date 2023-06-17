@@ -23,7 +23,7 @@ namespace PxCs.Tests
             Assert.True(testMaterial.name == "OWODWATRGRASSMIMOUNTAINCLOSE", "Material name is wrong with >" + testMaterial.name + "<");
             Assert.True(testMaterial.texture == "OWODWATRGRASSMIMOUNTAINCLOSE.TGA", "TExture name is wrong with >" + testMaterial.texture + "<");
             Assert.True(testMaterial.color != 0, "Color has no value");
-
+            Assert.True(testMaterial.group == PxMaterial.PxMaterialGroup.PxMaterialGroup_Stone, "Stone as materialGroup is expected, but got ");
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
         }
