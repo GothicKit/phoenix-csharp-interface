@@ -9,6 +9,8 @@ namespace PxCs.Data.Vob
         public uint id;
         public PxVobType type;
 
+        public PxAABBData boundingBox;
+
         public PxVobData[]? childVobs;
 
         public Vector3 position;
