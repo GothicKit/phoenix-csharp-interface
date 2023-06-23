@@ -145,6 +145,7 @@ namespace PxCs.Interface
 
         [DllImport(DLLNAME)] public static extern PxVobType pxVobGetType(IntPtr vob);
         [DllImport(DLLNAME)] public static extern uint pxVobGetId(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern PxAABBData pxVobGetBbox(IntPtr vob);
 
         [DllImport(DLLNAME)] public static extern Vector3 pxVobGetPosition(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxMatrix3x3Data pxVobGetRotation(IntPtr vob);
@@ -403,6 +404,8 @@ namespace PxCs.Interface
         {
             vob.id = pxVobGetId(vobPtr);
             vob.type = pxVobGetType(vobPtr);
+
+            vob.boundingBox = pxVobGetBbox(vobPtr);
 
             vob.position = pxVobGetPosition(vobPtr);
             vob.rotation = pxVobGetRotation(vobPtr);
