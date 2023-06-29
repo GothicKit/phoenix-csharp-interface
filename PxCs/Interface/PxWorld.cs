@@ -181,7 +181,8 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern uint pxVobGetChildCount(IntPtr vob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobGetChild(IntPtr vob, uint i);
 
-
+        // Vob - Item
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobItemGetInstance(IntPtr vobItem);
         // Vob - Mob
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetName(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern int pxVobMobGetHp(IntPtr vobMob);
@@ -339,6 +340,10 @@ namespace PxCs.Interface
             // Instanciate right class object.
             switch (vobType)
             {
+                case PxVobType.PxVob_oCItem:
+                    vob = new PxVobItemData();
+                    SetVobItemData(vobPtr, (PxVobItemData)vob);
+                    break;
                 case PxVobType.PxVob_oCMOB:
                     vob = new PxVobMobData();
                     SetVobMobData(vobPtr, (PxVobMobData)vob);
@@ -432,6 +437,13 @@ namespace PxCs.Interface
             vob.farClipScale = pxVobGetFarClipScale(vobPtr);
         }
 
+        private static void SetVobItemData(IntPtr vobItemPtr, PxVobItemData vobItem)
+        {
+            SetVobData(vobItemPtr, vobItem);
+
+            vobItem.instance = pxVobItemGetInstance(vobItemPtr).MarshalAsString();
+        }
+        
         private static void SetVobMobData(IntPtr vobMobPtr, PxVobMobData vobMob)
         {
             SetVobData(vobMobPtr, vobMob);
