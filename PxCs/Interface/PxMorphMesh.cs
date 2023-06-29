@@ -45,7 +45,7 @@ namespace PxCs.Interface
 
         public static PxMorphMeshData GetMorphMeshFromPtr(IntPtr morphMeshPtr)
         {
-            var name = GetName(morphMeshPtr);
+            var name = pxMmbGetName(morphMeshPtr).MarshalAsString();
             var mesh = GetMeshData(morphMeshPtr);
             var positions = GetPositionData(morphMeshPtr);
             var animations = GetAnimationData(morphMeshPtr);
@@ -56,11 +56,6 @@ namespace PxCs.Interface
                 positions = positions,
                 animations = animations
             };
-        }
-
-        public static string GetName(IntPtr mmb)
-        {
-            return pxMmbGetName(mmb).MarshalAsString();
         }
 
         public static PxMultiResolutionMeshData GetMeshData(IntPtr mmb)
