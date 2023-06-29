@@ -77,13 +77,13 @@ namespace PxCs.Interface
             return array;
         }
 
-        public static int[] getVertices(IntPtr animationPtr)
+        public static int[] GetVertices(IntPtr animationPtr)
         {
             var verticesPtr = pxMmbAniGetVertices(animationPtr, out int verticesCount);
 
             return verticesPtr.MarshalAsArray<int>((uint)verticesCount);
         }
-        public static Vector3[] getSamples(IntPtr animationPtr)
+        public static Vector3[] GetSamples(IntPtr animationPtr)
         {
             var samplesCount = pxMmbAniGetSampleCount(animationPtr);
             var array = new Vector3[samplesCount];
@@ -112,8 +112,8 @@ namespace PxCs.Interface
                 var speed = pxMmbAniGetSpeed(ani);
                 var flags = pxMmbAniGetFlags(ani);
                 var frameCount = pxMmbAniGetFrameCount(ani);
-                var vertices = getVertices(ani);
-                var samples = getSamples(ani);
+                var vertices = GetVertices(ani);
+                var samples = GetSamples(ani);
 
                 array[i] = new PxMorphAnimationData()
                 {
