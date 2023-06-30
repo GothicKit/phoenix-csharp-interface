@@ -17,6 +17,7 @@ namespace PxCs.Interface
             PxVmInstanceTypeNpc = 1,
             PxVmInstanceTypeItem = 2,
 			PxVmInstanceTypeSfx = 3,
+            PxVmInstanceTypeMusic = 4
 		};
 
 
@@ -93,6 +94,15 @@ namespace PxCs.Interface
 		[DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetLoopEndOffset(IntPtr instance);
 		[DllImport(DLLNAME)] public static extern float pxVmInstanceSfxGetReverbLevel(IntPtr instance);
 		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceSfxGetPfxName(IntPtr instance);
+
+		// C_Music_theme
+		[DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMusicGetFile(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern float pxVmInstanceMusicGetVol(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceMusicGetLoop(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern float pxVmInstanceMusicGetReverbMix(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern float pxVmInstanceMusicGetReverbTime(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceMusicGetTransitionType(IntPtr instance);
+		[DllImport(DLLNAME)] public static extern int pxVmInstanceMusicGetTransitionSubType(IntPtr instance);
 
 		public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
         {
@@ -175,6 +185,16 @@ namespace PxCs.Interface
 
 			return GetSfxByInstancePtr(sfxPtr);
 		}
+        
+		public static PxVmMusicData? InitializeMusic(IntPtr vmPtr, string name)
+		{
+			var sfxPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeMusic, IntPtr.Zero);
+
+			if (sfxPtr == IntPtr.Zero)
+				return null;
+
+			return GetMusicByInstancePtr(sfxPtr);
+		}
 
         public static string[] GetInstancesByClassName(IntPtr vmPtr, string name)
         {
@@ -237,6 +257,20 @@ namespace PxCs.Interface
 
 			return sfx;
 		}
+        private static PxVmMusicData GetMusicByInstancePtr(IntPtr instancePtr)
+        {
+            var music = new PxVmMusicData();
+
+            music.file = pxVmInstanceMusicGetFile(instancePtr).MarshalAsString();
+            music.vol = pxVmInstanceMusicGetVol(instancePtr);
+            music.loop = pxVmInstanceMusicGetLoop(instancePtr);
+            music.reverbMix = pxVmInstanceMusicGetReverbMix(instancePtr);
+            music.reverbTime = pxVmInstanceMusicGetReverbTime(instancePtr);
+            music.transitionSubType = pxVmInstanceMusicGetTransitionSubType(instancePtr);
+            music.transitionType = pxVmInstanceMusicGetTransitionType(instancePtr);
+
+            return music;
+        }
 
 		private static void AddInstanceData(PxVmData instanceData, IntPtr instancePtr)
         {
