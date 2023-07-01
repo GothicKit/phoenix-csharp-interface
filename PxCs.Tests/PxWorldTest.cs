@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.VisualBasic.CompilerServices;
 using PxCs.Data.Vob;
 using PxCs.Interface;
 using Xunit;
@@ -48,6 +49,9 @@ namespace PxCs.Tests
 
             var vobs = PxWorld.GetVobs(worldPtr);
 
+            var item = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCItem);
+            Assert.IsType<PxVobItemData>(item);
+            
             var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
             Assert.IsType<PxVobMobContainerData>(chest);
 
