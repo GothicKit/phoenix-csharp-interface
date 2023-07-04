@@ -181,6 +181,20 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern uint pxVobGetChildCount(IntPtr vob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobGetChild(IntPtr vob, uint i);
 
+        // Decal
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobGetGetHasDecal(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobGetDecalName(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern Vector2 pxVobGetDecalDimension(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern Vector2 pxVobGetDecalOffset(IntPtr vob);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobGetDecalTwoSided(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern PxMaterial.PxMaterialAlphaFunction pxVobGetDecalAlphaFunc(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern float pxVobGetDecalTextureAnimFps(IntPtr vob);
+        [DllImport(DLLNAME)] public static extern byte pxVobGetDecalAlphaWeight(IntPtr vob);
+        [return: MarshalAs(UnmanagedType.U1)]
+        [DllImport(DLLNAME)] public static extern bool pxVobGetDecalIgnoreDaylight(IntPtr vob);
+        
         // Vob - Item
         [DllImport(DLLNAME)] public static extern IntPtr pxVobItemGetInstance(IntPtr vobItem);
         // Vob - Mob
@@ -435,6 +449,23 @@ namespace PxCs.Interface
 
             vob.animationStrength = pxVobGetAnimationStrength(vobPtr);
             vob.farClipScale = pxVobGetFarClipScale(vobPtr);
+
+            if (!pxVobGetGetHasDecal(vobPtr))
+                return;
+            
+            var decalData = new VobDecalData()
+            {
+                name = pxVobGetDecalName(vobPtr).MarshalAsString(),
+                dimension = pxVobGetDecalDimension(vobPtr),
+                offset = pxVobGetDecalOffset(vobPtr),
+                twoSided = pxVobGetDecalTwoSided(vobPtr),
+                alphaFunc = pxVobGetDecalAlphaFunc(vobPtr),
+                textureAnimFps = pxVobGetDecalTextureAnimFps(vobPtr),
+                alphaWeight = pxVobGetDecalAlphaWeight(vobPtr),
+                ignoreDaylight =pxVobGetDecalIgnoreDaylight(vobPtr) 
+            };
+
+            vob.vobDecal = decalData;
         }
 
         private static void SetVobItemData(IntPtr vobItemPtr, PxVobItemData vobItem)
