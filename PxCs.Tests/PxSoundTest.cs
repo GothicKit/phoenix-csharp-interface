@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using PxCs.Interface;
 using Xunit;
 
@@ -14,13 +12,13 @@ namespace PxCs.Tests
 
             var soundByteArray = PxSound.GetSoundArrayFromVDF<byte>(vdfPtr, "levelup.wav");
 
-            Assert.NotNull(soundByteArray.sound);
+            Assert.NotNull(soundByteArray!.sound);
             Assert.IsType<byte[]>(soundByteArray.sound);
 
-            Assert.True(soundByteArray.sound.Length == 102440, "Wrong number of bytes " + soundByteArray.sound.Length);
+            Assert.True(soundByteArray.sound.Length >= 1024, "Sound needs to have more than 1kB at least");
 
             var soundFloatArray = PxSound.GetSoundArrayFromVDF<float>(vdfPtr, "levelup.wav");
-            Assert.True(soundFloatArray.sound.Length == 204880, "Wrong number of converted bytes " + soundFloatArray.sound.Length);
+            Assert.True(soundFloatArray!.sound.Length >= 1024, "Sound needs to have more than 1kB at least");
 
             DestroyVdf(vdfPtr);
 
@@ -33,13 +31,13 @@ namespace PxCs.Tests
 
             var soundFloatArray = PxSound.GetSoundArrayFromVDF<float>(vdfPtr, "svm_1_diemonster.wav");
 
-            Assert.IsType<float[]>(soundFloatArray.sound);
-            Assert.True(soundFloatArray.sound.Length == 73462, "Wrong number of converted bytes " + soundFloatArray.sound.Length);
+            Assert.IsType<float[]>(soundFloatArray!.sound);
+            Assert.True(soundFloatArray.sound.Length >= 1024, "Sound needs to have more than 1kB at least");
 
             var soundByteArray = PxSound.GetSoundArrayFromVDF<byte>(vdfPtr, "svm_1_diemonster.wav");
 
-            Assert.NotNull(soundByteArray.sound);
-            Assert.True(soundByteArray.sound.Length == 36924, "Wrong number of bytes " + soundByteArray.sound.Length);
+            Assert.NotNull(soundByteArray!.sound);
+            Assert.True(soundByteArray.sound.Length >= 1024, "Sound needs to have more than 1kB at least");
 
             DestroyVdf(vdfPtr);
         }

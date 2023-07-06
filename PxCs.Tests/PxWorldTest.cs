@@ -64,6 +64,9 @@ namespace PxCs.Tests
             var soundDaytime = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobSoundDaytime);
 			Assert.IsType<PxVobSoundDaytimeData>(soundDaytime);
 
+            var decalVob = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVob && i.visualType == PxWorld.PxVobVisualType.PxVobVisualDecal);
+            Assert.True(decalVob.vobDecal.HasValue);
+            
 			PxWorld.pxWorldDestroy(worldPtr);
             DestroyVdf(vdfPtr);
         }

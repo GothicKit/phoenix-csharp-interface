@@ -1,4 +1,5 @@
-﻿using PxCs.Data.Struct;
+﻿using System;
+using PxCs.Data.Struct;
 using System.Numerics;
 using static PxCs.Interface.PxWorld;
 
@@ -9,6 +10,8 @@ namespace PxCs.Data.Vob
         public uint id;
         public PxVobType type;
 
+        public VobDecalData? vobDecal; // optional
+        
         public PxAABBData boundingBox;
 
         public PxVobData[]? childVobs;
