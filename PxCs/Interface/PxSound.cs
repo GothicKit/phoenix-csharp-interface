@@ -66,7 +66,7 @@ namespace PxCs.Interface
             }
             catch (Exception)
             {
-                return new PxSoundData<T>();
+                return null;
             }
             finally
             {
