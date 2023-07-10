@@ -64,6 +64,10 @@ namespace PxCs.Interface
                     return null;
                 }
             }
+            catch (Exception)
+            {
+                return null;
+            }
             finally
             {
                 PxBuffer.pxBufferDestroy(wavSound);
