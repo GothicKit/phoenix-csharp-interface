@@ -2,6 +2,6 @@
 {
     public class PxVobWorldTriggerUntouchData : PxVobData
     {
-
+        public string? target;
     }
 }
