@@ -55,6 +55,12 @@ namespace PxCs.Tests
             var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
             Assert.IsType<PxVobMobContainerData>(chest);
 
+            var trigger = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTrigger);
+            Assert.IsType<PxVobTriggerData>(trigger);
+
+            var triggerLevelChange = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCTriggerChangeLevel);
+            Assert.IsType<PxVobTriggerChangeLevelData>(triggerLevelChange);
+
             var zoneFogDefault = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCZoneZFogDefault);
             Assert.IsType<PxVobZoneFogData>(zoneFogDefault);
 

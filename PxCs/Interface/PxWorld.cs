@@ -236,8 +236,22 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetKey(IntPtr vobMobDoor);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetPickString(IntPtr vobMobDoor);
 
-		// Vob - Sound
-		[DllImport(DLLNAME)] public static extern float pxVobSoundGetVolume(IntPtr sound);
+        // Trigger
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerGetTarget(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerGetFlags(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerGetFilterFlags(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerGetVobTarget(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerGetMaxActivationCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerGetRetriggerDelaySec(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerGetDamageThreshold(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerGetFireDelaySec(IntPtr trigger);
+
+        // Trigger - Change Level
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerChangeLevelGetLevelName(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerChangeLevelGetStartVob(IntPtr trigger);
+
+        // Vob - Sound
+        [DllImport(DLLNAME)] public static extern float pxVobSoundGetVolume(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern PxVobSoundMode pxVobSoundGetSoundMode(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRandomDelay(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRandomDelayVar(IntPtr sound);
@@ -377,6 +391,14 @@ namespace PxCs.Interface
                 case PxVobType.PxVob_oCMobDoor:
                     vob = new PxVobMobDoorData();
                     SetVobMobDoorData(vobPtr, (PxVobMobDoorData)vob);
+                    break;
+                case PxVobType.PxVob_zCTrigger:
+                    vob = new PxVobTriggerData();
+                    SetVobTriggerData(vobPtr, (PxVobTriggerData)vob);
+                    break;
+                case PxVobType.PxVob_oCTriggerChangeLevel:
+                    vob = new PxVobTriggerChangeLevelData();
+                    SetVobTriggerChangeLevelData(vobPtr, (PxVobTriggerChangeLevelData)vob);
                     break;
                 case PxVobType.PxVob_zCVobSound:
 					vob = new PxVobSoundData();
@@ -529,6 +551,28 @@ namespace PxCs.Interface
             vobMobDoor.locked = pxVobMobDoorGetLocked(vobMobDoorPtr);
             vobMobDoor.key = pxVobMobDoorGetKey(vobMobDoorPtr).MarshalAsString();
             vobMobDoor.pickString = pxVobMobDoorGetPickString(vobMobDoorPtr).MarshalAsString();
+        }
+
+        private static void SetVobTriggerData(IntPtr vobTriggerPtr, PxVobTriggerData vobTrigger)
+        {
+            SetVobData(vobTriggerPtr, vobTrigger);
+
+            vobTrigger.target = pxVobTriggerGetTarget(vobTriggerPtr).MarshalAsString();
+            vobTrigger.flags = pxVobTriggerGetFlags(vobTriggerPtr);
+            vobTrigger.filterFlags = pxVobTriggerGetFilterFlags(vobTriggerPtr);
+            vobTrigger.target = pxVobTriggerGetTarget(vobTriggerPtr).MarshalAsString();
+            vobTrigger.maxActivationCount = pxVobTriggerGetMaxActivationCount(vobTriggerPtr);
+            vobTrigger.retriggerDelaySec = pxVobTriggerGetRetriggerDelaySec(vobTriggerPtr);
+            vobTrigger.damageThreshold = pxVobTriggerGetDamageThreshold(vobTriggerPtr);
+            vobTrigger.fireDelaySec = pxVobTriggerGetFireDelaySec(vobTriggerPtr);
+        }
+
+        private static void SetVobTriggerChangeLevelData(IntPtr vobTriggerChangeLevelPtr, PxVobTriggerChangeLevelData vobTriggerChangeLevel)
+        {
+            SetVobData(vobTriggerChangeLevelPtr, vobTriggerChangeLevel);
+
+            vobTriggerChangeLevel.levelName = pxVobTriggerChangeLevelGetLevelName(vobTriggerChangeLevelPtr).MarshalAsString();
+            vobTriggerChangeLevel.startVob = pxVobTriggerChangeLevelGetStartVob(vobTriggerChangeLevelPtr).MarshalAsString();
         }
 
 		private static void SetVobSoundData(IntPtr vobSoundPtr, PxVobSoundData vobSound)
