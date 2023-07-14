@@ -278,10 +278,59 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern float pxVobTriggerGetRetriggerDelaySec(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern float pxVobTriggerGetDamageThreshold(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern float pxVobTriggerGetFireDelaySec(IntPtr trigger);
-
+        // Trigger save-game only variables
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerGetSNextTimeTriggerable(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerGetSCountCanBeActivated(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerGetSIsEnabled(IntPtr trigger);
+        // Trigger - Mover
+        [DllImport(DLLNAME)] public static extern PxVobTriggerMoverBehaviour pxVobTriggerMoverGetBehaviour(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetTouchBLockerDamage(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetStayOpenTimeSec(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetLocked(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetAutoLink(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetAutoRotate(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSpeed(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern PxVobTriggerMoverLerpMode pxVobTriggerMoverGetLerpMode(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern PxVobTriggerMoverSpeedMode pxVobTriggerMoverGetSpeedMode(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerMoverGetKeyframeCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern void pxVobTriggerMoverGetKeyframe(IntPtr trigger, uint i, out Vector3 position, out PxQuaternionData rotation);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxOpenStart(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxOpenEnd(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxTransitioning(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxCloseStart(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxCloseEnd(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxLock(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxUnlock(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxUseLocked(IntPtr trigger);
+        // Trigger - Mover save-game only variables
+        [DllImport(DLLNAME)] public static extern Vector3 pxVobTriggerMoverGetSActKeyPosDelta(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSActKeyframeF(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerMoverGetSActKeyframe(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerMoverGetSNextKeyFrame(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetMoveSpeedUnit(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSAdvanceDir(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerMoverGetSMoverState(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerMoverGetSTriggerEventCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSStayOpenTimeDest(IntPtr trigger);
+        // Trigger - List
+        [DllImport(DLLNAME)] public static extern PxVobTriggerBatchMode pxVobTriggerListGetTriggerBatchMode(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerListGetTargetsCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern void pxVobTriggerListGetTarget(IntPtr trigger, uint i, IntPtr name, out float delay);
+        // Trigger - List save-game only variables
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerListGetSActTarget(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerListGetSSendOnTrigger(IntPtr trigger);
+        // Trigger - Script
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerScriptGetFunction(IntPtr trigger);
         // Trigger - Change Level
         [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerChangeLevelGetLevelName(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerChangeLevelGetStartVob(IntPtr trigger);
+        // Trigger - World Start
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerWorldStartGetTarget(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerWorldStartGetFireOnce(IntPtr trigger);
+        // Trigger - World Start save-game only variables
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerWorldStartGetSHasFired(IntPtr trigger);
+        // Trigger - Untouch
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerUntouchGetTarget(IntPtr trigger);
 
         // Vob - Sound
         [DllImport(DLLNAME)] public static extern float pxVobSoundGetVolume(IntPtr sound);
