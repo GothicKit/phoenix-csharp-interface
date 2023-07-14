@@ -1,3 +1,4 @@
+using PxCs.Data.Animation;
 using PxCs.Data.Struct;
 using PxCs.Data.Vob;
 using PxCs.Data.WayNet;
@@ -454,6 +455,14 @@ namespace PxCs.Interface
                     vob = new PxVobItemData();
                     SetVobItemData(vobPtr, (PxVobItemData)vob);
                     break;
+                case PxVobType.PxVob_zCTriggerWorldStart:
+                    vob = new PxVobTriggerWorldStartData();
+                    SetVobTriggerWorldStart(vobPtr, (PxVobTriggerWorldStartData)vob);
+                    break;
+                case PxVobType.PxVob_zCTriggerUntouch:
+                    vob = new PxVobTriggerUntouchData();
+                    SetVobTriggerUntouch(vobPtr, (PxVobTriggerUntouchData)vob);
+                    break;
                 case PxVobType.PxVob_oCMOB:
                     vob = new PxVobMobData();
                     SetVobMobData(vobPtr, (PxVobMobData)vob);
@@ -478,19 +487,31 @@ namespace PxCs.Interface
                     vob = new PxVobTriggerData();
                     SetVobTriggerData(vobPtr, (PxVobTriggerData)vob);
                     break;
+                case PxVobType.PxVob_zCTriggerList:
+                    vob = new PxVobTriggerListData();
+                    SetVobTriggerListData(vobPtr, (PxVobTriggerListData)vob);
+                    break;
+                case PxVobType.PxVob_oCTriggerScript:
+                    vob = new PxVobTriggerScriptData();
+                    SetVobTriggerScriptData(vobPtr, (PxVobTriggerScriptData)vob);
+                    break;
                 case PxVobType.PxVob_oCTriggerChangeLevel:
                     vob = new PxVobTriggerChangeLevelData();
                     SetVobTriggerChangeLevelData(vobPtr, (PxVobTriggerChangeLevelData)vob);
                     break;
+                case PxVobType.PxVob_zCMover:
+                    vob = new PxVobTriggerMoverData();
+                    SetVobTriggerMoverData(vobPtr, (PxVobTriggerMoverData)vob);
+                    break;
                 case PxVobType.PxVob_zCVobSound:
-					vob = new PxVobSoundData();
+                    vob = new PxVobSoundData();
                     SetVobSoundData(vobPtr, (PxVobSoundData)vob);
-					break;
-				case PxVobType.PxVob_zCVobSoundDaytime:
-					vob = new PxVobSoundDaytimeData();
-					SetVobSoundDaytimeData(vobPtr, (PxVobSoundDaytimeData)vob);
-					break;
-				case PxVobType.PxVob_oCZoneMusic:
+                    break;
+                case PxVobType.PxVob_zCVobSoundDaytime:
+                    vob = new PxVobSoundDaytimeData();
+                    SetVobSoundDaytimeData(vobPtr, (PxVobSoundDaytimeData)vob);
+                    break;
+                case PxVobType.PxVob_oCZoneMusic:
                 case PxVobType.PxVob_oCZoneMusicDefault:
                     vob = new PxVobZoneMusicData();
                     SetVobZoneMusicData(vobPtr, (PxVobZoneMusicData)vob);
@@ -578,7 +599,22 @@ namespace PxCs.Interface
 
             vobItem.instance = pxVobItemGetInstance(vobItemPtr).MarshalAsString();
         }
-        
+
+        private static void SetVobTriggerWorldStart(IntPtr vobTriggerWorldStartPtr, PxVobTriggerWorldStartData vobTriggerWorldStart)
+        {
+            SetVobData(vobTriggerWorldStartPtr, vobTriggerWorldStart);
+
+            vobTriggerWorldStart.target = pxVobTriggerWorldStartGetTarget(vobTriggerWorldStartPtr).MarshalAsString();
+            vobTriggerWorldStart.fireOnce = pxVobTriggerWorldStartGetFireOnce(vobTriggerWorldStartPtr);
+            vobTriggerWorldStart.sHasFired = pxVobTriggerWorldStartGetSHasFired(vobTriggerWorldStartPtr);
+        }
+
+        private static void SetVobTriggerUntouch(IntPtr vobTriggerUntouchPtr, PxVobTriggerUntouchData vobTriggerUntouch)
+        {
+            SetVobData(vobTriggerUntouchPtr, vobTriggerUntouch);
+            vobTriggerUntouch.target = pxVobTriggerUntouchGetTarget(vobTriggerUntouchPtr).MarshalAsString();
+        }
+
         private static void SetVobMobData(IntPtr vobMobPtr, PxVobMobData vobMob)
         {
             SetVobData(vobMobPtr, vobMob);
@@ -642,24 +678,88 @@ namespace PxCs.Interface
             vobTrigger.target = pxVobTriggerGetTarget(vobTriggerPtr).MarshalAsString();
             vobTrigger.flags = pxVobTriggerGetFlags(vobTriggerPtr);
             vobTrigger.filterFlags = pxVobTriggerGetFilterFlags(vobTriggerPtr);
-            vobTrigger.target = pxVobTriggerGetTarget(vobTriggerPtr).MarshalAsString();
             vobTrigger.maxActivationCount = pxVobTriggerGetMaxActivationCount(vobTriggerPtr);
             vobTrigger.retriggerDelaySec = pxVobTriggerGetRetriggerDelaySec(vobTriggerPtr);
             vobTrigger.damageThreshold = pxVobTriggerGetDamageThreshold(vobTriggerPtr);
             vobTrigger.fireDelaySec = pxVobTriggerGetFireDelaySec(vobTriggerPtr);
         }
 
+        private static void SetVobTriggerListData(IntPtr vobTriggerListPtr, PxVobTriggerListData vobTriggerList)
+        {
+            SetVobTriggerData(vobTriggerListPtr, vobTriggerList);
+
+            vobTriggerList.mode = pxVobTriggerListGetTriggerBatchMode(vobTriggerListPtr);
+            var count = pxVobTriggerListGetTargetsCount(vobTriggerListPtr);
+            var array = new PxVobTriggerListData.PxTarget[count];
+            for (var i = 0u; i < count; i++)
+            {
+                var name = IntPtr.Zero;
+                pxVobTriggerListGetTarget(vobTriggerListPtr, i, name, out float delay);
+                array[i] = new PxVobTriggerListData.PxTarget()
+                {
+                    name = name.MarshalAsString(),
+                    delay = delay
+                };
+            }
+            vobTriggerList.targets = array;
+        }
+
+        private static void SetVobTriggerScriptData(IntPtr vobTriggerScriptPtr, PxVobTriggerScriptData vobTriggerScript)
+        {
+            SetVobTriggerData(vobTriggerScriptPtr, vobTriggerScript);
+
+            vobTriggerScript.function = pxVobTriggerScriptGetFunction(vobTriggerScriptPtr).MarshalAsString();
+        }
+
+
         private static void SetVobTriggerChangeLevelData(IntPtr vobTriggerChangeLevelPtr, PxVobTriggerChangeLevelData vobTriggerChangeLevel)
         {
-            SetVobData(vobTriggerChangeLevelPtr, vobTriggerChangeLevel);
+            SetVobTriggerData(vobTriggerChangeLevelPtr, vobTriggerChangeLevel);
 
             vobTriggerChangeLevel.levelName = pxVobTriggerChangeLevelGetLevelName(vobTriggerChangeLevelPtr).MarshalAsString();
             vobTriggerChangeLevel.startVob = pxVobTriggerChangeLevelGetStartVob(vobTriggerChangeLevelPtr).MarshalAsString();
         }
 
-		private static void SetVobSoundData(IntPtr vobSoundPtr, PxVobSoundData vobSound)
-		{
-			SetVobData(vobSoundPtr, vobSound);
+        private static void SetVobTriggerMoverData(IntPtr vobTriggerMoverPtr, PxVobTriggerMoverData vobTriggerMover)
+        {
+            SetVobTriggerData(vobTriggerMoverPtr, vobTriggerMover);
+
+            vobTriggerMover.behaviour = pxVobTriggerMoverGetBehaviour(vobTriggerMoverPtr);
+            vobTriggerMover.touchBlockerDamage = pxVobTriggerMoverGetTouchBLockerDamage(vobTriggerMoverPtr);
+            vobTriggerMover.stayOpenTimeSec = pxVobTriggerMoverGetStayOpenTimeSec(vobTriggerMoverPtr);
+            vobTriggerMover.locked = pxVobTriggerMoverGetLocked(vobTriggerMoverPtr);
+            vobTriggerMover.autoLink = pxVobTriggerMoverGetAutoLink(vobTriggerMoverPtr);
+            vobTriggerMover.autoRotate = pxVobTriggerMoverGetAutoRotate(vobTriggerMoverPtr);
+            vobTriggerMover.speed = pxVobTriggerMoverGetSpeed(vobTriggerMoverPtr);
+            vobTriggerMover.lerpMode = pxVobTriggerMoverGetLerpMode(vobTriggerMoverPtr);
+            vobTriggerMover.speedMode = pxVobTriggerMoverGetSpeedMode(vobTriggerMoverPtr);
+
+            var count = pxVobTriggerMoverGetKeyframeCount(vobTriggerMoverPtr);
+            var array = new PxAnimationSampleData[count];
+            for (var i = 0u; i < count; i++)
+            {
+                pxVobTriggerMoverGetKeyframe(vobTriggerMoverPtr, i, out Vector3 position, out PxQuaternionData rotation);
+                array[i] = new PxAnimationSampleData()
+                {
+                    position = position,
+                    rotation = rotation
+                };
+            }
+            vobTriggerMover.keyframes = array;
+
+            vobTriggerMover.sfxOpenStart = pxVobTriggerMoverGetSfxOpenStart(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxOpenEnd = pxVobTriggerMoverGetSfxOpenEnd(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxTransitioning = pxVobTriggerMoverGetSfxTransitioning(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxCloseStart = pxVobTriggerMoverGetSfxCloseStart(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxCloseEnd = pxVobTriggerMoverGetSfxCloseEnd(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxLock = pxVobTriggerMoverGetSfxLock(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxUnlock = pxVobTriggerMoverGetSfxUnlock(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxUseLocked = pxVobTriggerMoverGetSfxUseLocked(vobTriggerMoverPtr).MarshalAsString();
+        }
+
+        private static void SetVobSoundData(IntPtr vobSoundPtr, PxVobSoundData vobSound)
+        {
+            SetVobData(vobSoundPtr, vobSound);
 
 			vobSound.volume = pxVobSoundGetVolume(vobSoundPtr);
 			vobSound.mode = pxVobSoundGetSoundMode(vobSoundPtr);
