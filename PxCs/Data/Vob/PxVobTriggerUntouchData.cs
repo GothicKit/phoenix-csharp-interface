@@ -1,6 +1,6 @@
 ﻿namespace PxCs.Data.Vob
 {
-    public class PxVobWorldTriggerUntouchData : PxVobData
+    public class PxVobTriggerUntouchData : PxVobData
     {
         public string? target;
     }
