@@ -285,7 +285,7 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern bool pxVobTriggerGetSIsEnabled(IntPtr trigger);
         // Trigger - Mover
         [DllImport(DLLNAME)] public static extern PxVobTriggerMoverBehaviour pxVobTriggerMoverGetBehaviour(IntPtr trigger);
-        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetTouchBLockerDamage(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetTouchBlockerDamage(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetStayOpenTimeSec(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetLocked(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetAutoLink(IntPtr trigger);
