@@ -119,6 +119,39 @@ namespace PxCs.Interface
 													// the VOb indicated by its radius setting.
 		};
 
+        public enum PxVobTriggerMoverBehaviour
+        {
+            PxVobTriggerMoverBehaviourToggle = 0,
+            PxVobTriggerMoverBehaviourTriggerControl = 1,
+            PxVobTriggerMoverBehaviourOpenTimed = 2,
+            PxVobTriggerMoverBehaviourLoop = 3,
+            PxVobTriggerMoverBehaviourSingleKeys = 4
+        }
+
+        public enum PxVobTriggerMoverLerpMode
+        {
+            PxVobTriggerMoverLerpModeCurve = 0,
+            PxVobTriggerMoverLerpModeLinear = 1
+        }
+
+        public enum PxVobTriggerMoverSpeedMode
+        {
+            PxVobTriggerMoverSpeedModeSegConstant = 0,
+            PxVobTriggerMoverSpeedModeSlowStartEnd = 1,
+            PxVobTriggerMoverSpeedModeSlowStart = 2,
+            PxVobTriggerMoverSpeedModeSlowEnd = 3,
+            PxVobTriggerMoverSpeedModeSegSlowStarEnd = 4,
+            PxVobTriggerMoverSpeedModeSegSlowStart = 5,
+            PxVobTriggerMoverSpeedModeSegSlowEnd = 6
+        }
+
+        public enum PxVobTriggerBatchMode
+        {
+            PxVobTriggerBatchModeAll = 0,
+            PxVobTriggerBatchModeNext = 1,
+            PxVobTriggerBatchModeRandom = 2
+        }
+
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVdf(IntPtr vdf, string name);

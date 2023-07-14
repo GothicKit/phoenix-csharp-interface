@@ -1,38 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using PxCs.Data.Animation;
+using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data.Vob
 {
-    public enum PxMoverBehavior : uint
-    {
-        toggle = 0,
-        triggerControl = 1,
-        openTimed = 2,
-        loop = 3,
-        singleKeys = 4,
-    }
-
-    public enum PxMoverLerpMode : uint
-    {
-        curve = 0,
-        linear = 1,
-    }
-
-    public enum PxMoverSpeedMode : uint
-    {
-        segConstant = 0,
-        slowStartEnd = 1,
-        slowStart = 2,
-        slowEnd = 3,
-        segSlowStartEnd = 4,
-        segSlowStart = 5,
-        segSlowEnd = 6,
-    }
-
     public class PxVobTriggerMoverData : PxVobTriggerData
     {
-        public PxMoverBehavior behaviour = PxMoverBehavior.toggle;
+        public PxVobTriggerMoverBehaviour behaviour = PxVobTriggerMoverBehaviour.PxVobTriggerMoverBehaviourToggle;
         public float touchBlockerDamage = 0;
         public float stayOpenTimeSec = 0;
         public bool locked = true;
@@ -40,10 +15,10 @@ namespace PxCs.Data.Vob
         public bool autoRotate = false;
 
         public float speed = 0;
-        public PxMoverLerpMode lerpMode = PxMoverLerpMode.curve;
-        public PxMoverSpeedMode speedMode = PxMoverSpeedMode.segConstant;
+        public PxVobTriggerMoverLerpMode lerpMode = PxVobTriggerMoverLerpMode.PxVobTriggerMoverLerpModeCurve;
+        public PxVobTriggerMoverSpeedMode speedMode = PxVobTriggerMoverSpeedMode.PxVobTriggerMoverSpeedModeSegConstant;
 
-        public List<PxAnimationSampleData>? keyframes;
+        public PxAnimationSampleData[]? keyframes;
 
         public string? sfxOpenStart;
         public string? sfxOpenEnd;

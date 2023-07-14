@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
+using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data.Vob
 {
-    public enum PxTriggerBatchMode
-    {
-        all = 0,
-        next = 1,
-        random = 2,
-    };
     public class PxVobTriggerListData : PxVobTriggerData
     {
         public struct PxTarget
@@ -21,8 +16,8 @@ namespace PxCs.Data.Vob
             }
         }
 
-        public PxTriggerBatchMode mode;
-        public List<PxTarget>? targets;
+        public PxVobTriggerBatchMode mode;
+        public PxTarget[] targets;
 
         // Save-game only variables
         public byte sActTarget;
