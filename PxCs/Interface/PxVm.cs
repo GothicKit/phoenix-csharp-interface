@@ -61,6 +61,10 @@ namespace PxCs.Interface
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index, IntPtr zero /*==IntPtr.Zero*/);
 
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmGetSymbolByIndex(IntPtr vm, uint index);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmGetSymbolByName(IntPtr vm, string name);
+        [DllImport(DLLNAME)] public static extern uint pxVmSymbolGetId(IntPtr symbol);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmSymbolGetName(IntPtr symbol);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByIndex(IntPtr vm, uint index, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByName(IntPtr vm, string name, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByIndex(IntPtr vm, uint index, PxVmInstanceType type, IntPtr existing);
@@ -175,6 +179,16 @@ namespace PxCs.Interface
 
 			return GetItemByInstancePtr(itemPtr);
 		}
+		
+		public static PxVmItemData? InitializeItem(IntPtr vmPtr, uint index)
+		{
+			var itemPtr = pxVmInstanceInitializeByIndex(vmPtr, index, PxVmInstanceType.PxVmInstanceTypeItem, IntPtr.Zero);
+
+			if (itemPtr == IntPtr.Zero)
+				return null;
+
+			return GetItemByInstancePtr(itemPtr);
+		}
 
 		public static PxVmSfxData? InitializeSfx(IntPtr vmPtr, string name)
 		{
@@ -196,6 +210,32 @@ namespace PxCs.Interface
 			return GetMusicByInstancePtr(sfxPtr);
 		}
 
+		public static PxVmSymbolData? GetSymbol(IntPtr vm, uint index)
+		{
+			var symbolPtr = pxVmGetSymbolByIndex(vm, index);
+
+			return GetSymbolData(symbolPtr);
+		}
+		
+		public static PxVmSymbolData? GetSymbol(IntPtr vm, string name)
+		{
+			var symbolPtr = pxVmGetSymbolByName(vm, name);
+
+			return GetSymbolData(symbolPtr);
+		}
+
+		private static PxVmSymbolData? GetSymbolData(IntPtr symbolPtr)
+		{
+			if (symbolPtr == IntPtr.Zero)
+				return null;
+
+			return new PxVmSymbolData()
+			{
+				id = pxVmSymbolGetId(symbolPtr),
+				name = pxVmSymbolGetName(symbolPtr).MarshalAsString()
+			};
+		}
+		
         public static string[] GetInstancesByClassName(IntPtr vmPtr, string name)
         {
             var names = new List<string>();
