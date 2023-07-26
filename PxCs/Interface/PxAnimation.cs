@@ -12,7 +12,7 @@ namespace PxCs.Interface
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxManLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxManLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxManLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxManDestroy(IntPtr ani);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxManGetName(IntPtr man);
@@ -31,9 +31,9 @@ namespace PxCs.Interface
 
 
 
-        public static PxAnimationData? LoadFromVdf(IntPtr vdfPtr, string name)
+        public static PxAnimationData? LoadFromVfs(IntPtr vfsPtr, string name)
         {
-            var manPtr = pxManLoadFromVdf(vdfPtr, name);
+            var manPtr = pxManLoadFromVfs(vfsPtr, name);
 
             if (manPtr == IntPtr.Zero)
                 return null;

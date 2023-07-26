@@ -121,7 +121,7 @@ namespace PxCs.Interface
 
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxWorldDestroy(IntPtr world);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldGetMesh(IntPtr world);

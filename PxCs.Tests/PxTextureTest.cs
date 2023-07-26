@@ -10,11 +10,11 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_Texture()
         {
-            var vdfPtr = LoadVdf("Data/textures.VDF");
+            var vfsPtr = LoadVfs("Data/textures.VDF");
 
             // Textures are named uncompiled >.TGA< and compiled >-C.TEX<
-            var texPtr = PxTexture.pxTexLoadFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX");
-            Assert.True(texPtr != IntPtr.Zero, "Texture couldn't be loaded inside vdf.");
+            var texPtr = PxTexture.pxTexLoadFromVfs(vfsPtr, "OWODPAIGRASSMI-C.TEX");
+            Assert.True(texPtr != IntPtr.Zero, "Texture couldn't be loaded inside vfs.");
 
             PxTexture.pxTexGetMeta(texPtr, out PxTexture.Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
             Assert.True(format == PxTexture.Format.tex_dxt1, "format >tex_dxt1< doesn't match.");
@@ -30,15 +30,15 @@ namespace PxCs.Tests
             Assert.True(mipMapArray[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
 
             PxTexture.pxTexDestroy(texPtr);
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
 
         [Fact]
         public void Test_load_Texture_via_wrapper()
         {
-            var vdfPtr = LoadVdf("Data/textures.VDF");
+            var vfsPtr = LoadVfs("Data/textures.VDF");
 
-            var texture = PxTexture.GetTextureFromVdf(vdfPtr, "OWODPAIGRASSMI-C.TEX", PxTexture.Format.tex_dxt1);
+            var texture = PxTexture.GetTextureFromVfs(vfsPtr, "OWODPAIGRASSMI-C.TEX", PxTexture.Format.tex_dxt1);
 
             Assert.NotNull(texture);
 
@@ -49,15 +49,15 @@ namespace PxCs.Tests
 
             Assert.True(texture.mipmaps![0].mipmap[10] == 227, "Picked some mipmap data. It's expected to have value >227<.");
 
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
 
         [Fact]
         public void Test_load_Texture_via_wrapper_unsupported_format()
         {
-            var vdfPtr = LoadVdf("Data/textures.VDF");
+            var vfsPtr = LoadVfs("Data/textures.VDF");
 
-            var texture = PxTexture.GetTextureFromVdf(vdfPtr, "LOG_PAPER-C.TEX");
+            var texture = PxTexture.GetTextureFromVfs(vfsPtr, "LOG_PAPER-C.TEX");
 
             Assert.NotNull(texture);
 
@@ -68,7 +68,7 @@ namespace PxCs.Tests
 
             Assert.True(texture.mipmaps![0].mipmap.Length == 1048576, "Picked some mipmap data. It's expected to have value >1048576<.");
 
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }
