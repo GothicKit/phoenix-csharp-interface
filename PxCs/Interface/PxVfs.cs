@@ -10,7 +10,7 @@ namespace PxCs.Interface
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVfsNew();
-        [DllImport(DLLNAME)] public static extern void pxVfsMountFile(IntPtr vfs, string path);
+        [DllImport(DLLNAME)] public static extern void pxVfsMountDisk(IntPtr vfs, string path);
         [DllImport(DLLNAME)] public static extern void pxVfsDestroy(IntPtr vfs);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVfsGetNodeByName(IntPtr vfs, string name);
@@ -25,7 +25,7 @@ namespace PxCs.Interface
 
             foreach (var file in files)
             {
-                pxVfsMountFile(vfsPtr, file);
+                pxVfsMountDisk(vfsPtr, file);
             }
 
             return vfsPtr;

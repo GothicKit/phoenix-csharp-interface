@@ -48,7 +48,7 @@ namespace PxCs.Tests
             Assert.True(File.Exists(fullPath), "Path >" + fullPath + "< does not exist.");
 
             var vfsPtr = PxVfs.pxVfsNew();
-            PxVfs.pxVfsMountFile(vfsPtr, fullPath);
+            PxVfs.pxVfsMountDisk(vfsPtr, fullPath);
             
             return vfsPtr;
         }

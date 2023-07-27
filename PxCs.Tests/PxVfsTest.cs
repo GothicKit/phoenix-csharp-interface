@@ -11,8 +11,8 @@ namespace PxCs.Tests
         public void Test_load_Vfs()
         {
             var vfsPtr = PxVfs.pxVfsNew();
-            PxVfs.pxVfsMountFile(vfsPtr, GetAssetPath("Data/worlds.VDF"));
-            PxVfs.pxVfsMountFile(vfsPtr, GetAssetPath("Data/textures.VDF"));
+            PxVfs.pxVfsMountDisk(vfsPtr, GetAssetPath("Data/worlds.VDF"));
+            PxVfs.pxVfsMountDisk(vfsPtr, GetAssetPath("Data/textures.VDF"));
 
             // If we reach this far, mounting was successful. Test complete. Starting cleanup.
 
