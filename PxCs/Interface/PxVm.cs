@@ -95,10 +95,10 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetValue(IntPtr instance);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetDamageType(IntPtr instance);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetDamageTotal(IntPtr instance);
-        [DllImport(DLLNAME)] public static extern uint pxVmInstanceItemGetDamageLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceItemGetDamageLength();
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetDamage(IntPtr instance, uint i);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetWear(IntPtr instance);
-        [DllImport(DLLNAME)] public static extern uint pxVmInstanceItemGetProtectionLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceItemGetProtectionLength();
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetProtection(IntPtr instance, uint i);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetNutrition(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceItemGetCondAtrLength(IntPtr instance);
@@ -323,7 +323,7 @@ namespace PxCs.Interface
             var item = new PxVmItemData();
             AddInstanceData(item, instancePtr);
 
-            var damageCount = pxVmInstanceItemGetDamageLength(instancePtr);
+            var damageCount = pxVmInstanceItemGetDamageLength();
             int[] damage = new int[damageCount];
             for (var i = 0u; i < damageCount; i++)
                 damage[i] = pxVmInstanceItemGetDamage(instancePtr, i);
@@ -331,21 +331,22 @@ namespace PxCs.Interface
             int[] protection = new int[damageCount];
             for (var i = 0u; i < damageCount; i++)
                 protection[i] = pxVmInstanceItemGetProtection(instancePtr, i);
-
-            int[] condAtr = new int[damageCount];
-            for (var i = 0u; i < damageCount; i++)
+            
+            var conditionCount = pxVmInstanceItemGetCondAtrLength(instancePtr);
+            int[] condAtr = new int[conditionCount];
+            for (var i = 0u; i < conditionCount; i++)
                 condAtr[i] = pxVmInstanceItemGetCondAtr(instancePtr, i);
 
-            int[] condValue = new int[damageCount];
-            for (var i = 0u; i < damageCount; i++)
+            int[] condValue = new int[conditionCount];
+            for (var i = 0u; i < conditionCount; i++)
                 condValue[i] = pxVmInstanceItemGetCondValue(instancePtr, i);
 
-            int[] changeAtr = new int[damageCount];
-            for (var i = 0u; i < damageCount; i++)
+            int[] changeAtr = new int[conditionCount];
+            for (var i = 0u; i < conditionCount; i++)
                 changeAtr[i] = pxVmInstanceItemGetChangeAtr(instancePtr, i);
 
-            int[] changeValue = new int[damageCount];
-            for (var i = 0u; i < damageCount; i++)
+            int[] changeValue = new int[conditionCount];
+            for (var i = 0u; i < conditionCount; i++)
                 changeValue[i] = pxVmInstanceItemGetChangeValue(instancePtr, i);
 
             var onStateCount = pxVmInstanceItemGetOnStateLength(instancePtr);
