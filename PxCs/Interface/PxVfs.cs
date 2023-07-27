@@ -13,8 +13,8 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxVfsMountFile(IntPtr vfs, string path);
         [DllImport(DLLNAME)] public static extern void pxVfsDestroy(IntPtr vfs);
 
-        [DllImport(DLLNAME)] public static extern IntPtr pxVfsGetEntryByName(IntPtr vfs, string name);
-        [DllImport(DLLNAME)] public static extern IntPtr pxVfsEntryOpenBuffer(IntPtr entry);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVfsGetNodeByName(IntPtr vfs, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVfsNodeOpenBuffer(IntPtr node);
 
         /// <summary>
         /// Hint: This file isn't taking care of special flags like LoadAdditive or UseNewer (for patches and mods)

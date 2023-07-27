@@ -19,14 +19,14 @@ namespace PxCs.Interface
 
         public static PxSoundData<T>? GetSoundArrayFromVfs<T>(IntPtr vfsPtr, string name) where T : struct
         {
-            var vfsEntrySound = PxVfs.pxVfsGetEntryByName(vfsPtr, name);
+            var vfsSoundNode = PxVfs.pxVfsGetNodeByName(vfsPtr, name);
 
-            if (vfsEntrySound == IntPtr.Zero)
+            if (vfsSoundNode == IntPtr.Zero)
             {
                 throw new AccessViolationException("Sound not found.");
             }
 
-            var wavSound = PxVfs.pxVfsEntryOpenBuffer(vfsEntrySound);
+            var wavSound = PxVfs.pxVfsNodeOpenBuffer(vfsSoundNode);
 
             if (wavSound == IntPtr.Zero)
             {
