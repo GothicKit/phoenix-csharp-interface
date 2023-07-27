@@ -10,10 +10,10 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_World_Mesh()
         {
-            var vdfPtr = LoadVdf("Data/worlds.VDF");
+            var vfsPtr = LoadVfs("Data/worlds.VDF");
 
-            var worldPtr = PxWorld.pxWorldLoadFromVdf(vdfPtr, "world.zen");
-            Assert.True(worldPtr != IntPtr.Zero, "World couldn't be loaded inside vdf.");
+            var worldPtr = PxWorld.pxWorldLoadFromVfs(vfsPtr, "world.zen");
+            Assert.True(worldPtr != IntPtr.Zero, "World couldn't be loaded inside vfs.");
 
             var mesh = PxWorld.pxWorldGetMesh(worldPtr);
             
@@ -35,7 +35,7 @@ namespace PxCs.Tests
 
             PxWorld.pxWorldDestroy(worldPtr);
 
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }

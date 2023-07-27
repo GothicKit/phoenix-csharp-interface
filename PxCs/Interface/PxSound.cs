@@ -17,16 +17,16 @@ namespace PxCs.Interface
             bit_16 = 16,
         }
 
-        public static PxSoundData<T>? GetSoundArrayFromVDF<T>(IntPtr vdfPtr, string name) where T : struct
+        public static PxSoundData<T>? GetSoundArrayFromVfs<T>(IntPtr vfsPtr, string name) where T : struct
         {
-            var vdfEntrySound = PxVdf.pxVdfGetEntryByName(vdfPtr, name);
+            var vfsSoundNode = PxVfs.pxVfsGetNodeByName(vfsPtr, name);
 
-            if (vdfEntrySound == IntPtr.Zero)
+            if (vfsSoundNode == IntPtr.Zero)
             {
                 throw new AccessViolationException("Sound not found.");
             }
 
-            var wavSound = PxVdf.pxVdfEntryOpenBuffer(vdfEntrySound);
+            var wavSound = PxVfs.pxVfsNodeOpenBuffer(vfsSoundNode);
 
             if (wavSound == IntPtr.Zero)
             {
