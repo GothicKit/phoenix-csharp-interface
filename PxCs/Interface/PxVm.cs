@@ -328,39 +328,44 @@ namespace PxCs.Interface
             for (var i = 0u; i < damageCount; i++)
                 damage[i] = pxVmInstanceItemGetDamage(instancePtr, i);
 
-            int[] protection = new int[damageCount];
-            for (var i = 0u; i < damageCount; i++)
+            var protectionCount = pxVmInstanceItemGetProtectionLength();
+            int[] protection = new int[protectionCount];
+            for (var i = 0u; i < protectionCount; i++)
                 protection[i] = pxVmInstanceItemGetProtection(instancePtr, i);
-            
-            var conditionCount = pxVmInstanceItemGetCondAtrLength(instancePtr);
-            int[] condAtr = new int[conditionCount];
-            for (var i = 0u; i < conditionCount; i++)
+
+            var conditionAtrCount = pxVmInstanceItemGetCondAtrLength(instancePtr);
+            int[] condAtr = new int[conditionAtrCount];
+            for (var i = 0u; i < conditionAtrCount; i++)
                 condAtr[i] = pxVmInstanceItemGetCondAtr(instancePtr, i);
 
-            int[] condValue = new int[conditionCount];
-            for (var i = 0u; i < conditionCount; i++)
+            var conditionValueCount = pxVmInstanceItemGetCondValueLength(instancePtr);
+            int[] condValue = new int[conditionValueCount];
+            for (var i = 0u; i < conditionValueCount; i++)
                 condValue[i] = pxVmInstanceItemGetCondValue(instancePtr, i);
-
-            int[] changeAtr = new int[conditionCount];
-            for (var i = 0u; i < conditionCount; i++)
+            
+            var changeAtrCount = pxVmInstanceItemGetChangeAtrLength(instancePtr);
+            int[] changeAtr = new int[changeAtrCount];
+            for (var i = 0u; i < changeAtrCount; i++)
                 changeAtr[i] = pxVmInstanceItemGetChangeAtr(instancePtr, i);
 
-            int[] changeValue = new int[conditionCount];
-            for (var i = 0u; i < conditionCount; i++)
+            var changeValueCount = pxVmInstanceItemGetChangeValueLength(instancePtr);
+            int[] changeValue = new int[changeValueCount];
+            for (var i = 0u; i < changeValueCount; i++)
                 changeValue[i] = pxVmInstanceItemGetChangeValue(instancePtr, i);
 
             var onStateCount = pxVmInstanceItemGetOnStateLength(instancePtr);
             int[] onState = new int[onStateCount];
             for (var i = 0u; i < onStateCount; i++)
                 onState[i] = pxVmInstanceItemGetOnState(instancePtr, i);
-
+            
             var textCount = pxVmInstanceItemGetTextLength(instancePtr);
             string[] text = new string[textCount];
             for (var i = 0u; i < textCount; i++)
                 text[i] = pxVmInstanceItemGetText(instancePtr, i).MarshalAsString();
 
-            int[] count = new int[textCount];
-            for (var i = 0u; i < textCount; i++)
+            var countLength = pxVmInstanceItemGetCountLength(instancePtr);
+            int[] count = new int[countLength];
+            for (var i = 0u; i < countLength; i++)
                 count[i] = pxVmInstanceItemGetCount(instancePtr, i);
 
 
