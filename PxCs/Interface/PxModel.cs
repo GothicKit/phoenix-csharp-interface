@@ -13,16 +13,16 @@ namespace PxCs.Interface
 
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdlLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMdlLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdlLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMdlDestroy(IntPtr mdl);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdlGetHierarchy(IntPtr mdl);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdlGetMesh(IntPtr mdl);
 
 
-        public static PxModelData? LoadModelFromVdf(IntPtr vdfPtr, string name)
+        public static PxModelData? LoadModelFromVfs(IntPtr vfsPtr, string name)
         {
-            var mdlPtr = pxMdlLoadFromVdf(vdfPtr, name);
+            var mdlPtr = pxMdlLoadFromVfs(vfsPtr, name);
             if (mdlPtr == IntPtr.Zero)
                 return null;
 

@@ -12,7 +12,7 @@ namespace PxCs.Interface
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxFntLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxFntLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxFntLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxFntDestroy(IntPtr fnt);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxFntGetName(IntPtr fnt);
@@ -21,9 +21,9 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxFntGetGlyph(IntPtr fnt, uint i, out uint width, out Vector2 upper, out Vector2 lower);
 
 
-        public static PxFontData? LoadFont(IntPtr vdfPtr, string fontname, params Format[] supportedTextureFormats)
+        public static PxFontData? LoadFont(IntPtr vfsPtr, string fontname, params Format[] supportedTextureFormats)
         {
-            var fontPtr = pxFntLoadFromVdf(vdfPtr, "FONT_DEFAULT.FNT");
+            var fontPtr = pxFntLoadFromVfs(vfsPtr, "FONT_DEFAULT.FNT");
 
             if (fontPtr == IntPtr.Zero)
                 return null;
@@ -34,7 +34,7 @@ namespace PxCs.Interface
                 name = fontName,
                 height = pxFntGetHeight(fontPtr),
                 glyphs = GetGlyphs(fontPtr),
-                texture = GetTextureFromVdf(vdfPtr, fontName, supportedTextureFormats)
+                texture = GetTextureFromVfs(vfsPtr, fontName, supportedTextureFormats)
             };
 
             pxFntDestroy(fontPtr);

@@ -10,15 +10,15 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_model()
         {
-            var vdfPtr = LoadVdf("Data/anims.VDF");
+            var vfsPtr = LoadVfs("Data/anims.VDF");
 
-            var mmb = PxMorphMesh.LoadMorphMeshFromVdf(vdfPtr, "Hum_Head_FatBald.MMB");
+            var mmb = PxMorphMesh.LoadMorphMeshFromVfs(vfsPtr, "Hum_Head_FatBald.MMB");
 
             Assert.NotNull(mmb);
             Assert.NotNull(mmb.mesh);
             Assert.NotNull(mmb.animations);
 
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }

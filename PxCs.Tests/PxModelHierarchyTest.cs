@@ -9,13 +9,13 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_ModelHierarchy()
         {
-            var vdfPtr = LoadVdf("Data/anims.VDF");
+            var vfsPtr = LoadVfs("Data/anims.VDF");
 
-            var mdh = PxModelHierarchy.LoadFromVdf(vdfPtr, "HUMANS.MDH");
+            var mdh = PxModelHierarchy.LoadFromVfs(vfsPtr, "HUMANS.MDH");
 
             Assert.NotNull(mdh);
 
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace PxCs.Interface
         };
 
         [DllImport(DLLNAME)] public static extern IntPtr pxTexLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxTexLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxTexLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxTexDestroy(IntPtr tex);
 
         [DllImport(DLLNAME)] public static extern void pxTexGetMeta(IntPtr tex, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
@@ -38,9 +38,9 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxTexFreeDecompressedMipmap(IntPtr data);
 
 
-        public static PxTextureData? GetTextureFromVdf(IntPtr vdf, string name, params Format[] supportedFormats)
+        public static PxTextureData? GetTextureFromVfs(IntPtr vfs, string name, params Format[] supportedFormats)
         {
-            var texturePtr = LoadTextureFromVdf(vdf, name);
+            var texturePtr = LoadTextureFromVfs(vfs, name);
 
             if (texturePtr == IntPtr.Zero)
                 return null;
@@ -78,7 +78,7 @@ namespace PxCs.Interface
         /// <summary>
         /// Try to load texture in default name (.TGA) and compiled (-C.TEX)
         /// </summary>
-        private static IntPtr LoadTextureFromVdf(IntPtr vdf, string name)
+        private static IntPtr LoadTextureFromVfs(IntPtr vfs, string name)
         {
             IntPtr texturePtr;
 
@@ -87,13 +87,13 @@ namespace PxCs.Interface
             if (name.EndsWith(".TGA"))
             {
                 var compiledName = name.Replace(".TGA", "-C.TEX");
-                texturePtr = pxTexLoadFromVdf(vdf, compiledName);
+                texturePtr = pxTexLoadFromVfs(vfs, compiledName);
 
                 if (texturePtr != IntPtr.Zero)
                     return texturePtr;
             }
 
-            texturePtr = pxTexLoadFromVdf(vdf, name);
+            texturePtr = pxTexLoadFromVfs(vfs, name);
 
             return texturePtr;
         }

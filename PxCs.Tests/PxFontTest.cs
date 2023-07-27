@@ -8,9 +8,9 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_Font()
         {
-            var vdfPtr = LoadVdf("Data/textures.VDF");
+            var vfsPtr = LoadVfs("Data/textures.VDF");
 
-            var font = PxFont.LoadFont(vdfPtr, "FONT_DEFAULT.FNT");
+            var font = PxFont.LoadFont(vfsPtr, "FONT_DEFAULT.FNT");
 
             Assert.NotNull(font);
             Assert.True(font.name == "FONT_DEFAULT.TGA", "Font name isn't set right.");

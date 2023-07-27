@@ -25,7 +25,7 @@ namespace PxCs.Interface
         public delegate void PxVmExternalCallback(IntPtr vmPtr);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxVmLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxVmDestroy(IntPtr vm);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmStackPopInstance(IntPtr vm);

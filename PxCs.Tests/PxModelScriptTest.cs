@@ -9,9 +9,9 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_model()
         {
-            var vdfPtr = LoadVdf("Data/anims.VDF");
+            var vfsPtr = LoadVfs("Data/anims.VDF");
 
-            var mds = PxModelScript.GetModelScriptFromVdf(vdfPtr, "HUMANS.MDS");
+            var mds = PxModelScript.GetModelScriptFromVfs(vfsPtr, "HUMANS.MDS");
 
             Assert.NotNull(mds);
 
@@ -21,7 +21,7 @@ namespace PxCs.Tests
             Assert.True(mds.meshes.Length == 50, $"Meshes length is wrong with >{mds.meshes.Length}<");
             Assert.True(mds.meshes[0] == "Hum_Body_Naked0.ASC", $"Mesh[0] is wrong with >{mds.meshes[0]}<");
 
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }
