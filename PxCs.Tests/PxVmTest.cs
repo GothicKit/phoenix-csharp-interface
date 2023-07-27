@@ -8,7 +8,8 @@ namespace PxCs.Tests
 {
     public class PxVmTest : PxPhoenixTest
     {
-        private const string VmPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
+        private const string VmGothicPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
+        private const string VmSfxPath = "_work/DATA/scripts/_compiled/SFX.DAT";
         public static void PxVmExternalDefaultCallbackFunction(IntPtr vmPtr, string missingCallbackName)
         {
 
@@ -36,7 +37,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_call_External_callback()
         {
-            var vmPtr = LoadVm(VmPath);
+            var vmPtr = LoadVm(VmGothicPath);
 
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "Wld_InsertNpc", Wld_InsertNpc);
@@ -54,7 +55,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_get_Symbols()
         {
-            var vmPtr = LoadVm(VmPath);
+            var vmPtr = LoadVm(VmGothicPath);
 
             var symbol1 = PxVm.GetSymbol(vmPtr, 3644); // Should be GRD_ARMOR_H
             var symbol2 = PxVm.GetSymbol(vmPtr, "GRD_ARMOR_H");
@@ -72,7 +73,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_get_all_C_Item_Instances()
         {
-			var vmPtr = LoadVm(VmPath);
+			var vmPtr = LoadVm(VmGothicPath);
 
             var elements = PxVm.GetInstancesByClassName(vmPtr, "C_Item");
             var exampleItem = elements.FirstOrDefault(i => i.ToUpper() == "ITARSCROLLHEAL");
@@ -96,7 +97,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_instantiate_Item_by_name()
         {
-			var vmPtr = LoadVm(VmPath);
+			var vmPtr = LoadVm(VmGothicPath);
 
 			var lockpick = PxVm.InitializeItem(vmPtr, "ITKELOCKPICK");
 
@@ -109,7 +110,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_instantiate_Item_by_index()
         {
-            var vmPtr = LoadVm(VmPath);
+            var vmPtr = LoadVm(VmGothicPath);
 
             var grdArmorH = PxVm.InitializeItem(vmPtr, 3644); // Should be GRD_ARMOR_H
 
@@ -122,7 +123,7 @@ namespace PxCs.Tests
 		[Fact]
 		public void Test_instantiate_Sfx_by_name()
 		{
-			var vmPtr = LoadVm(VmPath);
+			var vmPtr = LoadVm(VmSfxPath);
 
 			var fireSfx = PxVm.InitializeSfx(vmPtr, "FIRE_LARGE");
 
@@ -135,7 +136,7 @@ namespace PxCs.Tests
 		[Fact]
         public void Test_instantiate_Npc_by_index()
         {
-            var vmPtr = LoadVm(VmPath);
+            var vmPtr = LoadVm(VmGothicPath);
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
             // FIXME: I need to check what's a real index of an NPC.
@@ -166,7 +167,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_call_routine_on_Npc()
         {
-            var vmPtr = LoadVm(VmPath);
+            var vmPtr = LoadVm(VmGothicPath);
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "TA_MIN", TA_MIN);
 
@@ -195,7 +196,7 @@ namespace PxCs.Tests
         //[Fact]
         public void Test_call_method_with_parameter()
         {
-            var vmPtr = LoadVm(VmPath);
+            var vmPtr = LoadVm(VmGothicPath);
 
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "ConcatStrings", ConcatStrings);
