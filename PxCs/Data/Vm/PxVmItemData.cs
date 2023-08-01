@@ -1,4 +1,7 @@
-﻿namespace PxCs.Data.Vm
+﻿using System;
+using PxCs.Interface;
+
+namespace PxCs.Data.Vm
 {
     public class PxVmItemData : PxVmData
     {
@@ -7,8 +10,8 @@
         public string? nameId;
         public int hp;
         public int hpMax;
-        public int mainFlag;
-        public uint flags;
+        public PxVm.PxVmItemFlags mainFlag;
+        public PxVm.PxVmItemFlags flags;
         public int weight;
         public int value;
         public int damageType;

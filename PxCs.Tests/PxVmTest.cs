@@ -103,7 +103,9 @@ namespace PxCs.Tests
 
 			Assert.NotEqual(lockpick!.instancePtr, IntPtr.Zero);
             Assert.True(lockpick.visual!.ToLower() == "ItKe_Lockpick_01.3ds".ToLower(), "Lockpick has wrong visual name.");
-
+            Assert.True(lockpick.mainFlag == PxVm.PxVmItemFlags.ITEM_KAT_NONE, "Lockpick has wrong mainFlag");
+            Assert.True(lockpick.flags.HasFlag(PxVm.PxVmItemFlags.ITEM_MULTI), "Lockpick needs to have flag >multi<.");
+            
 			PxVm.pxVmDestroy(vmPtr);
 		}
         
