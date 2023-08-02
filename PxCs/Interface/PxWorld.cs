@@ -725,7 +725,7 @@ namespace PxCs.Interface
             SetVobTriggerData(vobTriggerMoverPtr, vobTriggerMover);
 
             vobTriggerMover.behaviour = pxVobTriggerMoverGetBehaviour(vobTriggerMoverPtr);
-            vobTriggerMover.touchBlockerDamage = pxVobTriggerMoverGetTouchBLockerDamage(vobTriggerMoverPtr);
+            vobTriggerMover.touchBlockerDamage = pxVobTriggerMoverGetTouchBlockerDamage(vobTriggerMoverPtr);
             vobTriggerMover.stayOpenTimeSec = pxVobTriggerMoverGetStayOpenTimeSec(vobTriggerMoverPtr);
             vobTriggerMover.locked = pxVobTriggerMoverGetLocked(vobTriggerMoverPtr);
             vobTriggerMover.autoLink = pxVobTriggerMoverGetAutoLink(vobTriggerMoverPtr);
