@@ -9,9 +9,9 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_World_Material()
         {
-            var vdfPtr = LoadVdf("Data/worlds.VDF");
+            var vfsPtr = LoadVfs("Data/worlds.VDF");
 
-            var worldPtr = PxWorld.pxWorldLoadFromVdf(vdfPtr, "world.zen");
+            var worldPtr = PxWorld.pxWorldLoadFromVfs(vfsPtr, "world.zen");
             Assert.True(worldPtr != IntPtr.Zero, "World couldn't be loaded inside vdf.");
 
             var mesh = PxWorld.pxWorldGetMesh(worldPtr);
@@ -25,7 +25,7 @@ namespace PxCs.Tests
             Assert.True(testMaterial.color != 0, "Color has no value");
             Assert.True(testMaterial.group == PxMaterial.PxMaterialGroup.PxMaterialGroup_Stone, "Stone as materialGroup is expected, but got ");
             PxWorld.pxWorldDestroy(worldPtr);
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PxCs.Interface
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMmbLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMmbLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMmbLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMmbDestroy(IntPtr mmb);
         [DllImport(DLLNAME)] public static extern IntPtr pxMmbGetName(IntPtr mmb);
         [DllImport(DLLNAME)] public static extern IntPtr pxMmbGetMesh(IntPtr mmb);
@@ -32,9 +32,9 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern Vector3 pxMmbAniGetSample(IntPtr ani, uint i);
 
 
-        public static PxMorphMeshData? LoadMorphMeshFromVdf(IntPtr vdfPtr, string name)
+        public static PxMorphMeshData? LoadMorphMeshFromVfs(IntPtr vfsPtr, string name)
         {
-            var mmbPtr = pxMmbLoadFromVdf(vdfPtr, name);
+            var mmbPtr = pxMmbLoadFromVfs(vfsPtr, name);
             if (mmbPtr == IntPtr.Zero)
                 return null;
 

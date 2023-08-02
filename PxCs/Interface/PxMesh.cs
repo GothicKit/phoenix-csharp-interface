@@ -12,7 +12,7 @@ namespace PxCs.Interface
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMshLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMshLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMshLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMshDestroy(IntPtr msh);
 
         [DllImport(DLLNAME)] public static extern string pxMshGetName(string msh);

@@ -42,22 +42,19 @@ namespace PxCs.Tests
             return fullPath;
         }
 
-        protected IntPtr LoadVdf(string relativeFilePath)
+        protected IntPtr LoadVfs(string relativeFilePath)
         {
             string fullPath = GetAssetPath(relativeFilePath);
             Assert.True(File.Exists(fullPath), "Path >" + fullPath + "< does not exist.");
 
-            var vdfPtrMain = PxVdf.pxVdfNew("main");
-            var vdfPtrToLoad = PxVdf.pxVdfLoadFromFile(fullPath);
-
-            PxVdf.pxVdfMerge(vdfPtrMain, vdfPtrToLoad, true);
-            PxVdf.pxVdfDestroy(vdfPtrToLoad); // Data is already copied into vdfPtrMain and can therefore be destroyed.
-
-            return vdfPtrMain;
+            var vfsPtr = PxVfs.pxVfsNew();
+            PxVfs.pxVfsMountDisk(vfsPtr, fullPath);
+            
+            return vfsPtr;
         }
-        protected void DestroyVdf(IntPtr vdf)
+        protected void DestroyVfs(IntPtr vfs)
         {
-            PxVdf.pxVdfDestroy(vdf);
+            PxVfs.pxVfsDestroy(vfs);
         }
 
         protected IntPtr LoadBuffer(string relativeFilePath)

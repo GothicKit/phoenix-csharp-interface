@@ -15,7 +15,7 @@ namespace PxCs.Interface
 
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMrmLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMrmLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMrmLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMrmDestroy(IntPtr mrm);
 
         [DllImport(DLLNAME)] public static extern uint pxMrmGetPositionCount(IntPtr mrm);
@@ -28,9 +28,9 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern PxAABBData pxMrmGetBbox(IntPtr mrm);
 
 
-        public static PxMultiResolutionMeshData? GetMRMFromVdf(IntPtr vdfPtr, string name)
+        public static PxMultiResolutionMeshData? GetMRMFromVfs(IntPtr vfsPtr, string name)
         {
-            var mrmPtr = pxMrmLoadFromVdf(vdfPtr, name);
+            var mrmPtr = pxMrmLoadFromVfs(vfsPtr, name);
             if (mrmPtr == IntPtr.Zero)
                 return null;
 
