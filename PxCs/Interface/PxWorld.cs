@@ -316,7 +316,8 @@ namespace PxCs.Interface
         // Trigger - List
         [DllImport(DLLNAME)] public static extern PxVobTriggerBatchMode pxVobTriggerListGetTriggerBatchMode(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern uint pxVobTriggerListGetTargetsCount(IntPtr trigger);
-        [DllImport(DLLNAME)] public static extern void pxVobTriggerListGetTarget(IntPtr trigger, uint i, IntPtr name, out float delay);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerListGetTargetName(IntPtr trigger, uint i);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerListGetTargetDelay(IntPtr trigger, uint i);
         // Trigger - List save-game only variables
         [DllImport(DLLNAME)] public static extern uint pxVobTriggerListGetSActTarget(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern bool pxVobTriggerListGetSSendOnTrigger(IntPtr trigger);
@@ -693,8 +694,8 @@ namespace PxCs.Interface
             var array = new PxVobTriggerListData.PxTarget[count];
             for (var i = 0u; i < count; i++)
             {
-                var name = IntPtr.Zero;
-                pxVobTriggerListGetTarget(vobTriggerListPtr, i, name, out float delay);
+                var name = pxVobTriggerListGetTargetName(vobTriggerListPtr, i);
+                var delay = pxVobTriggerListGetTargetDelay(vobTriggerListPtr, i);
                 array[i] = new PxVobTriggerListData.PxTarget()
                 {
                     name = name.MarshalAsString(),
