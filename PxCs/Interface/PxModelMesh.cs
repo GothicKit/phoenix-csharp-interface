@@ -15,7 +15,7 @@ namespace PxCs.Interface
         private const string DLLNAME = PxPhoenix.DLLNAME;
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdmLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMdmLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdmLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMdmDestroy(IntPtr mdm);
 
         [DllImport(DLLNAME)] public static extern uint pxMdmGetMeshCount(IntPtr mdm);
@@ -32,9 +32,9 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxSsmGetNodes(IntPtr ssm, out uint length); // ret: IntArray
 
 
-        public static PxModelMeshData? LoadModelMeshFromVdf(IntPtr vdfPtr, string name, params string[] attachmentKeys)
+        public static PxModelMeshData? LoadModelMeshFromVfs(IntPtr vfsPtr, string name, params string[] attachmentKeys)
         {
-            var mdmPtr = pxMdmLoadFromVdf(vdfPtr, name);
+            var mdmPtr = pxMdmLoadFromVfs(vfsPtr, name);
             var data = GetFromPtr(mdmPtr, attachmentKeys);
 
             pxMdmDestroy(mdmPtr);

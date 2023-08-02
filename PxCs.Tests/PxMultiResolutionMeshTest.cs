@@ -10,9 +10,9 @@ namespace PxCs.Tests
         [Fact]
         public void Test_load_MRM()
         {
-            var vdfPtr = LoadVdf("Data/meshes.VDF");
+            var vfsPtr = LoadVfs("Data/meshes.VDF");
 
-            var mrm = PxMultiResolutionMesh.GetMRMFromVdf(vdfPtr, "ITFO_PLANTS_BERRYS_01.MRM");
+            var mrm = PxMultiResolutionMesh.GetMRMFromVfs(vfsPtr, "ITFO_PLANTS_BERRYS_01.MRM");
 
             Assert.NotNull(mrm);
             Assert.Single(mrm.materials!);
@@ -21,7 +21,7 @@ namespace PxCs.Tests
             Assert.Single(mrm.subMeshes!);
             Assert.Equal(54, mrm.subMeshes!.First().triangles!.Length);
             
-            DestroyVdf(vdfPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }

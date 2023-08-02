@@ -76,7 +76,7 @@ namespace PxCs.Interface
         };
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMdsLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdsLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMdsDestroy(IntPtr mdm);
 
         // Misc parameters
@@ -199,9 +199,9 @@ namespace PxCs.Interface
 
 
 
-        public static PxModelScriptData? GetModelScriptFromVdf(IntPtr vdfPtr, string name)
+        public static PxModelScriptData? GetModelScriptFromVfs(IntPtr vfsPtr, string name)
         {
-            var mdsPtr = pxMdsLoadFromVdf(vdfPtr, name);
+            var mdsPtr = pxMdsLoadFromVfs(vfsPtr, name);
 
             if (mdsPtr == IntPtr.Zero)
                 return null;

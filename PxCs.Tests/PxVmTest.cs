@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using PxCs.Data.Vm;
 using PxCs.Interface;
 using Xunit;
 
@@ -7,6 +8,8 @@ namespace PxCs.Tests
 {
     public class PxVmTest : PxPhoenixTest
     {
+        private const string VmGothicPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
+        private const string VmSfxPath = "_work/DATA/scripts/_compiled/SFX.DAT";
         public static void PxVmExternalDefaultCallbackFunction(IntPtr vmPtr, string missingCallbackName)
         {
 
@@ -34,7 +37,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_call_External_callback()
         {
-            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            var vmPtr = LoadVm(VmGothicPath);
 
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "Wld_InsertNpc", Wld_InsertNpc);
@@ -46,10 +49,31 @@ namespace PxCs.Tests
             PxVm.pxVmDestroy(vmPtr);
         }
 
+        /// <summary>
+        /// Shows 2 ways of loading Symbols.
+        /// </summary>
+        [Fact]
+        public void Test_get_Symbols()
+        {
+            var vmPtr = LoadVm(VmGothicPath);
+
+            var symbol1 = PxVm.GetSymbol(vmPtr, 3644); // Should be GRD_ARMOR_H
+            var symbol2 = PxVm.GetSymbol(vmPtr, "GRD_ARMOR_H");
+            
+            Assert.NotNull(symbol1);
+            Assert.NotNull(symbol2);
+            
+            Assert.Equal(3644, (int)symbol1.id);
+            Assert.Equal("GRD_ARMOR_H", symbol1.name.ToUpper());
+            
+            Assert.Equal(3644, (int)symbol2.id);
+            Assert.Equal("GRD_ARMOR_H", symbol2.name.ToUpper());
+        }
+        
         [Fact]
         public void Test_get_all_C_Item_Instances()
         {
-			var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+			var vmPtr = LoadVm(VmGothicPath);
 
             var elements = PxVm.GetInstancesByClassName(vmPtr, "C_Item");
             var exampleItem = elements.FirstOrDefault(i => i.ToUpper() == "ITARSCROLLHEAL");
@@ -59,7 +83,7 @@ namespace PxCs.Tests
 		}
 
 		[Fact]
-        public void Test_instanciate_Npc_by_name()
+        public void Test_instantiate_Npc_by_name()
         {
             var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
 
@@ -71,22 +95,37 @@ namespace PxCs.Tests
         }
 
         [Fact]
-        public void Test_instanciate_Item_by_name()
+        public void Test_instantiate_Item_by_name()
         {
-			var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+			var vmPtr = LoadVm(VmGothicPath);
 
 			var lockpick = PxVm.InitializeItem(vmPtr, "ITKELOCKPICK");
 
 			Assert.NotEqual(lockpick!.instancePtr, IntPtr.Zero);
             Assert.True(lockpick.visual!.ToLower() == "ItKe_Lockpick_01.3ds".ToLower(), "Lockpick has wrong visual name.");
-
+            Assert.True(lockpick.mainFlag == PxVm.PxVmItemFlags.ITEM_KAT_NONE, "Lockpick has wrong mainFlag");
+            Assert.True(lockpick.flags.HasFlag(PxVm.PxVmItemFlags.ITEM_MULTI), "Lockpick needs to have flag >multi<.");
+            
 			PxVm.pxVmDestroy(vmPtr);
 		}
+        
+        [Fact]
+        public void Test_instantiate_Item_by_index()
+        {
+            var vmPtr = LoadVm(VmGothicPath);
+
+            var grdArmorH = PxVm.InitializeItem(vmPtr, 3644); // Should be GRD_ARMOR_H
+
+            Assert.NotEqual(grdArmorH!.instancePtr, IntPtr.Zero);
+            Assert.True(grdArmorH.visual!.ToLower() == "grdh.3ds".ToLower(), "Guard armor has wrong visual name.");
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
 
 		[Fact]
-		public void Test_instanciate_Sfx_by_name()
+		public void Test_instantiate_Sfx_by_name()
 		{
-			var vmPtr = LoadVm("_work/DATA/scripts/_compiled/SFX.DAT");
+			var vmPtr = LoadVm(VmSfxPath);
 
 			var fireSfx = PxVm.InitializeSfx(vmPtr, "FIRE_LARGE");
 
@@ -95,12 +134,11 @@ namespace PxCs.Tests
 
 			PxVm.pxVmDestroy(vmPtr);
 		}
-
-
+        
 		[Fact]
-        public void Test_instanciate_Npc_by_index()
+        public void Test_instantiate_Npc_by_index()
         {
-            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            var vmPtr = LoadVm(VmGothicPath);
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
             // FIXME: I need to check what's a real index of an NPC.
@@ -131,7 +169,7 @@ namespace PxCs.Tests
         [Fact]
         public void Test_call_routine_on_Npc()
         {
-            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            var vmPtr = LoadVm(VmGothicPath);
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "TA_MIN", TA_MIN);
 
@@ -160,7 +198,7 @@ namespace PxCs.Tests
         //[Fact]
         public void Test_call_method_with_parameter()
         {
-            var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
+            var vmPtr = LoadVm(VmGothicPath);
 
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "ConcatStrings", ConcatStrings);

@@ -13,7 +13,7 @@ namespace PxCs.Interface
 
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdhLoad(IntPtr buffer);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMdhLoadFromVdf(IntPtr vdf, string name);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdhLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxMdhDestroy(IntPtr mdh);
 
         [DllImport(DLLNAME)] public static extern PxAABBData pxMdhGetBbox(IntPtr mdh);
@@ -24,9 +24,9 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxMdhGetNode(IntPtr mdh, uint i, out short parent, out IntPtr name, out PxMatrix4x4Data transform);
 
 
-        public static PxModelHierarchyData? LoadFromVdf(IntPtr vdfPtr, string name)
+        public static PxModelHierarchyData? LoadFromVfs(IntPtr vfsPtr, string name)
         {
-            var mdhPtr = pxMdhLoadFromVdf(vdfPtr, name);
+            var mdhPtr = pxMdhLoadFromVfs(vfsPtr, name);
 
             if (mdhPtr == IntPtr.Zero)
                 return null;
