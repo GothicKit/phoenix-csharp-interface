@@ -58,6 +58,11 @@ namespace PxCs.Interface
 
         public delegate void PxVmExternalDefaultCallback(IntPtr vmPtr, string missingCallbackName);
         public delegate void PxVmExternalCallback(IntPtr vmPtr);
+        
+        [DllImport(DLLNAME)] public static extern IntPtr pxScriptGetSymbolById(IntPtr vm, uint index);
+        [DllImport(DLLNAME)] public static extern IntPtr pxScriptGetSymbolByName(IntPtr vm, string name);
+        [DllImport(DLLNAME)] public static extern uint pxScriptSymbolGetId(IntPtr symbol);
+        [DllImport(DLLNAME)] public static extern IntPtr pxScriptSymbolGetName(IntPtr symbol);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoadFromVfs(IntPtr vfs, string name);
@@ -96,10 +101,6 @@ namespace PxCs.Interface
         [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVmCallFunctionByIndex(IntPtr vm, uint index, IntPtr zero /*==IntPtr.Zero*/);
 
-        [DllImport(DLLNAME)] public static extern IntPtr pxVmGetSymbolByIndex(IntPtr vm, uint index);
-        [DllImport(DLLNAME)] public static extern IntPtr pxVmGetSymbolByName(IntPtr vm, string name);
-        [DllImport(DLLNAME)] public static extern uint pxVmSymbolGetId(IntPtr symbol);
-        [DllImport(DLLNAME)] public static extern IntPtr pxVmSymbolGetName(IntPtr symbol);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByIndex(IntPtr vm, uint index, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceAllocateByName(IntPtr vm, string name, PxVmInstanceType type);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceInitializeByIndex(IntPtr vm, uint index, PxVmInstanceType type, IntPtr existing);
@@ -297,14 +298,14 @@ namespace PxCs.Interface
 
         public static PxVmSymbolData? GetSymbol(IntPtr vm, uint index)
         {
-            var symbolPtr = pxVmGetSymbolByIndex(vm, index);
+            var symbolPtr = pxScriptGetSymbolById(vm, index);
 
             return GetSymbolData(symbolPtr);
         }
 
         public static PxVmSymbolData? GetSymbol(IntPtr vm, string name)
         {
-            var symbolPtr = pxVmGetSymbolByName(vm, name);
+            var symbolPtr = pxScriptGetSymbolByName(vm, name);
 
             return GetSymbolData(symbolPtr);
         }
@@ -316,8 +317,8 @@ namespace PxCs.Interface
 
             return new PxVmSymbolData()
             {
-                id = pxVmSymbolGetId(symbolPtr),
-                name = pxVmSymbolGetName(symbolPtr).MarshalAsString()
+                id = pxScriptSymbolGetId(symbolPtr),
+                name = pxScriptSymbolGetName(symbolPtr).MarshalAsString()
             };
         }
 
