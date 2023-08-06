@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
+using PxCs.Helper;
 
 namespace PxCs.Extensions
 {
@@ -9,9 +9,7 @@ namespace PxCs.Extensions
 	/// ATTENTION: These methods should be called ASAP after fetching the IntPtr from extern method before the pointer gets lost.
 	/// </summary>
 	public static class IntPtrExtension
-    {
-		private static bool isEncodingProviderRegistered = false;
-
+	{
 		/// <summary>
 		/// Important: This method handles heap strings by byte-copying values until (char)'\0' is found.
 		/// Important: No memory clean up done.
@@ -19,12 +17,8 @@ namespace PxCs.Extensions
 		/// <exception cref="ArgumentNullException"></exception>
 		public static string MarshalAsString(this IntPtr strPtr)
 		{
-			// As PxCs is with .netstandard2.1 we need to register the coding provider once.
-			if (!isEncodingProviderRegistered)
-			{
-				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-				isEncodingProviderRegistered = true;
-			}
+			if (!PxEncoding.isEncodingSet)
+				throw new Exception("No string encoding set. Please call SetEncoding() first.");
 
 			if (strPtr == IntPtr.Zero)
 				throw new ArgumentNullException("String parameter is zero.");
@@ -46,7 +40,7 @@ namespace PxCs.Extensions
 			if (byteArray.Count == 0)
 				return string.Empty;
 			else
-				return Encoding.GetEncoding(1252).GetString(byteArray.ToArray(), 0, byteArray.Count);
+				return PxEncoding.Encoding.GetString(byteArray.ToArray(), 0, byteArray.Count);
 		}
 
 		/// <summary>

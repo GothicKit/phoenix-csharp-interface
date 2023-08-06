@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using PxCs.Extensions;
+using PxCs.Helper;
 using PxCs.Interface;
 using Xunit;
 
@@ -19,6 +21,8 @@ namespace PxCs.Tests
             G1_ASSET_DIR = dir;
 
             PxLogging.pxLoggerSet(PxLogMessage);
+            
+            PxEncoding.SetEncoding(PxEncoding.SupportedEncodings.WestEurope);
         }
 
         public static void PxLogMessage(PxLogging.Level level, string message)
