@@ -80,7 +80,6 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern void pxMdsDestroy(IntPtr mdm);
 
         // Misc parameters
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMdsGetSkeletonDisableMesh(IntPtr mds);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetSkeletonName(IntPtr mds);
@@ -145,7 +144,6 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventTagItem(IntPtr mds, uint animIndex, uint eventTagIndex);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventTagFrames(IntPtr mds, uint animIndex, uint eventTagIndex, out uint size);
         [DllImport(DLLNAME)] public static extern PxEventFightMode pxMdsGetAnimation_EventTagFightMode(IntPtr mds, uint animIndex, uint eventTagIndex);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventTagAttached(IntPtr mds, uint animIndex, uint eventTagIndex);
 
         // Animations -> EventPfx
@@ -154,7 +152,6 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventPfxIndex(IntPtr mds, uint animIndex, uint eventIndex);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventPfxName(IntPtr mds, uint animIndex, uint eventIndex);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventPfxPosition(IntPtr mds, uint animIndex, uint eventIndex);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventPfxAttached(IntPtr mds, uint animIndex, uint eventIndex);
 
         // Animations -> PfxStop
@@ -169,7 +166,6 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventSfxFrame(IntPtr mds, uint animIndex, uint sfxIndex);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventSfxName(IntPtr mds, uint animIndex, uint sfxIndex);
         [DllImport(DLLNAME)] public static extern float pxMdsGetAnimation_EventSfxRange(IntPtr mds, uint animIndex, uint sfxIndex);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventSfxEmptySlot(IntPtr mds, uint animIndex, uint sfxIndex);
 
         // Animations -> SfxGround
@@ -177,7 +173,6 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern int pxMdsGetAnimation_EventSfxGroundFrame(IntPtr mds, uint animIndex, uint sfxIndex);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdsGetAnimation_EventSfxGroundName(IntPtr mds, uint animIndex, uint sfxIndex);
         [DllImport(DLLNAME)] public static extern float pxMdsGetAnimation_EventSfxGroundRange(IntPtr mds, uint animIndex, uint sfxIndex);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMdsGetAnimation_EventSfxGroundEmptySlot(IntPtr mds, uint animIndex, uint sfxIndex);
 
         // Animations -> EventMorphAnimate

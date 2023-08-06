@@ -133,8 +133,8 @@ namespace PxCs.Interface
             out IntPtr namePtr,
             out Vector3 position,
             out Vector3 direction,
-            [MarshalAs(UnmanagedType.U1)] out bool freePoint,
-            [MarshalAs(UnmanagedType.U1)] out bool underwater,
+            out bool freePoint,
+            out bool underwater,
             out int waterDepth);
 
         [DllImport(DLLNAME)] public static extern uint pxWorldGetWayEdgeCount(IntPtr world);
@@ -149,27 +149,15 @@ namespace PxCs.Interface
 
         [DllImport(DLLNAME)] public static extern Vector3 pxVobGetPosition(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxMatrix3x3Data pxVobGetRotation(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetShowVisual(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobSpriteAlignment pxVobGetSpriteAlignment(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetCdStatic(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetCdDynamic(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetVobStatic(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobShadowMode pxVobGetShadowMode(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetPhysicsEnabled(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxVobAnimationMode pxVobGetAnimationMode(IntPtr vob);
         [DllImport(DLLNAME)] public static extern int pxVobGetBias(IntPtr vob);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetAmbient(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetAnimationStrength(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetFarClipScale(IntPtr vob);
@@ -182,17 +170,14 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobGetChild(IntPtr vob, uint i);
 
         // Decal
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetGetHasDecal(IntPtr vob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobGetDecalName(IntPtr vob);
         [DllImport(DLLNAME)] public static extern Vector2 pxVobGetDecalDimension(IntPtr vob);
         [DllImport(DLLNAME)] public static extern Vector2 pxVobGetDecalOffset(IntPtr vob);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetDecalTwoSided(IntPtr vob);
         [DllImport(DLLNAME)] public static extern PxMaterial.PxMaterialAlphaFunction pxVobGetDecalAlphaFunc(IntPtr vob);
         [DllImport(DLLNAME)] public static extern float pxVobGetDecalTextureAnimFps(IntPtr vob);
         [DllImport(DLLNAME)] public static extern byte pxVobGetDecalAlphaWeight(IntPtr vob);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobGetDecalIgnoreDaylight(IntPtr vob);
         
         // Vob - Item
@@ -201,17 +186,13 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetName(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern int pxVobMobGetHp(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern int pxVobMobGetDamage(IntPtr vobMob);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobGetMovable(IntPtr vobMob);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobGetTakable(IntPtr vobMob);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobGetFocusOverride(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern PxVobSoundMaterial pxVobMobGetMaterial(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetVisualDestroyed(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetOwner(IntPtr vobMob);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobGetOwnerGuild(IntPtr vobMob);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobGetDestroyed(IntPtr vobMob);
         //Vob - MobInter
         [DllImport(DLLNAME)] public static extern int pxVobMobInterGetState(IntPtr vobMobInter);
@@ -219,19 +200,16 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetItem(IntPtr vobMobInter);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetConditionFunction(IntPtr vobMobInter);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobInterGetOnStateChangeFunction(IntPtr vobMobInter);
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobInterGetRewind(IntPtr vobMobInter);
         // Vob - MobFire
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobFireGetSlot(IntPtr vobMobFire);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobFireGetVobTree(IntPtr vobMobFire);
         // Vob - MobContainer
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobContainerGetLocked(IntPtr vobMobContainer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobContainerGetKey(IntPtr vobMobContainer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobContainerGetPickString(IntPtr vobMobContainer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobContainerGetContents(IntPtr vobMobContainer);
         // Vob - MobDoor
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobMobDoorGetLocked(IntPtr vobMobDoor);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetKey(IntPtr vobMobDoor);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobMobDoorGetPickString(IntPtr vobMobDoor);
@@ -255,11 +233,8 @@ namespace PxCs.Interface
 		[DllImport(DLLNAME)] public static extern PxVobSoundMode pxVobSoundGetSoundMode(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRandomDelay(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern float pxVobSoundGetRandomDelayVar(IntPtr sound);
-		[return: MarshalAs(UnmanagedType.U1)]
 		[DllImport(DLLNAME)] public static extern bool pxVobSoundGetInitiallyPlaying(IntPtr sound);
-		[return: MarshalAs(UnmanagedType.U1)]
 		[DllImport(DLLNAME)] public static extern bool pxVobSoundGetAmbient3d(IntPtr sound);
-		[return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxVobSoundGetObstruction(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern float pxVobSoundGetConeAngle(IntPtr sound);
 		[DllImport(DLLNAME)] public static extern PxVobSoundTriggerVolume pxVobSoundGetSoundTriggerVolume(IntPtr sound);
@@ -273,12 +248,12 @@ namespace PxCs.Interface
 		// Vob - ZoneMusic
 		[DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneMusic(
             IntPtr zoneMusic,
-            [MarshalAs(UnmanagedType.U1)] out bool enabled,
+            out bool enabled,
             out int priority,
-            [MarshalAs(UnmanagedType.U1)] out bool ellipsoid,
+            out bool ellipsoid,
             out float reverb,
             out float volume,
-            [MarshalAs(UnmanagedType.U1)] out bool loop);
+            out bool loop);
         // Vob - ZoneFarPlane
         [DllImport(DLLNAME)] public static extern void pxWorldVobGetZoneFarPlane(
             IntPtr zoneFarPlane,
@@ -290,8 +265,8 @@ namespace PxCs.Interface
             out float rangeCenter,
             out float innerRangePercentage,
             out Vector4Byte color,
-            [MarshalAs(UnmanagedType.U1)] out bool fadeOutSky,
-            [MarshalAs(UnmanagedType.U1)] out bool overrideColor);
+            out bool fadeOutSky,
+            out bool overrideColor);
 
 
 
