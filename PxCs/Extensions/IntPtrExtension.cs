@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
+using PxCs.Helper;
 
 namespace PxCs.Extensions
 {
@@ -10,26 +10,6 @@ namespace PxCs.Extensions
 	/// </summary>
 	public static class IntPtrExtension
 	{
-		private static Encoding LangEncoding;
-		private static bool _isEncodingSet;
-
-		public enum SupportedEncodings
-		{
-			Cyrillic = 1251,
-			Latin = 1252
-		};
-		
-		public static void SetEncoding(SupportedEncodings encodingId)
-		{
-			// As PxCs is with .netstandard2.1 we need to register the coding provider once.
-			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-			LangEncoding = Encoding.GetEncoding((int)encodingId);
-
-			_isEncodingSet = true;
-		}
-
-
 		/// <summary>
 		/// Important: This method handles heap strings by byte-copying values until (char)'\0' is found.
 		/// Important: No memory clean up done.
@@ -37,7 +17,7 @@ namespace PxCs.Extensions
 		/// <exception cref="ArgumentNullException"></exception>
 		public static string MarshalAsString(this IntPtr strPtr)
 		{
-			if (!_isEncodingSet)
+			if (!PxEncoding.isEncodingSet)
 				throw new Exception("No string encoding set. Please call SetEncoding() first.");
 
 			if (strPtr == IntPtr.Zero)
@@ -60,7 +40,7 @@ namespace PxCs.Extensions
 			if (byteArray.Count == 0)
 				return string.Empty;
 			else
-				return LangEncoding.GetString(byteArray.ToArray(), 0, byteArray.Count);
+				return PxEncoding.Encoding.GetString(byteArray.ToArray(), 0, byteArray.Count);
 		}
 
 		/// <summary>

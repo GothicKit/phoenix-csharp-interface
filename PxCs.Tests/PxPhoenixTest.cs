@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using PxCs.Extensions;
+using PxCs.Helper;
 using PxCs.Interface;
 using Xunit;
 
@@ -21,7 +22,7 @@ namespace PxCs.Tests
 
             PxLogging.pxLoggerSet(PxLogMessage);
             
-            IntPtrExtension.SetEncoding(IntPtrExtension.SupportedEncodings.Latin);
+            PxEncoding.SetEncoding(PxEncoding.SupportedEncodings.WestEurope);
         }
 
         public static void PxLogMessage(PxLogging.Level level, string message)
