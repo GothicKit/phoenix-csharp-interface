@@ -72,31 +72,18 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern float pxMatGetTextureAnimFps(IntPtr mat);
         [DllImport(DLLNAME)] public static extern PxMaterialAnimationMappingMode pxMatGetTextureAnimMapMode(IntPtr mat);
         [DllImport(DLLNAME)] public static extern Vector2 pxMatGetTextureAnimMapDir(IntPtr mat);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetDisableCollision(IntPtr mat);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetDisableLightmap(IntPtr mat);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetDontCollapse(IntPtr mat);
-
         [DllImport(DLLNAME)] public static extern IntPtr pxMatGetDetailObject(IntPtr mat);
         [DllImport(DLLNAME)] public static extern Vector2 pxMatGetDetailTextureScale(IntPtr mat);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetForceOccluder(IntPtr mat);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetEnvironmentMapping(IntPtr mat);
         [DllImport(DLLNAME)] public static extern float pxMatGetEnvironmentMappingStrength(IntPtr mat);
         [DllImport(DLLNAME)] public static extern PxMaterialWaveModeType pxMatGetWaveMode(IntPtr mat);
         [DllImport(DLLNAME)] public static extern PxMaterialWaveSpeedType pxMatGetWaveSpeed(IntPtr mat);
         [DllImport(DLLNAME)] public static extern float pxMatGetWaveMaxAmplitude(IntPtr mat);
         [DllImport(DLLNAME)] public static extern float pxMatGetWaveGridSize(IntPtr mat);
-
-        [return: MarshalAs(UnmanagedType.U1)]
         [DllImport(DLLNAME)] public static extern bool pxMatGetIgnoreSun(IntPtr mat);
         [DllImport(DLLNAME)] public static extern PxMaterialAlphaFunction pxMatGetAlphaFunc(IntPtr mat);
         [DllImport(DLLNAME)] public static extern Vector2 pxMatGetDefaultMapping(IntPtr mat);
