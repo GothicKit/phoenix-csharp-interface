@@ -3,7 +3,6 @@
 ![License](https://img.shields.io/github/license/GothicKit/phoenix-java-interface?label=License&color=important)
 ![.NET](https://img.shields.io/static/v1?label=.NET+Standard&message=2.1&color=informational)
 ![C#](https://img.shields.io/static/v1?label=C%23&message=8&color=informational)
-![Version](https://img.shields.io/github/v/tag/GothicKit/phoenix-csharp-interface?label=Version&sort=semver)
 
 C# bindings for the [phoenix](https://github.com/lmichaelis/phoenix) library for parsing game assets of
 [PiranhaBytes'](https://www.piranha-bytes.com/) early 2000's games [Gothic](https://en.wikipedia.org/wiki/Gothic_(video_game))
