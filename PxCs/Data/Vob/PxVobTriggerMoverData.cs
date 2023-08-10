@@ -7,16 +7,16 @@ namespace PxCs.Data.Vob
 {
     public class PxVobTriggerMoverData : PxVobTriggerData
     {
-        public PxVobTriggerMoverBehaviour behaviour = PxVobTriggerMoverBehaviour.PxVobTriggerMoverBehaviourToggle;
-        public float touchBlockerDamage = 0;
-        public float stayOpenTimeSec = 0;
-        public bool locked = true;
-        public bool autoLink = false;
-        public bool autoRotate = false;
+        public PxVobTriggerMoverBehaviour behaviour;
+        public float touchBlockerDamage;
+        public float stayOpenTimeSec;
+        public bool locked;
+        public bool autoLink;
+        public bool autoRotate;
 
-        public float speed = 0;
-        public PxVobTriggerMoverLerpMode lerpMode = PxVobTriggerMoverLerpMode.PxVobTriggerMoverLerpModeCurve;
-        public PxVobTriggerMoverSpeedMode speedMode = PxVobTriggerMoverSpeedMode.PxVobTriggerMoverSpeedModeSegConstant;
+        public float speed;
+        public PxVobTriggerMoverLerpMode lerpMode;
+        public PxVobTriggerMoverSpeedMode speedMode;
 
         public PxAnimationSampleData[]? keyframes;
 

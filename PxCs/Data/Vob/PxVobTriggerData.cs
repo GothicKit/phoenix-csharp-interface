@@ -13,8 +13,8 @@
 
         // Save-game only variables
 
-        public float sNextTimeTriggerable = 0;
-        public int sCountCanBeActivated = 0;
-        public bool sIsEnabled = true;
+        public float sNextTimeTriggerable;
+        public int sCountCanBeActivated;
+        public bool sIsEnabled;
     }
 }
