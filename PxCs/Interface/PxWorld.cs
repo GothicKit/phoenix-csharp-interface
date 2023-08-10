@@ -1,3 +1,4 @@
+using PxCs.Data.Animation;
 using PxCs.Data.Struct;
 using PxCs.Data.Vob;
 using PxCs.Data.WayNet;
@@ -119,6 +120,39 @@ namespace PxCs.Interface
 													// the VOb indicated by its radius setting.
 		};
 
+        public enum PxVobTriggerMoverBehaviour
+        {
+            PxVobTriggerMoverBehaviourToggle = 0,
+            PxVobTriggerMoverBehaviourTriggerControl = 1,
+            PxVobTriggerMoverBehaviourOpenTimed = 2,
+            PxVobTriggerMoverBehaviourLoop = 3,
+            PxVobTriggerMoverBehaviourSingleKeys = 4
+        }
+
+        public enum PxVobTriggerMoverLerpMode
+        {
+            PxVobTriggerMoverLerpModeCurve = 0,
+            PxVobTriggerMoverLerpModeLinear = 1
+        }
+
+        public enum PxVobTriggerMoverSpeedMode
+        {
+            PxVobTriggerMoverSpeedModeSegConstant = 0,
+            PxVobTriggerMoverSpeedModeSlowStartEnd = 1,
+            PxVobTriggerMoverSpeedModeSlowStart = 2,
+            PxVobTriggerMoverSpeedModeSlowEnd = 3,
+            PxVobTriggerMoverSpeedModeSegSlowStarEnd = 4,
+            PxVobTriggerMoverSpeedModeSegSlowStart = 5,
+            PxVobTriggerMoverSpeedModeSegSlowEnd = 6
+        }
+
+        public enum PxVobTriggerBatchMode
+        {
+            PxVobTriggerBatchModeAll = 0,
+            PxVobTriggerBatchModeNext = 1,
+            PxVobTriggerBatchModeRandom = 2
+        }
+
 
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVfs(IntPtr vfs, string name);
@@ -223,10 +257,60 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern float pxVobTriggerGetRetriggerDelaySec(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern float pxVobTriggerGetDamageThreshold(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern float pxVobTriggerGetFireDelaySec(IntPtr trigger);
-
+        // Trigger save-game only variables
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerGetSNextTimeTriggerable(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerGetSCountCanBeActivated(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerGetSIsEnabled(IntPtr trigger);
+        // Trigger - Mover
+        [DllImport(DLLNAME)] public static extern PxVobTriggerMoverBehaviour pxVobTriggerMoverGetBehaviour(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetTouchBlockerDamage(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetStayOpenTimeSec(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetLocked(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetAutoLink(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerMoverGetAutoRotate(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSpeed(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern PxVobTriggerMoverLerpMode pxVobTriggerMoverGetLerpMode(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern PxVobTriggerMoverSpeedMode pxVobTriggerMoverGetSpeedMode(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerMoverGetKeyframeCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern void pxVobTriggerMoverGetKeyframe(IntPtr trigger, uint i, out Vector3 position, out PxQuaternionData rotation);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxOpenStart(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxOpenEnd(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxTransitioning(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxCloseStart(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxCloseEnd(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxLock(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxUnlock(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerMoverGetSfxUseLocked(IntPtr trigger);
+        // Trigger - Mover save-game only variables
+        [DllImport(DLLNAME)] public static extern Vector3 pxVobTriggerMoverGetSActKeyPosDelta(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSActKeyframeF(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerMoverGetSActKeyframe(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerMoverGetSNextKeyFrame(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetMoveSpeedUnit(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSAdvanceDir(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerMoverGetSMoverState(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern int pxVobTriggerMoverGetSTriggerEventCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerMoverGetSStayOpenTimeDest(IntPtr trigger);
+        // Trigger - List
+        [DllImport(DLLNAME)] public static extern PxVobTriggerBatchMode pxVobTriggerListGetTriggerBatchMode(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerListGetTargetsCount(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerListGetTargetName(IntPtr trigger, uint i);
+        [DllImport(DLLNAME)] public static extern float pxVobTriggerListGetTargetDelay(IntPtr trigger, uint i);
+        // Trigger - List save-game only variables
+        [DllImport(DLLNAME)] public static extern uint pxVobTriggerListGetSActTarget(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerListGetSSendOnTrigger(IntPtr trigger);
+        // Trigger - Script
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerScriptGetFunction(IntPtr trigger);
         // Trigger - Change Level
         [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerChangeLevelGetLevelName(IntPtr trigger);
         [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerChangeLevelGetStartVob(IntPtr trigger);
+        // Trigger - World Start
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerWorldStartGetTarget(IntPtr trigger);
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerWorldStartGetFireOnce(IntPtr trigger);
+        // Trigger - World Start save-game only variables
+        [DllImport(DLLNAME)] public static extern bool pxVobTriggerWorldStartGetSHasFired(IntPtr trigger);
+        // Trigger - Untouch
+        [DllImport(DLLNAME)] public static extern IntPtr pxVobTriggerUntouchGetTarget(IntPtr trigger);
 
         // Vob - Sound
         [DllImport(DLLNAME)] public static extern float pxVobSoundGetVolume(IntPtr sound);
@@ -347,6 +431,14 @@ namespace PxCs.Interface
                     vob = new PxVobItemData();
                     SetVobItemData(vobPtr, (PxVobItemData)vob);
                     break;
+                case PxVobType.PxVob_zCTriggerWorldStart:
+                    vob = new PxVobTriggerWorldStartData();
+                    SetVobTriggerWorldStart(vobPtr, (PxVobTriggerWorldStartData)vob);
+                    break;
+                case PxVobType.PxVob_zCTriggerUntouch:
+                    vob = new PxVobTriggerUntouchData();
+                    SetVobTriggerUntouch(vobPtr, (PxVobTriggerUntouchData)vob);
+                    break;
                 case PxVobType.PxVob_oCMOB:
                     vob = new PxVobMobData();
                     SetVobMobData(vobPtr, (PxVobMobData)vob);
@@ -371,19 +463,31 @@ namespace PxCs.Interface
                     vob = new PxVobTriggerData();
                     SetVobTriggerData(vobPtr, (PxVobTriggerData)vob);
                     break;
+                case PxVobType.PxVob_zCTriggerList:
+                    vob = new PxVobTriggerListData();
+                    SetVobTriggerListData(vobPtr, (PxVobTriggerListData)vob);
+                    break;
+                case PxVobType.PxVob_oCTriggerScript:
+                    vob = new PxVobTriggerScriptData();
+                    SetVobTriggerScriptData(vobPtr, (PxVobTriggerScriptData)vob);
+                    break;
                 case PxVobType.PxVob_oCTriggerChangeLevel:
                     vob = new PxVobTriggerChangeLevelData();
                     SetVobTriggerChangeLevelData(vobPtr, (PxVobTriggerChangeLevelData)vob);
                     break;
+                case PxVobType.PxVob_zCMover:
+                    vob = new PxVobTriggerMoverData();
+                    SetVobTriggerMoverData(vobPtr, (PxVobTriggerMoverData)vob);
+                    break;
                 case PxVobType.PxVob_zCVobSound:
-					vob = new PxVobSoundData();
+                    vob = new PxVobSoundData();
                     SetVobSoundData(vobPtr, (PxVobSoundData)vob);
-					break;
-				case PxVobType.PxVob_zCVobSoundDaytime:
-					vob = new PxVobSoundDaytimeData();
-					SetVobSoundDaytimeData(vobPtr, (PxVobSoundDaytimeData)vob);
-					break;
-				case PxVobType.PxVob_oCZoneMusic:
+                    break;
+                case PxVobType.PxVob_zCVobSoundDaytime:
+                    vob = new PxVobSoundDaytimeData();
+                    SetVobSoundDaytimeData(vobPtr, (PxVobSoundDaytimeData)vob);
+                    break;
+                case PxVobType.PxVob_oCZoneMusic:
                 case PxVobType.PxVob_oCZoneMusicDefault:
                     vob = new PxVobZoneMusicData();
                     SetVobZoneMusicData(vobPtr, (PxVobZoneMusicData)vob);
@@ -471,7 +575,22 @@ namespace PxCs.Interface
 
             vobItem.instance = pxVobItemGetInstance(vobItemPtr).MarshalAsString();
         }
-        
+
+        private static void SetVobTriggerWorldStart(IntPtr vobTriggerWorldStartPtr, PxVobTriggerWorldStartData vobTriggerWorldStart)
+        {
+            SetVobData(vobTriggerWorldStartPtr, vobTriggerWorldStart);
+
+            vobTriggerWorldStart.target = pxVobTriggerWorldStartGetTarget(vobTriggerWorldStartPtr).MarshalAsString();
+            vobTriggerWorldStart.fireOnce = pxVobTriggerWorldStartGetFireOnce(vobTriggerWorldStartPtr);
+            vobTriggerWorldStart.sHasFired = pxVobTriggerWorldStartGetSHasFired(vobTriggerWorldStartPtr);
+        }
+
+        private static void SetVobTriggerUntouch(IntPtr vobTriggerUntouchPtr, PxVobTriggerUntouchData vobTriggerUntouch)
+        {
+            SetVobData(vobTriggerUntouchPtr, vobTriggerUntouch);
+            vobTriggerUntouch.target = pxVobTriggerUntouchGetTarget(vobTriggerUntouchPtr).MarshalAsString();
+        }
+
         private static void SetVobMobData(IntPtr vobMobPtr, PxVobMobData vobMob)
         {
             SetVobData(vobMobPtr, vobMob);
@@ -535,24 +654,88 @@ namespace PxCs.Interface
             vobTrigger.target = pxVobTriggerGetTarget(vobTriggerPtr).MarshalAsString();
             vobTrigger.flags = pxVobTriggerGetFlags(vobTriggerPtr);
             vobTrigger.filterFlags = pxVobTriggerGetFilterFlags(vobTriggerPtr);
-            vobTrigger.target = pxVobTriggerGetTarget(vobTriggerPtr).MarshalAsString();
             vobTrigger.maxActivationCount = pxVobTriggerGetMaxActivationCount(vobTriggerPtr);
             vobTrigger.retriggerDelaySec = pxVobTriggerGetRetriggerDelaySec(vobTriggerPtr);
             vobTrigger.damageThreshold = pxVobTriggerGetDamageThreshold(vobTriggerPtr);
             vobTrigger.fireDelaySec = pxVobTriggerGetFireDelaySec(vobTriggerPtr);
         }
 
+        private static void SetVobTriggerListData(IntPtr vobTriggerListPtr, PxVobTriggerListData vobTriggerList)
+        {
+            SetVobTriggerData(vobTriggerListPtr, vobTriggerList);
+
+            vobTriggerList.mode = pxVobTriggerListGetTriggerBatchMode(vobTriggerListPtr);
+            var count = pxVobTriggerListGetTargetsCount(vobTriggerListPtr);
+            var array = new PxVobTriggerListData.PxTarget[count];
+            for (var i = 0u; i < count; i++)
+            {
+                var name = pxVobTriggerListGetTargetName(vobTriggerListPtr, i);
+                var delay = pxVobTriggerListGetTargetDelay(vobTriggerListPtr, i);
+                array[i] = new PxVobTriggerListData.PxTarget()
+                {
+                    name = name.MarshalAsString(),
+                    delay = delay
+                };
+            }
+            vobTriggerList.targets = array;
+        }
+
+        private static void SetVobTriggerScriptData(IntPtr vobTriggerScriptPtr, PxVobTriggerScriptData vobTriggerScript)
+        {
+            SetVobTriggerData(vobTriggerScriptPtr, vobTriggerScript);
+
+            vobTriggerScript.function = pxVobTriggerScriptGetFunction(vobTriggerScriptPtr).MarshalAsString();
+        }
+
+
         private static void SetVobTriggerChangeLevelData(IntPtr vobTriggerChangeLevelPtr, PxVobTriggerChangeLevelData vobTriggerChangeLevel)
         {
-            SetVobData(vobTriggerChangeLevelPtr, vobTriggerChangeLevel);
+            SetVobTriggerData(vobTriggerChangeLevelPtr, vobTriggerChangeLevel);
 
             vobTriggerChangeLevel.levelName = pxVobTriggerChangeLevelGetLevelName(vobTriggerChangeLevelPtr).MarshalAsString();
             vobTriggerChangeLevel.startVob = pxVobTriggerChangeLevelGetStartVob(vobTriggerChangeLevelPtr).MarshalAsString();
         }
 
-		private static void SetVobSoundData(IntPtr vobSoundPtr, PxVobSoundData vobSound)
-		{
-			SetVobData(vobSoundPtr, vobSound);
+        private static void SetVobTriggerMoverData(IntPtr vobTriggerMoverPtr, PxVobTriggerMoverData vobTriggerMover)
+        {
+            SetVobTriggerData(vobTriggerMoverPtr, vobTriggerMover);
+
+            vobTriggerMover.behaviour = pxVobTriggerMoverGetBehaviour(vobTriggerMoverPtr);
+            vobTriggerMover.touchBlockerDamage = pxVobTriggerMoverGetTouchBlockerDamage(vobTriggerMoverPtr);
+            vobTriggerMover.stayOpenTimeSec = pxVobTriggerMoverGetStayOpenTimeSec(vobTriggerMoverPtr);
+            vobTriggerMover.locked = pxVobTriggerMoverGetLocked(vobTriggerMoverPtr);
+            vobTriggerMover.autoLink = pxVobTriggerMoverGetAutoLink(vobTriggerMoverPtr);
+            vobTriggerMover.autoRotate = pxVobTriggerMoverGetAutoRotate(vobTriggerMoverPtr);
+            vobTriggerMover.speed = pxVobTriggerMoverGetSpeed(vobTriggerMoverPtr);
+            vobTriggerMover.lerpMode = pxVobTriggerMoverGetLerpMode(vobTriggerMoverPtr);
+            vobTriggerMover.speedMode = pxVobTriggerMoverGetSpeedMode(vobTriggerMoverPtr);
+
+            var count = pxVobTriggerMoverGetKeyframeCount(vobTriggerMoverPtr);
+            var array = new PxAnimationSampleData[count];
+            for (var i = 0u; i < count; i++)
+            {
+                pxVobTriggerMoverGetKeyframe(vobTriggerMoverPtr, i, out Vector3 position, out PxQuaternionData rotation);
+                array[i] = new PxAnimationSampleData()
+                {
+                    position = position,
+                    rotation = rotation
+                };
+            }
+            vobTriggerMover.keyframes = array;
+
+            vobTriggerMover.sfxOpenStart = pxVobTriggerMoverGetSfxOpenStart(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxOpenEnd = pxVobTriggerMoverGetSfxOpenEnd(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxTransitioning = pxVobTriggerMoverGetSfxTransitioning(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxCloseStart = pxVobTriggerMoverGetSfxCloseStart(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxCloseEnd = pxVobTriggerMoverGetSfxCloseEnd(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxLock = pxVobTriggerMoverGetSfxLock(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxUnlock = pxVobTriggerMoverGetSfxUnlock(vobTriggerMoverPtr).MarshalAsString();
+            vobTriggerMover.sfxUseLocked = pxVobTriggerMoverGetSfxUseLocked(vobTriggerMoverPtr).MarshalAsString();
+        }
+
+        private static void SetVobSoundData(IntPtr vobSoundPtr, PxVobSoundData vobSound)
+        {
+            SetVobData(vobSoundPtr, vobSound);
 
 			vobSound.volume = pxVobSoundGetVolume(vobSoundPtr);
 			vobSound.mode = pxVobSoundGetSoundMode(vobSoundPtr);
