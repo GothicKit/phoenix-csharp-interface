@@ -23,7 +23,7 @@ namespace PxCs.Interface
 
         public static PxFontData? LoadFont(IntPtr vfsPtr, string fontname, params Format[] supportedTextureFormats)
         {
-            var fontPtr = pxFntLoadFromVfs(vfsPtr, "FONT_DEFAULT.FNT");
+            var fontPtr = pxFntLoadFromVfs(vfsPtr, fontname);
 
             if (fontPtr == IntPtr.Zero)
                 return null;
