@@ -53,7 +53,7 @@ namespace PxCs.Interface
                 checksum = pxManGetChecksum(manPtr),
 
                 samples = GetSamples(manPtr),
-                nodeIndices = pxManGetNodeIndices(manPtr, out uint length).MarshalAsArray<uint>(length)
+                node_indices = pxManGetNodeIndices(manPtr, out uint length).MarshalAsArray<uint>(length)
             };
 
             pxManDestroy(manPtr);

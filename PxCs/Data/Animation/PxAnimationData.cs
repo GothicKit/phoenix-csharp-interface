@@ -18,7 +18,7 @@ namespace PxCs.Data.Animation
         public uint checksum;
 
         public PxAnimationSampleData[] samples = default!;
-        public uint[] nodeIndices = default!;
+        public uint[] node_indices = default!;
 
 
         [Obsolete("Not yet delivered by phoenix.")]
