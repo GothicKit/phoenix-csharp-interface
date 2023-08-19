@@ -4,12 +4,12 @@ namespace PxCs.Data.Mesh
 {
     public class PxSoftSkinMeshData
     {
-        public PxMultiResolutionMeshData? mesh;
-        public PxOBBData? bboxes; // FIXME - not loaded from phoenix as of now!
+        public PxMultiResolutionMeshData mesh = default!;
+        public PxOBBData bboxes = default!; // FIXME - not loaded from phoenix as of now!
 
-        public PxWedgeNormalData[]? wedgeNormals;
-        public int[]? nodes;
+        public PxWedgeNormalData[] wedgeNormals = default!;
+        public int[] nodes = default!;
 
-        public PxWeightEntryData[][]? weights;
+        public PxWeightEntryData[][] weights = default!;
     }
 }

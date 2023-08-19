@@ -2,6 +2,6 @@
 {
     public class PxVobTriggerUntouchData : PxVobData
     {
-        public string? target;
+        public string target = default!;
     }
 }

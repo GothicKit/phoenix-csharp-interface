@@ -12,9 +12,9 @@ namespace PxCs.Data.Struct
     public class PxOBBData
     {
         public Vector3 center;
-        public Vector3[]? axes; // exactly [3]
-        public Vector3[]? halfWidth;
+        public Vector3[] axes = default!; // exactly [3]
+        public Vector3[] halfWidth = default!;
 
-        PxOBBData[]? children;
+        PxOBBData[] children = default!;
     }
 }

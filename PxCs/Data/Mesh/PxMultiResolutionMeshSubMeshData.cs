@@ -2,22 +2,22 @@
 {
     public class PxMultiResolutionMeshSubMeshData
     {
-        public PxMaterialData? material;
+        public PxMaterialData material = default!;
 
-        public float[]? colors;
+        public float[] colors = default!;
 
         // Triangles
-        public PxTriangleData[]? triangles;
-        public PxTrianglePlaneData[]? trianglePlanes;
-        public PxTriangleEdgeData[]? triangleEdges;
-        public ushort[]? trianglePlaneIndices;
+        public PxTriangleData[] triangles = default!;
+        public PxTrianglePlaneData[] trianglePlanes = default!;
+        public PxTriangleEdgeData[] triangleEdges = default!;
+        public ushort[] trianglePlaneIndices = default!;
 
         // Wedges
-        public PxWedgeData[]? wedges;
-        public ushort[]? wedgeMap;
+        public PxWedgeData[] wedges = default!;
+        public ushort[] wedgeMap = default!;
 
         // Edges
-        public PxEdgeData[]? edges;
-        public float[]? edgeScores;
+        public PxEdgeData[] edges = default!;
+        public float[] edgeScores = default!;
     }
 }

@@ -2,11 +2,11 @@
 {
     public class PxAnimationEventData
     {
-        PxAnimationEventType type;
-        uint no;
-        string? tag;
-        string[] content = new string[4];
-        float[] values = new float[4];
-        float probability;
+        public PxAnimationEventType type;
+        public uint no;
+        public string tag = default!;
+        public string[] content = new string[4];
+        public float[] values = new float[4];
+        public float probability;
     }
 }

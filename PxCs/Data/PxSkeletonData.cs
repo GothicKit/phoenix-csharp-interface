@@ -2,7 +2,7 @@
 {
     public class PxSkeletonData
     {
-        public string? name;
+        public string name = default!;
         public bool disableMesh;
     }
 }

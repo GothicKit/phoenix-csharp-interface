@@ -2,7 +2,7 @@
 {
     public class PxVobTriggerWorldStartData : PxVobData
     {
-        public string? target;
+        public string target = default!;
         public bool fireOnce;
 
         // Save-game only variables

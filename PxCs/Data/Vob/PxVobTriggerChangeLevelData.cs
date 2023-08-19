@@ -2,7 +2,7 @@
 {
     public class PxVobTriggerChangeLevelData : PxVobTriggerData
     {
-        public string? levelName;
-        public string? startVob;
+        public string levelName = default!;
+        public string startVob = default!;
     }
 }

@@ -3,7 +3,7 @@
     public class PxEventSfxGroundData
     {
         public int frame;
-        public string? name;
+        public string name = default!;
         public float range;
         public bool emptySlot;
     }

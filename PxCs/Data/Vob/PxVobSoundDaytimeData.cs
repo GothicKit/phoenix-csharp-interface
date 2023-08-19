@@ -4,6 +4,6 @@
     {
 		public float startTime;
 		public float endTime;
-		public string? soundName2;
+		public string soundName2 = default!;
 	}
 }

@@ -18,16 +18,16 @@ namespace PxCs.Data.Vob
         public PxVobTriggerMoverLerpMode lerpMode;
         public PxVobTriggerMoverSpeedMode speedMode;
 
-        public PxAnimationSampleData[]? keyframes;
+        public PxAnimationSampleData[] keyframes = default!;
 
-        public string? sfxOpenStart;
-        public string? sfxOpenEnd;
-        public string? sfxTransitioning;
-        public string? sfxCloseStart;
-        public string? sfxCloseEnd;
-        public string? sfxLock;
-        public string? sfxUnlock;
-        public string? sfxUseLocked;
+        public string sfxOpenStart = default!;
+        public string sfxOpenEnd = default!;
+        public string sfxTransitioning = default!;
+        public string sfxCloseStart = default!;
+        public string sfxCloseEnd = default!;
+        public string sfxLock = default!;
+        public string sfxUnlock = default!;
+        public string sfxUseLocked = default!;
 
         // Save-game only variables
         public Vector3 sActKeyPosDelta;

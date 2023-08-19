@@ -12,7 +12,7 @@ namespace PxCs.Data.Vob
         }
 
         public PxVobTriggerBatchMode mode;
-        public PxTarget[]? targets;
+        public PxTarget[] targets = default!;
 
         // Save-game only variables
         public byte sActTarget;

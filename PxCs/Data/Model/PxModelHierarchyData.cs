@@ -5,7 +5,7 @@ namespace PxCs.Data.Model
 {
     public class PxModelHierarchyData
     {
-        public PxModelHierarchyNodeData[]? nodes;
+        public PxModelHierarchyNodeData[] nodes = default!;
         public PxAABBData bbox;
         public Vector3 rootTranslation;
         public uint checksum;

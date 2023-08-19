@@ -2,9 +2,9 @@
 {
     public class PxAnimationBlendingData
     {
-        public string? name;
-        public string? next;
-        public float blend_in;
-        public float blend_out;
+        public string name = default!;
+        public string next = default!;
+        public float blendIn;
+        public float blendOut;
     }
 }

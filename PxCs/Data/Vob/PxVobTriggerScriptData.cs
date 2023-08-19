@@ -2,6 +2,6 @@
 {
     public class PxVobTriggerScriptData : PxVobTriggerData
     {
-        public string? function;
+        public string function = default!;
     }
 }

@@ -14,6 +14,6 @@ namespace PxCs.Data.Vob
 		public float coneAngle;
 		public PxVobSoundTriggerVolume volumeType;
 		public float radius;
-		public string? soundName;
+		public string soundName = default!;
 	}
 }

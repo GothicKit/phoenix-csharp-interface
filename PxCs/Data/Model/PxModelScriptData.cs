@@ -5,13 +5,13 @@ namespace PxCs.Data.Model
 {
     public class PxModelScriptData
     {
-        public PxSkeletonData? skeleton;
-        public string[]? meshes;
-        public string[]? disabledAnimations;
-        public PxAnimationCombinationData[]? combinations;
-        public PxAnimationBlendingData[]? blends;
-        public PxAnimationAliasData[]? aliases;
-        public PxModelTagData[]? modelTags;
-        public PxModelScriptAnimationData[]? animations;
+        public PxSkeletonData skeleton = default!;
+        public string[] meshes = default!;
+        public string[] disabledAnimations = default!;
+        public PxAnimationCombinationData[] combinations = default!;
+        public PxAnimationBlendingData[] blends = default!;
+        public PxAnimationAliasData[] aliases = default!;
+        public PxModelTagData[] modelTags = default!;
+        public PxModelScriptAnimationData[] animations = default!;
     }
 }

@@ -2,7 +2,7 @@ namespace PxCs.Data.Vm
 {
     public class PxVmMusicData : PxVmData
     {
-        public string? file;
+        public string file = default!;
         public float vol;
         public int loop;
         public float reverbMix;

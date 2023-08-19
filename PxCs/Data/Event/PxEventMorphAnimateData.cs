@@ -3,7 +3,7 @@
     public class PxEventMorphAnimateData
     {
         public int frame;
-        public string? animation;
-        public string? node;
+        public string animation = default!;
+        public string node = default!;
     }
 }

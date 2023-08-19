@@ -7,7 +7,7 @@ namespace PxCs.Data.Model
     {
         public uint checksum;
 
-        public PxSoftSkinMeshData[]? meshes;
-        public Dictionary<string, PxMultiResolutionMeshData>? attachments;
+        public PxSoftSkinMeshData[] meshes = default!;
+        public Dictionary<string, PxMultiResolutionMeshData> attachments = default!;
     }
 }

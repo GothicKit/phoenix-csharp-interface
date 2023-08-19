@@ -2,6 +2,6 @@
 {
     public class PxModelTagData
     {
-        public string? bone;
+        public string bone = default!;
     }
 }
