@@ -10,14 +10,14 @@ namespace PxCs.Tests
         {
             var vfsPtr = LoadVfs("Data/textures.VDF");
 
-            var font = PxFont.LoadFont(vfsPtr, "FONT_DEFAULT.FNT");
+            var font = PxFont.LoadFont(vfsPtr, "FONT_OLD_20_WHITE.FNT");
 
             Assert.NotNull(font);
-            Assert.True(font.name == "FONT_DEFAULT.TGA", "Font name isn't set right.");
+            Assert.True(font.name == "FONT_OLD_20_WHITE.TGA", "Font name isn't set right.");
             Assert.True(font.glyphs!.Length == 256, $"It's expected to have 256 glyphs, but >{font.glyphs.Length}< given.");
 
             Assert.NotNull(font.texture);
-            Assert.True(font.texture.width == 512, $"Font texture expected to be 512 but was >{font.texture.width}<.");
+            Assert.True(font.texture.width == 1024, $"Font texture expected to be 1024 but was >{font.texture.width}<.");
         }
     }
 }
