@@ -131,18 +131,20 @@ namespace PxCs.Tests
 
             var menu = PxVm.InitializeMenu(vmPtr, "MENU_MAIN");
 
+            Assert.NotNull(menu);
             Assert.True(menu!.musicTheme!.ToLower() == "SYS_Menu".ToLower(), "Menu music is not default music.");
 
             PxVm.pxVmDestroy(vmPtr);
         }
 
+        [Fact]
         public void Test_instantiate_Menu_Item_by_name()
         {
             var vmPtr = LoadVm(VmMenuPath);
 
             var menuItem = PxVm.InitializeMenuItem(vmPtr, "MENUITEM_MAIN_HEADLINE");
 
-            Assert.NotEqual(menuItem!.instancePtr, IntPtr.Zero);
+            Assert.NotNull(menuItem);
             Assert.True(menuItem.backpic!.ToLower() == "menu_gothicshadow.tga".ToLower(), "Menu item has wrong backpic name.");
 
             PxVm.pxVmDestroy(vmPtr);
