@@ -51,13 +51,25 @@ namespace PxCs.Tests
 
             var item = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCItem);
             Assert.IsType<PxVobItemData>(item);
-            
+
             var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
             Assert.IsType<PxVobMobContainerData>(chest);
 
             // In world.zen there is no Trigger. Therefore commenting this line out.
             // var trigger = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTrigger);
             // Assert.IsType<PxVobTriggerData>(trigger);
+
+            // var triggerWorldStart = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTriggerWorldStart);
+            // Assert.IsType<PxVobTriggerListData>(triggerWorldStart);
+
+            var triggerList = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTriggerList);
+            Assert.IsType<PxVobTriggerListData>(triggerList);
+
+            // var triggerScript = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCTriggerScript);
+            // Assert.IsType<PxVobTriggerScriptData>(triggerScript);
+
+            var moverTrigger = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCMover);
+            Assert.IsType<PxVobTriggerMoverData>(moverTrigger);
 
             var triggerLevelChange = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCTriggerChangeLevel);
             Assert.IsType<PxVobTriggerChangeLevelData>(triggerLevelChange);
@@ -66,15 +78,15 @@ namespace PxCs.Tests
             Assert.IsType<PxVobZoneFogData>(zoneFogDefault);
 
             var sound = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobSound);
-			Assert.IsType<PxVobSoundData>(sound);
-			
+            Assert.IsType<PxVobSoundData>(sound);
+
             var soundDaytime = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobSoundDaytime);
-			Assert.IsType<PxVobSoundDaytimeData>(soundDaytime);
+            Assert.IsType<PxVobSoundDaytimeData>(soundDaytime);
 
             var decalVob = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVob && i.visualType == PxWorld.PxVobVisualType.PxVobVisualDecal);
             Assert.True(decalVob.vobDecal.HasValue);
-            
-			PxWorld.pxWorldDestroy(worldPtr);
+
+            PxWorld.pxWorldDestroy(worldPtr);
             DestroyVfs(vfsPtr);
         }
     }

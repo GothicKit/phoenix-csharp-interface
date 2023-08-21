@@ -10,5 +10,11 @@
         public float retriggerDelaySec;
         public float damageThreshold;
         public float fireDelaySec;
+
+        // Save-game only variables
+
+        public float sNextTimeTriggerable;
+        public int sCountCanBeActivated;
+        public bool sIsEnabled;
     }
 }

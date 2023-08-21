@@ -1,7 +1,7 @@
 ﻿namespace PxCs.Data.Vob
 {
-    public class PxVobTriggerScriptData : PxVobData
+    public class PxVobTriggerScriptData : PxVobTriggerData
     {
-
+        public string? function;
     }
 }
