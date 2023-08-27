@@ -30,8 +30,7 @@ namespace PxCs.Interface
             var hierarchy = PxModelHierarchy.GetFromPtr(mdhPtr);
 
             var mdmPtr = pxMdlGetMesh(mdlPtr);
-            var attachmentKeys = hierarchy!.nodes.Select(i => i.name).ToArray();
-            var mesh = PxModelMesh.GetFromPtr(mdmPtr, attachmentKeys!);
+            var mesh = PxModelMesh.GetFromPtr(mdmPtr);
 
             var mdl = new PxModelData()
             {

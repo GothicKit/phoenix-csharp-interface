@@ -20,7 +20,9 @@ namespace PxCs.Interface
 
         [DllImport(DLLNAME)] public static extern uint pxMdmGetMeshCount(IntPtr mdm);
         [DllImport(DLLNAME)] public static extern IntPtr pxMdmGetMesh(IntPtr mdm, uint i);
-        [DllImport(DLLNAME)] public static extern IntPtr pxMdmGetAttachment(IntPtr mdm, string name);
+        [DllImport(DLLNAME)] public static extern uint pxMdmGetAttachmentCount(IntPtr mdm);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdmGetAttachmentKey(IntPtr mdm, uint index);
+        [DllImport(DLLNAME)] public static extern IntPtr pxMdmGetAttachmentValue(IntPtr mdm, string name);
         [DllImport(DLLNAME)] public static extern uint pxMdmGetChecksum(IntPtr mdm);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxSsmGetMesh(IntPtr ssm);
@@ -32,16 +34,16 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxSsmGetNodes(IntPtr ssm, out uint length); // ret: IntArray
 
 
-        public static PxModelMeshData? LoadModelMeshFromVfs(IntPtr vfsPtr, string name, params string[] attachmentKeys)
+        public static PxModelMeshData? LoadModelMeshFromVfs(IntPtr vfsPtr, string name)
         {
             var mdmPtr = pxMdmLoadFromVfs(vfsPtr, name);
-            var data = GetFromPtr(mdmPtr, attachmentKeys);
+            var data = GetFromPtr(mdmPtr);
 
             pxMdmDestroy(mdmPtr);
             return data;
         }
 
-        public static PxModelMeshData? GetFromPtr(IntPtr mdmPtr, params string[] attachmentKeys)
+        public static PxModelMeshData? GetFromPtr(IntPtr mdmPtr)
         {
             if (mdmPtr == IntPtr.Zero)
                 return null;
@@ -50,7 +52,7 @@ namespace PxCs.Interface
             {
                 checksum = pxMdmGetChecksum(mdmPtr),
                 meshes = GetMeshes(mdmPtr),
-                attachments = GetAttachments(mdmPtr, attachmentKeys)
+                attachments = GetAttachments(mdmPtr)
             };
         }
 
@@ -124,18 +126,18 @@ namespace PxCs.Interface
             return array;
         }
 
-        public static Dictionary<string, PxMultiResolutionMeshData> GetAttachments(IntPtr mdmPtr, params string[] attachmentKeys)
+        public static Dictionary<string, PxMultiResolutionMeshData> GetAttachments(IntPtr mdmPtr)
         {
             var data = new Dictionary<string, PxMultiResolutionMeshData>();
+            var attachmentCount = pxMdmGetAttachmentCount(mdmPtr);
 
-            foreach (var key in attachmentKeys)
+            for (var i = 0u; i < attachmentCount; i++)
             {
-                var attachmentPtr = pxMdmGetAttachment(mdmPtr, key);
-                if (attachmentPtr == IntPtr.Zero)
-                    continue;
-
+                var key = pxMdmGetAttachmentKey(mdmPtr, i).MarshalAsString();
+                var attachmentPtr = pxMdmGetAttachmentValue(mdmPtr, key);
+                
                 var mrm = PxMultiResolutionMesh.GetMRMFromPtr(attachmentPtr);
-                data[key] = mrm;
+                data.Add(key, mrm);
             }
 
             return data;

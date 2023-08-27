@@ -24,8 +24,7 @@ namespace PxCs.Tests
         {
             var vfsPtr = LoadVfs("Data/anims.VDF");
 
-            var modelMesh = PxModelMesh.LoadModelMeshFromVfs(vfsPtr, "chestbig_occhestlarge.mdm",
-                "BIP01 CHEST_BIG_0", "BIP01 CHEST_BIG_1", "BIP01 CHESTLOCK", "ZS_POS0");
+            var modelMesh = PxModelMesh.LoadModelMeshFromVfs(vfsPtr, "chestbig_occhestlarge.mdm");
 
             Assert.NotNull(modelMesh);
             Assert.True(modelMesh.checksum == 0, $"Checksum needs to be zero for Chest.");
