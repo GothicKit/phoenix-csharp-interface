@@ -4,8 +4,8 @@
     {
         public int frame;
         public int index;
-        public string? name;
-        public string? position;
+        public string name = default!;
+        public string position = default!;
         public bool attached;
     }
 }

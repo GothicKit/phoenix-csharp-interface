@@ -5,11 +5,11 @@ namespace PxCs.Data.Mesh
 {
     public class PxMaterialData
     {
-        public string? name;
+        public string name = default!;
         public PxMaterialGroup group;
         public uint color;
         public float smoothAngle;
-        public string? texture;
+        public string texture = default!;
         public Vector2 textureScale;
         public float animFps;
         public PxMaterialAnimationMappingMode animMapMode;
@@ -17,7 +17,7 @@ namespace PxCs.Data.Mesh
         public bool disableCollision;
         public bool disableLightmap;
         public bool dontCollapse;
-        public string? detailObject;
+        public string detailObject = default!;
         public Vector2 detailTextureScale;
         public bool forceOccluder;
         public bool environmentMapping;

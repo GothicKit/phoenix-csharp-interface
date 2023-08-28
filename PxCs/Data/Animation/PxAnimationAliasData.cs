@@ -4,13 +4,13 @@ namespace PxCs.Data.Animation
 {
     public class PxAnimationAliasData
     {
-        public string? name;
+        public string name = default!;
         public uint layer;
-        public string? next;
+        public string next = default!;
         public float blendIn;
         public float blendOut;
         public PxAnimationFlags flags;
-        public string? alias;
+        public string alias = default!;
         public PxAnimationDirection direction;
     }
 }

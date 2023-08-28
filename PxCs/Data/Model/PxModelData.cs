@@ -2,7 +2,7 @@
 {
     public class PxModelData
     {
-        public PxModelHierarchyData? hierarchy;
-        public PxModelMeshData? mesh;
+        public PxModelHierarchyData hierarchy = default!;
+        public PxModelMeshData mesh = default!;
     }
 }

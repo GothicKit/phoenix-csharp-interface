@@ -2,7 +2,7 @@
 {
     public class PxVobMobFireData : PxVobMobInterData
     {
-        public string? slot;
-        public string? vobTree;
+        public string slot = default!;
+        public string vobTree = default!;
     }
 }

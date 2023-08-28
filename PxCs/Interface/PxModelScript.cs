@@ -286,8 +286,8 @@ namespace PxCs.Interface
                 {
                     name = pxMdsGetAnimationBlendingName(mdsPtr, i).MarshalAsString(),
                     next = pxMdsGetAnimationBlendingNext(mdsPtr, i).MarshalAsString(),
-                    blend_in = pxMdsGetAnimationBlendingBlendIn(mdsPtr, i),
-                    blend_out = pxMdsGetAnimationBlendingBlendOut(mdsPtr, i)
+                    blendIn = pxMdsGetAnimationBlendingBlendIn(mdsPtr, i),
+                    blendOut = pxMdsGetAnimationBlendingBlendOut(mdsPtr, i)
                 };
             }
 

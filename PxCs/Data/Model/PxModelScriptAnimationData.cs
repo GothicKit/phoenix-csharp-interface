@@ -5,13 +5,13 @@ namespace PxCs.Data.ModelScript
 {
     public class PxModelScriptAnimationData
     {
-        public string? name;
+        public string name = default!;
         public uint layer;
-        public string? next;
+        public string next = default!;
         public float blendIn;
         public float blendOut;
         public PxAnimationFlags flags;
-        public string? model;
+        public string model = default!;
         public PxAnimationDirection direction;
         public int firstFrame;
         public int lastFrame;
@@ -19,12 +19,12 @@ namespace PxCs.Data.ModelScript
         public float speed;
         public float collisionVolumeScale;
 
-        public PxEventTagData[]? events;
-        public PxEventPfxData[]? pfx;
-        public PxEventPfxStopData[]? pfxStop;
-        public PxEventSfxData[]? sfx;
-        public PxEventSfxGroundData[]? sfxGround;
-        public PxEventMorphAnimateData[]? morph;
-        public PxEventCameraTremorData[]? tremors;
+        public PxEventTagData[] events = default!;
+        public PxEventPfxData[] pfx = default!;
+        public PxEventPfxStopData[] pfxStop = default!;
+        public PxEventSfxData[] sfx = default!;
+        public PxEventSfxGroundData[] sfxGround = default!;
+        public PxEventMorphAnimateData[] morph = default!;
+        public PxEventCameraTremorData[] tremors = default!;
     }
 }

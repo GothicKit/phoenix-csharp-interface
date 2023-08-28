@@ -2,6 +2,6 @@
 {
     public class PxVobItemData : PxVobData
     {
-        public string? instance;
+        public string instance = default!;
     }
 }

@@ -2,10 +2,10 @@
 {
     public class PxVobTriggerData : PxVobData
     {
-        public string? target;
+        public string target = default!;
         public uint flags;
         public uint filterFlags;
-        public string? vobTarget;
+        public string vobTarget = default!;
         public int maxActivationCount;
         public float retriggerDelaySec;
         public float damageThreshold;

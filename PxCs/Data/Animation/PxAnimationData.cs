@@ -5,8 +5,8 @@ namespace PxCs.Data.Animation
 {
     public class PxAnimationData
     {
-        public string? name;
-        public string? next;
+        public string name = default!;
+        public string next = default!;
         public uint layer;
 
         public uint frameCount;
@@ -17,16 +17,16 @@ namespace PxCs.Data.Animation
         public PxAABBData bbox;
         public uint checksum;
 
-        public PxAnimationSampleData[]? samples;
-        public uint[]? node_indices;
+        public PxAnimationSampleData[] samples = default!;
+        public uint[] node_indices = default!;
 
 
         [Obsolete("Not yet delivered by phoenix.")]
-        public PxAnimationEventData[]? events;
+        public PxAnimationEventData[] events = default!;
         [Obsolete("Not yet delivered by phoenix.")]
-        public string? sourcePath;
+        public string sourcePath = default!;
         [Obsolete("Not yet delivered by phoenix.")]
-        public string? sourceScript;
+        public string sourceScript = default!;
         [Obsolete("Not yet delivered by phoenix.")]
         public float fpsSource;
         [Obsolete("Not yet delivered by phoenix.")]

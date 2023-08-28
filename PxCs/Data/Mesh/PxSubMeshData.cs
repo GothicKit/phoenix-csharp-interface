@@ -2,17 +2,17 @@
 {
     public class PxSubMeshData
     {
-        float[]? colors;
+        float[] colors = default!;
 
-        PxTriangleData[]? triangles;
-        PxTrianglePlaneData[]? trianglePlanes;
-        ushort[]? trianglePlaneIndices;
-        PxTriangleEdgeData[]? triangleEdges;
+        PxTriangleData[] triangles = default!;
+        PxTrianglePlaneData[] trianglePlanes = default!;
+        ushort[] trianglePlaneIndices = default!;
+        PxTriangleEdgeData[] triangleEdges = default!;
 
-        PxEdgeData[]? edges;
-        float[]? edgeScores;
+        PxEdgeData[] edges = default!;
+        float[] edgeScores = default!;
 
-        PxWedgeData[]? wedges;
-        ushort[]? wedgeMap;
+        PxWedgeData[] wedges = default!;
+        ushort[] wedgeMap = default!;
     }
 }

@@ -5,7 +5,7 @@ namespace PxCs.Data.Model
     public class PxModelHierarchyNodeData
     {
         public short parentIndex;
-        public string? name;
+        public string name = default!;
         public PxMatrix4x4Data transform;
     }
 }
