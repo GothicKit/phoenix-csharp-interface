@@ -10,6 +10,8 @@ namespace PxCs.Tests
     {
         private const string VmGothicPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
         private const string VmSfxPath = "_work/DATA/scripts/_compiled/SFX.DAT";
+        private const string VmMenuPath = "_work/DATA/scripts/_compiled/MENU.DAT";
+
         public static void PxVmExternalDefaultCallbackFunction(IntPtr vmPtr, string missingCallbackName)
         {
 
@@ -59,30 +61,30 @@ namespace PxCs.Tests
 
             var symbol1 = PxVm.GetSymbol(vmPtr, 3644); // Should be GRD_ARMOR_H
             var symbol2 = PxVm.GetSymbol(vmPtr, "GRD_ARMOR_H");
-            
+
             Assert.NotNull(symbol1);
             Assert.NotNull(symbol2);
-            
+
             Assert.Equal(3644, (int)symbol1.id);
             Assert.Equal("GRD_ARMOR_H", symbol1.name.ToUpper());
-            
+
             Assert.Equal(3644, (int)symbol2.id);
             Assert.Equal("GRD_ARMOR_H", symbol2.name.ToUpper());
         }
-        
+
         [Fact]
         public void Test_get_all_C_Item_Instances()
         {
-			var vmPtr = LoadVm(VmGothicPath);
+            var vmPtr = LoadVm(VmGothicPath);
 
             var elements = PxVm.GetInstancesByClassName(vmPtr, "C_Item");
             var exampleItem = elements.FirstOrDefault(i => i.ToUpper() == "ITARSCROLLHEAL");
-            
-            Assert.NotNull(exampleItem);
-			PxVm.pxVmDestroy(vmPtr);
-		}
 
-		[Fact]
+            Assert.NotNull(exampleItem);
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
         public void Test_instantiate_Npc_by_name()
         {
             var vmPtr = LoadVm("_work/DATA/scripts/_compiled/GOTHIC.DAT");
@@ -97,18 +99,18 @@ namespace PxCs.Tests
         [Fact]
         public void Test_instantiate_Item_by_name()
         {
-			var vmPtr = LoadVm(VmGothicPath);
+            var vmPtr = LoadVm(VmGothicPath);
 
-			var lockpick = PxVm.InitializeItem(vmPtr, "ITKELOCKPICK");
+            var lockpick = PxVm.InitializeItem(vmPtr, "ITKELOCKPICK");
 
-			Assert.NotEqual(lockpick!.instancePtr, IntPtr.Zero);
+            Assert.NotEqual(lockpick!.instancePtr, IntPtr.Zero);
             Assert.True(lockpick.visual!.ToLower() == "ItKe_Lockpick_01.3ds".ToLower(), "Lockpick has wrong visual name.");
             Assert.True(lockpick.mainFlag == PxVm.PxVmItemFlags.ITEM_KAT_NONE, "Lockpick has wrong mainFlag");
             Assert.True(lockpick.flags.HasFlag(PxVm.PxVmItemFlags.ITEM_MULTI), "Lockpick needs to have flag >multi<.");
-            
-			PxVm.pxVmDestroy(vmPtr);
-		}
-        
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
         [Fact]
         public void Test_instantiate_Item_by_index()
         {
@@ -122,20 +124,46 @@ namespace PxCs.Tests
             PxVm.pxVmDestroy(vmPtr);
         }
 
-		[Fact]
-		public void Test_instantiate_Sfx_by_name()
-		{
-			var vmPtr = LoadVm(VmSfxPath);
+        [Fact]
+        public void Test_instantiate_Menu_by_name()
+        {
+            var vmPtr = LoadVm(VmMenuPath);
 
-			var fireSfx = PxVm.InitializeSfx(vmPtr, "FIRE_LARGE");
+            var menu = PxVm.InitializeMenu(vmPtr, "MENU_MAIN");
 
-			Assert.NotEqual(fireSfx!.instancePtr, IntPtr.Zero);
-			Assert.True(fireSfx.file!.ToLower() == "fire_large01.wav".ToLower(), "FireLarge has wrong file name.");
+            Assert.NotNull(menu);
+            Assert.True(menu!.musicTheme!.ToLower() == "SYS_Menu".ToLower(), "Menu music is not default music.");
 
-			PxVm.pxVmDestroy(vmPtr);
-		}
-        
-		[Fact]
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
+        public void Test_instantiate_Menu_Item_by_name()
+        {
+            var vmPtr = LoadVm(VmMenuPath);
+
+            var menuItem = PxVm.InitializeMenuItem(vmPtr, "MENUITEM_MAIN_HEADLINE");
+
+            Assert.NotNull(menuItem);
+            Assert.True(menuItem.backpic!.ToLower() == "menu_gothicshadow.tga".ToLower(), "Menu item has wrong backpic name.");
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
+        public void Test_instantiate_Sfx_by_name()
+        {
+            var vmPtr = LoadVm(VmSfxPath);
+
+            var fireSfx = PxVm.InitializeSfx(vmPtr, "FIRE_LARGE");
+
+            Assert.NotEqual(fireSfx!.instancePtr, IntPtr.Zero);
+            Assert.True(fireSfx.file!.ToLower() == "fire_large01.wav".ToLower(), "FireLarge has wrong file name.");
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
         public void Test_instantiate_Npc_by_index()
         {
             var vmPtr = LoadVm(VmGothicPath);
@@ -159,10 +187,8 @@ namespace PxCs.Tests
             var start_h = PxVm.pxVmStackPopInt(vmPtr);  // 22
             var npc = PxVm.pxVmStackPopInstance(vmPtr);
 
-
-
-            Assert.True(Array.Exists(new[]{"OCR_HUT_33", "OCR_OUTSIDE_HUT_29"}, el => el == waypoint), $"Waypoint >{waypoint}< is wrong.");
-            Assert.True(Array.Exists(new[]{22, 8}, el=> el==start_h), $"Start_h >{start_h}< is wrong.");
+            Assert.True(Array.Exists(new[] { "OCR_HUT_33", "OCR_OUTSIDE_HUT_29" }, el => el == waypoint), $"Waypoint >{waypoint}< is wrong.");
+            Assert.True(Array.Exists(new[] { 22, 8 }, el => el == start_h), $"Start_h >{start_h}< is wrong.");
             Assert.True(npc != IntPtr.Zero, "Npc is IntPtr.Zero.");
         }
 
@@ -202,7 +228,6 @@ namespace PxCs.Tests
 
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
             PxVm.pxVmRegisterExternal(vmPtr, "ConcatStrings", ConcatStrings);
-
 
             PxVm.pxVmStackPushInt(vmPtr, 2001); // int channel
             PxVm.pxVmStackPushString(vmPtr, "preText"); // string preText

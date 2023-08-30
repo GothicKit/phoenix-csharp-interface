@@ -17,7 +17,9 @@ namespace PxCs.Interface
             PxVmInstanceTypeNpc = 1,
             PxVmInstanceTypeItem = 2,
             PxVmInstanceTypeSfx = 3,
-            PxVmInstanceTypeMusic = 4
+            PxVmInstanceTypeMusic = 4,
+            PxVmInstanceTypeMenu = 5,
+            PxVmInstanceTypeMenuItem = 6
         };
 
         [Flags]
@@ -54,15 +56,73 @@ namespace PxCs.Interface
             ITEM_AMULET   = 1 << 22, // use like amulet
             ITEM_RING     = 1 << 11  // use like ring
         };
-        
+
+        [Flags]
+        public enum PxVmCMenuItemFlags
+        {
+            Chromakeyed = 1 << 0,
+            Transparent = 1 << 1,
+            Selectable = 1 << 2,
+            Movable = 1 << 3,
+            Centered = 1 << 4,
+            Disabled = 1 << 5,
+            Fade = 1 << 6,
+            Effects = 1 << 7,
+            OnlyOutgame = 1 << 8,
+            OnlyIngame = 1 << 9,
+            PerfOption = 1 << 10,
+            Multiline = 1 << 11,
+            NeedsApply = 1 << 12,
+            NeedsRestart = 1 << 13,
+            ExtendedMenu = 1 << 14,
+        }
+
+        public enum PxVmCMenuItemType
+        {
+            PxVmCMenuItemTypeUnknown = 0,
+            PxVmCMenuItemTypeText = 1,
+            PxVmCMenuItemTypeSlider = 2,
+            PxVmCMenuItemTypeInput = 3,
+            PxVmCMenuItemTypeCursor = 4,
+            PxVmCMenuItemTypeChoicebox = 5,
+            PxVmCMenuItemTypeButton = 6,
+            PxVmCMenuItemTypeListbox = 7,
+        }
+
+        public enum PxVmCMenuItemSelectEvent
+        {
+            PxVmCMenuItemSelectEventExecute = 1,
+            PxVmCMenuItemSelectEventChanged = 2,
+            PxVmCMenuItemSelectEventLeave = 3,
+            PxVmCMenuItemSelectEventTimer = 4,
+            PxVmCMenuItemSelectEventClose = 5,
+            PxVmCMenuItemSelectEventInit = 6,
+            PxVmCMenuItemSelectEventSelectPrevious = 7,
+            PxVmCMenuItemSelectEventSelectNext = 8,
+        }
+
+        public enum PxVmCMenuItemSelectAction
+        {
+            PxVmCMenuItemSelectActionUnknown = 0,
+            PxVmCMenuItemSelectActionBack = 1,
+            PxVmCMenuItemSelectActionStartMenu = 2,
+            PxVmCMenuItemSelectActionStartItem = 3,
+            PxVmCMenuItemSelectActionClose = 4,
+            PxVmCMenuItemSelectActionConCommands = 5,
+            PxVmCMenuItemSelectActionPlaySound = 6,
+            PxVmCMenuItemSelectActionExecuteCommands = 7,
+        }
 
         public delegate void PxVmExternalDefaultCallback(IntPtr vmPtr, string missingCallbackName);
         public delegate void PxVmExternalCallback(IntPtr vmPtr);
-        
+
         [DllImport(DLLNAME)] public static extern IntPtr pxScriptGetSymbolById(IntPtr vm, uint index);
         [DllImport(DLLNAME)] public static extern IntPtr pxScriptGetSymbolByName(IntPtr vm, string name);
         [DllImport(DLLNAME)] public static extern uint pxScriptSymbolGetId(IntPtr symbol);
         [DllImport(DLLNAME)] public static extern IntPtr pxScriptSymbolGetName(IntPtr symbol);
+        [DllImport(DLLNAME)] public static extern int pxScriptSymbolGetInt(IntPtr symbol, uint i);
+        [DllImport(DLLNAME)] public static extern float pxScriptSymbolGetFloat(IntPtr symbol, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxScriptSymbolGetString(IntPtr symbol, uint i);
 
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoadFromVfs(IntPtr vfs, string name);
@@ -172,6 +232,56 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetInvRotZ(IntPtr instance);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetInvAnimate(IntPtr instance);
 
+        // C_Menu
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuGetBackPic(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuGetBackWorld(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetPosX(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetPosY(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetDimX(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetDimY(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetAlpha(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuGetMusicTheme(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetEventTimerMsec(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern byte pxVmInstanceMenuGetItemsLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuGetItems(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuGetFlags(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetDefaultOutgame(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuGetDefaultIngame(IntPtr instance);
+
+        // C_MENU_ITEM
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetFontname(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetTextLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetText(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetBackpic(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetAlphamode(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetAlpha(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetType(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetOnSelActionLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetOnSelAction(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetOnSelActionSLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetOnSelActionS(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetOnChgSetOption(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetOnChgSetOptionSection(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetOnEventActionLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetOnEventAction(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetPosX(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetPosY(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetDimX(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetDimY(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstanceMenuItemGetSizeStartScale(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetFlags(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstanceMenuItemGetOpenDelayTime(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstanceMenuItemGetOpenDuration(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetUserFloatLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstanceMenuItemGetUserFloat(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceMenuItemGetUserStringLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetUserString(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetFrameSizex(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetFrameSizey(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetHideIfOptionSectionSet(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceMenuItemGetHideIfOptionSet(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceMenuItemGetHideOnValue(IntPtr instance);
+
         // C_Sfx
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceSfxGetFile(IntPtr instance);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceSfxGetPitchOff(IntPtr instance);
@@ -272,6 +382,50 @@ namespace PxCs.Interface
                 return null;
 
             return GetItemByInstancePtr(itemPtr);
+        }
+
+        public static PxVmMenuData? InitializeMenu(IntPtr vmPtr, string name)
+        {
+            var menuPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeMenu, IntPtr.Zero);
+
+            if (menuPtr == IntPtr.Zero)
+            {
+                return null;
+            }
+            return GetMenuByInstancePtr(menuPtr);
+        }
+
+        public static PxVmMenuData? InitializeMenu(IntPtr vmPtr, uint index)
+        {
+            var menuPtr = pxVmInstanceInitializeByIndex(vmPtr, index, PxVmInstanceType.PxVmInstanceTypeMenu, IntPtr.Zero);
+
+            if (menuPtr == IntPtr.Zero)
+            {
+                return null;
+            }
+            return GetMenuByInstancePtr(menuPtr);
+        }
+
+        public static PxVmMenuItemData? InitializeMenuItem(IntPtr vmPtr, string name)
+        {
+            var menuItem = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypeMenuItem, IntPtr.Zero);
+
+            if (menuItem == IntPtr.Zero)
+            {
+                return null;
+            }
+            return GetMenuItemByInstancePtr(menuItem);
+        }
+
+        public static PxVmMenuItemData? InitializeMenuItem(IntPtr vmPtr, uint index)
+        {
+            var menuItemPtr = pxVmInstanceInitializeByIndex(vmPtr, index, PxVmInstanceType.PxVmInstanceTypeMenuItem, IntPtr.Zero);
+
+            if (menuItemPtr == IntPtr.Zero)
+            {
+                return null;
+            }
+            return GetMenuItemByInstancePtr(menuItemPtr);
         }
 
         public static PxVmSfxData? InitializeSfx(IntPtr vmPtr, string name)
@@ -376,7 +530,7 @@ namespace PxCs.Interface
             int[] condValue = new int[conditionValueCount];
             for (var i = 0u; i < conditionValueCount; i++)
                 condValue[i] = pxVmInstanceItemGetCondValue(instancePtr, i);
-            
+
             var changeAtrCount = pxVmInstanceItemGetChangeAtrLength(instancePtr);
             int[] changeAtr = new int[changeAtrCount];
             for (var i = 0u; i < changeAtrCount; i++)
@@ -391,7 +545,7 @@ namespace PxCs.Interface
             int[] onState = new int[onStateCount];
             for (var i = 0u; i < onStateCount; i++)
                 onState[i] = pxVmInstanceItemGetOnState(instancePtr, i);
-            
+
             var textCount = pxVmInstanceItemGetTextLength(instancePtr);
             string[] text = new string[textCount];
             for (var i = 0u; i < textCount; i++)
@@ -453,6 +607,100 @@ namespace PxCs.Interface
             item.invAnimate = pxVmInstanceItemGetInvAnimate(instancePtr);
 
             return item;
+        }
+
+        private static PxVmMenuData GetMenuByInstancePtr(IntPtr instancePtr)
+        {
+            var menu = new PxVmMenuData();
+
+            // on phoenix side this is of type uint8_t, and uint is 32 bits in c# so we get the byte (8bit integer) and cast it to uint
+            var itemCount = (uint)pxVmInstanceMenuGetItemsLength(instancePtr);
+            string[]? items = new string[itemCount];
+            for (var i = 0u; i < itemCount; i++)
+            {
+                var itemPtr = pxVmInstanceMenuGetItems(instancePtr, i);
+                items[i] = itemPtr.MarshalAsString();
+            }
+
+            menu.backPic = pxVmInstanceMenuGetBackPic(instancePtr).MarshalAsString();
+            menu.backWorld = pxVmInstanceMenuGetBackWorld(instancePtr).MarshalAsString();
+            menu.posX = pxVmInstanceMenuGetPosX(instancePtr);
+            menu.posY = pxVmInstanceMenuGetPosY(instancePtr);
+            menu.dimX = pxVmInstanceMenuGetDimX(instancePtr);
+            menu.dimY = pxVmInstanceMenuGetDimY(instancePtr);
+            menu.alpha = pxVmInstanceMenuGetAlpha(instancePtr);
+            menu.musicTheme = pxVmInstanceMenuGetMusicTheme(instancePtr).MarshalAsString();
+            menu.eventTimerMsec = pxVmInstanceMenuGetEventTimerMsec(instancePtr);
+            menu.items = items;
+            menu.flags = pxVmInstanceMenuGetFlags(instancePtr);
+            menu.defaultOutgame = pxVmInstanceMenuGetDefaultOutgame(instancePtr);
+            menu.defaultIngame = pxVmInstanceMenuGetDefaultIngame(instancePtr);
+
+            return menu;
+        }
+
+        private static PxVmMenuItemData GetMenuItemByInstancePtr(IntPtr instancePtr)
+        {
+            var menuItem = new PxVmMenuItemData();
+
+            var textCount = pxVmInstanceMenuItemGetTextLength(instancePtr);
+            string[] text = new string[textCount];
+            for (int i = 0; i < textCount; i++)
+                text[i] = pxVmInstanceMenuItemGetText(instancePtr, (uint)i).MarshalAsString();
+
+            var onSelActionLength = pxVmInstanceMenuItemGetOnSelActionLength(instancePtr);
+            int[] onSelAction = new int[onSelActionLength];
+            for (int i = 0; i < onSelActionLength; i++)
+                onSelAction[i] = pxVmInstanceMenuItemGetOnSelAction(instancePtr, (uint)i);
+
+            var onSelActionSLength = pxVmInstanceMenuItemGetOnSelActionSLength(instancePtr);
+            string[] onSelActionS = new string[onSelActionSLength];
+            for (int i = 0; i < onSelActionSLength; i++)
+                onSelActionS[i] = pxVmInstanceMenuItemGetOnSelActionS(instancePtr, (uint)i).MarshalAsString();
+
+            var onEventActionLength = pxVmInstanceMenuItemGetOnEventActionLength(instancePtr);
+            int[] onEventAction = new int[onEventActionLength];
+            for (int i = 0; i < onEventActionLength; i++)
+                onEventAction[i] = pxVmInstanceMenuItemGetOnEventAction(instancePtr, (uint)i);
+
+            var userFloatLength = pxVmInstanceMenuItemGetUserFloatLength(instancePtr);
+            float[] userFloat = new float[userFloatLength];
+            for (int i = 0; i < userFloatLength; i++)
+                userFloat[i] = pxVmInstanceMenuItemGetUserFloat(instancePtr, (uint)i);
+
+            var userStringLength = pxVmInstanceMenuItemGetUserStringLength(instancePtr);
+            string[] userString = new string[userStringLength];
+            for (int i = 0; i < userStringLength; i++)
+                userString[i] = pxVmInstanceMenuItemGetUserString(instancePtr, (uint)i).MarshalAsString();
+
+            menuItem.fontname = pxVmInstanceMenuItemGetFontname(instancePtr).MarshalAsString();
+            menuItem.text = text;
+            menuItem.backpic = pxVmInstanceMenuItemGetBackpic(instancePtr).MarshalAsString();
+            menuItem.alphamode = pxVmInstanceMenuItemGetAlphamode(instancePtr).MarshalAsString();
+            menuItem.alpha = pxVmInstanceMenuItemGetAlpha(instancePtr);
+            menuItem.type = pxVmInstanceMenuItemGetType(instancePtr);
+            menuItem.onSelAction = onSelAction;
+            menuItem.onSelActionS = onSelActionS;
+            menuItem.onChgSetOption = pxVmInstanceMenuItemGetOnChgSetOption(instancePtr).MarshalAsString();
+            menuItem.onChgSetOptionSection = pxVmInstanceMenuItemGetOnChgSetOptionSection(instancePtr).MarshalAsString();
+            menuItem.onEventAction = onEventAction;
+            menuItem.posX = pxVmInstanceMenuItemGetPosX(instancePtr);
+            menuItem.posY = pxVmInstanceMenuItemGetPosY(instancePtr);
+            menuItem.dimX = pxVmInstanceMenuItemGetDimX(instancePtr);
+            menuItem.dimY = pxVmInstanceMenuItemGetDimY(instancePtr);
+            menuItem.sizeStartScale = pxVmInstanceMenuItemGetSizeStartScale(instancePtr);
+            menuItem.flags = pxVmInstanceMenuItemGetFlags(instancePtr);
+            menuItem.openDelayTime = pxVmInstanceMenuItemGetOpenDelayTime(instancePtr);
+            menuItem.openDuration = pxVmInstanceMenuItemGetOpenDuration(instancePtr);
+            menuItem.userFloat = userFloat;
+            menuItem.userString = userString;
+            menuItem.frameSizex = pxVmInstanceMenuItemGetFrameSizex(instancePtr);
+            menuItem.frameSizey = pxVmInstanceMenuItemGetFrameSizey(instancePtr);
+            menuItem.hideIfOptionSectionSet = pxVmInstanceMenuItemGetHideIfOptionSectionSet(instancePtr).MarshalAsString();
+            menuItem.hideIfOptionSet = pxVmInstanceMenuItemGetHideIfOptionSet(instancePtr).MarshalAsString();
+            menuItem.hideOnValue = pxVmInstanceMenuItemGetHideOnValue(instancePtr);
+
+            return menuItem;
         }
 
         private static PxVmSfxData GetSfxByInstancePtr(IntPtr instancePtr)
