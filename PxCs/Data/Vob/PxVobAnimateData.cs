@@ -2,6 +2,6 @@
 {
     public class PxVobAnimateData : PxVobData
     {
-
+        public bool startOn;
     }
 }

@@ -2,6 +2,6 @@
 {
     public class PxVobLensFlareData : PxVobData
     {
-
+        public string fx = default!;
     }
 }
