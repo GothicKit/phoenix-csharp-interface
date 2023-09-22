@@ -255,12 +255,12 @@ namespace PxCs.Interface
         
         // Light Preset
         [DllImport(DLLNAME)] public static extern IntPtr pxLightPresetGetPreset(IntPtr lightPreset);
-        [DllImport(DLLNAME)] public static extern uint pxLightPresetGetLightType(IntPtr lightPreset);
+        [DllImport(DLLNAME)] public static extern PxLightMode pxLightPresetGetLightType(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern float pxLightPresetGetRange(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern Vector4Byte pxLightPresetGetColor(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern float pxLightPresetGetConeAngle(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern bool pxLightPresetGetIsStatic(IntPtr lightPreset);
-        [DllImport(DLLNAME)] public static extern uint pxLightPresetGetQuality(IntPtr lightPreset);
+        [DllImport(DLLNAME)] public static extern PxLightQuality pxLightPresetGetQuality(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern IntPtr pxLightPresetGetLensFlareFx(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern bool pxLightPresetGetOn(IntPtr lightPreset);
         [DllImport(DLLNAME)] public static extern uint pxLightPresetGetRangeAnimationScaleCount(IntPtr lightPreset);
@@ -943,11 +943,9 @@ namespace PxCs.Interface
 
         private static void SetVobLightData(IntPtr vobLightPtr, PxVobLightData vobLight)
         {
-            SetVobData(vobLightPtr, vobLight);
-
             vobLight.lightPreset = new PxLightPresetData();
-
             SetLightPresetData(vobLightPtr, vobLight.lightPreset);
+            SetVobData(vobLightPtr, vobLight);
         }
 
         private static void SetVobMessageFilterData(IntPtr vobMessageFilterPtr, PxVobMessageFilterData vobMessageFilter)
@@ -1238,36 +1236,37 @@ namespace PxCs.Interface
 
         private static void SetLightPresetData(IntPtr lightPresetPtr, PxLightPresetData lightPreset)
         {
-            uint rangeAnimationScaleCount = 0;
-            float[] rangeAnimationScale = new float[rangeAnimationScaleCount];
-            for (var i = 0u; i < rangeAnimationScaleCount; i++)
-            {
-                rangeAnimationScale[i] = pxLightPresetGetRangeAnimationScale(lightPresetPtr, i);
-            }
-
-            uint colorAnimationListCount = 0;
-            Vector4Byte[] colorAnimationList = new Vector4Byte[colorAnimationListCount];
-            for (var i = 0u; i < colorAnimationListCount; i++)
-            {
-                colorAnimationList[i] = pxLightPresetGetColorAnimationList(lightPresetPtr, i);
-            }
-
             var preset = pxLightPresetGetPreset(lightPresetPtr);
             var lensflareFx = pxLightPresetGetLensFlareFx(lightPresetPtr);
+
+            // uint rangeAnimationScaleCount = pxLightPresetGetRangeAnimationScaleCount(lightPresetPtr);
+            // float[] rangeAnimationScale = new float[rangeAnimationScaleCount];
+            // for (var i = 0u; i < rangeAnimationScaleCount; i++)
+            // {
+            //     rangeAnimationScale[i] = pxLightPresetGetRangeAnimationScale(lightPresetPtr, i);
+            // }
+            //
+            // uint colorAnimationListCount = pxLightPresetGetColorAnimationListCount(lightPresetPtr);
+            // Vector4Byte[] colorAnimationList = new Vector4Byte[colorAnimationListCount];
+            // for (var i = 0u; i < colorAnimationListCount; i++)
+            // {
+            //     colorAnimationList[i] = pxLightPresetGetColorAnimationList(lightPresetPtr, i);
+            // }
+
             lightPreset.preset = preset != IntPtr.Zero ? preset.MarshalAsString() : "";
             // lightPreset.preset = pxLightPresetGetPreset(lightPresetPtr).MarshalAsString();
-            lightPreset.lightType = (PxLightMode)pxLightPresetGetLightType(lightPresetPtr);
+            lightPreset.lightType = pxLightPresetGetLightType(lightPresetPtr);
             lightPreset.range = pxLightPresetGetRange(lightPresetPtr);
             lightPreset.color = pxLightPresetGetColor(lightPresetPtr);
             lightPreset.coneAngle = pxLightPresetGetConeAngle(lightPresetPtr);
             lightPreset.isStatic = pxLightPresetGetIsStatic(lightPresetPtr);
-            lightPreset.quality = (PxLightQuality)pxLightPresetGetQuality(lightPresetPtr);
-            // lightPreset.lensflareFx = lensflareFx != IntPtr.Zero ? lensflareFx.MarshalAsString() : "";
+            lightPreset.quality = pxLightPresetGetQuality(lightPresetPtr);
+            lightPreset.lensflareFx = lensflareFx != IntPtr.Zero ? lensflareFx.MarshalAsString() : "";
             lightPreset.on = pxLightPresetGetOn(lightPresetPtr);
-            lightPreset.rangeAnimationScale = rangeAnimationScale;
+            // lightPreset.rangeAnimationScale = rangeAnimationScale;
             lightPreset.rangeAnimationFps = pxLightPresetGetRangeAnimationFps(lightPresetPtr);
             lightPreset.rangeAnimationSmooth = pxLightPresetGetRangeAnimationSmooth(lightPresetPtr);
-            lightPreset.colorAnimationList = colorAnimationList;
+            // lightPreset.colorAnimationList = colorAnimationList;
             lightPreset.colorAnimationFps = pxLightPresetGetColorAnimationFps(lightPresetPtr);
             lightPreset.colorAnimationSmooth = pxLightPresetGetColorAnimationSmooth(lightPresetPtr);
             lightPreset.canMove = pxLightPresetGetCanMove(lightPresetPtr);
