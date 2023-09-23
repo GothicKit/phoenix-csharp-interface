@@ -34,20 +34,24 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxScriptSymbolGetString(IntPtr sym, uint index);
 
         
-        public static PxSymbolData GetSymbol(IntPtr scr, uint index)
+        public static PxSymbolData? GetSymbol(IntPtr scr, uint index)
         {
             var symbolPtr = pxScriptGetSymbolById(scr, index);
             return GetSymbol(symbolPtr);
         }
 
-        public static PxSymbolData GetSymbol(IntPtr scr, string name)
+        public static PxSymbolData? GetSymbol(IntPtr scr, string name)
         {
             var symbolPtr = pxScriptGetSymbolByName(scr, name);
+
             return GetSymbol(symbolPtr);
         }
 
-        public static PxSymbolData GetSymbol(IntPtr symbolPtr)
+        public static PxSymbolData? GetSymbol(IntPtr symbolPtr)
         {
+            if (symbolPtr == IntPtr.Zero)
+                return null;
+            
             return new PxSymbolData()
             {
                 name = pxScriptSymbolGetName(symbolPtr).MarshalAsString(),
