@@ -6,12 +6,8 @@ using Xunit;
 
 namespace PxCs.Tests
 {
-    public class PxVmTest : PxPhoenixTest
+    public class PxVmTest : PxDaedalusScriptTest
     {
-        private const string VmGothicPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
-        private const string VmSfxPath = "_work/DATA/scripts/_compiled/SFX.DAT";
-        private const string VmMenuPath = "_work/DATA/scripts/_compiled/MENU.DAT";
-
         public static void PxVmExternalDefaultCallbackFunction(IntPtr vmPtr, string missingCallbackName)
         {
 
@@ -25,15 +21,6 @@ namespace PxCs.Tests
 
             Assert.True(waypointName != string.Empty, "Empty waypoint. Maybe string parsing for pxVmStackPopString() is broken?");
             Assert.True(instance != 0, "Instance is >0<. Maybe pxVmStackPopInt() is broken?");
-        }
-
-        private IntPtr LoadVm(string relativeFilePath)
-        {
-            var bufferPtr = LoadBuffer(relativeFilePath);
-            var vmPtr = PxVm.pxVmLoad(bufferPtr);
-            DestroyBuffer(bufferPtr); // No need any longer
-
-            return vmPtr;
         }
 
         [Fact]
@@ -70,6 +57,8 @@ namespace PxCs.Tests
 
             Assert.Equal(3644, (int)symbol2.id);
             Assert.Equal("GRD_ARMOR_H", symbol2.name.ToUpper());
+            
+            PxVm.pxVmDestroy(vmPtr);
         }
 
         [Fact]
@@ -202,6 +191,8 @@ namespace PxCs.Tests
             var pxNpc = PxVm.InitializeNpc(vmPtr, 7774); // Buddler
 
             var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine, pxNpc.instancePtr);
+
+            PxVm.pxVmDestroy(vmPtr);
         }
 
         // The below test has two purposes:
