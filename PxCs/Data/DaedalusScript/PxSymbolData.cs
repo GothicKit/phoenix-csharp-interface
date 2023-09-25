@@ -1,8 +1,6 @@
-using System;
-
-namespace PxCs.Data.Vm
+namespace PxCs.Data.DaedalusScript
 {
-    public class PxVmSymbolData
+    public class PxSymbolData
     {
         public uint id;
         public string name = default!;

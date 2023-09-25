@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using PxCs.Data;
+using PxCs.Data.DaedalusScript;
 using PxCs.Extensions;
 
 namespace PxCs.Interface
