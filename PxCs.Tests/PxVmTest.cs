@@ -38,29 +38,6 @@ namespace PxCs.Tests
             PxVm.pxVmDestroy(vmPtr);
         }
 
-        /// <summary>
-        /// Shows 2 ways of loading Symbols.
-        /// </summary>
-        [Fact]
-        public void Test_get_Symbols()
-        {
-            var vmPtr = LoadVm(VmGothicPath);
-
-            var symbol1 = PxVm.GetSymbol(vmPtr, 3644); // Should be GRD_ARMOR_H
-            var symbol2 = PxVm.GetSymbol(vmPtr, "GRD_ARMOR_H");
-
-            Assert.NotNull(symbol1);
-            Assert.NotNull(symbol2);
-
-            Assert.Equal(3644, (int)symbol1.id);
-            Assert.Equal("GRD_ARMOR_H", symbol1.name.ToUpper());
-
-            Assert.Equal(3644, (int)symbol2.id);
-            Assert.Equal("GRD_ARMOR_H", symbol2.name.ToUpper());
-            
-            PxVm.pxVmDestroy(vmPtr);
-        }
-
         [Fact]
         public void Test_get_all_C_Item_Instances()
         {

@@ -11,6 +11,9 @@ namespace PxCs.Tests
         protected const string VmMenuPath = "_work/DATA/scripts/_compiled/MENU.DAT";
         
         
+        /// <summary>
+        /// Shows 2 ways of loading Symbols.
+        /// </summary>
         [Fact]
         public void Test_load_Symbol()
         {
