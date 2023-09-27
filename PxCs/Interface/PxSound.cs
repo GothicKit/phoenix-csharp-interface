@@ -14,36 +14,28 @@ namespace PxCs.Interface
         public enum BitDepth
         {
             bit_8 = 8,
-            bit_16 = 16,
+            bit_16 = 16
         }
 
         public static PxSoundData<T>? GetSoundArrayFromVfs<T>(IntPtr vfsPtr, string name) where T : struct
         {
             var vfsSoundNode = PxVfs.pxVfsGetNodeByName(vfsPtr, name);
-
             if (vfsSoundNode == IntPtr.Zero)
-            {
-                throw new AccessViolationException("Sound not found.");
-            }
+                return null;
 
             var wavSound = PxVfs.pxVfsNodeOpenBuffer(vfsSoundNode);
-
             if (wavSound == IntPtr.Zero)
-            {
-                throw new AccessViolationException("Sound could not be opened.");
-            }
+                return null;
 
             try
             {
-                ulong size = PxBuffer.pxBufferSize(wavSound);
-
-                var arrayPtr = IntPtr.Zero;
-                arrayPtr = PxBuffer.pxBufferArray(wavSound);
+                var size = PxBuffer.pxBufferSize(wavSound);
+                var arrayPtr = PxBuffer.pxBufferArray(wavSound);
 
                 if (typeof(T) == typeof(byte))
                 {
                     var wavFile = arrayPtr.MarshalAsArray<T>((uint)size);
-                    return new PxSoundData<T>()
+                    return new PxSoundData<T>
                     {
                         sound = wavFile
                     };
@@ -54,7 +46,7 @@ namespace PxCs.Interface
                     var floatArray = ConvertWAVByteArrayToFloatArray(wavFile);
                     T[] soundArray = new T[floatArray.Length];
                     Array.Copy(floatArray, soundArray, floatArray.Length);
-                    return new PxSoundData<T>()
+                    return new PxSoundData<T>
                     {
                         sound = soundArray
                     };
