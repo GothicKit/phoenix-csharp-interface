@@ -1,8 +1,10 @@
-﻿using PxCs.Data.Event;
+﻿using System;
+using PxCs.Data.Event;
 using static PxCs.Interface.PxModelScript;
 
 namespace PxCs.Data.ModelScript
 {
+    [Serializable]
     public class PxModelScriptAnimationData
     {
         public string name = default!;

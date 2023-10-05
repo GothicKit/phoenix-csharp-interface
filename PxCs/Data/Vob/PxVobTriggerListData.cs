@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobTriggerListData : PxVobTriggerData
     {
         public struct PxTarget

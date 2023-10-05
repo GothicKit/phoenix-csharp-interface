@@ -1,7 +1,9 @@
-﻿using static PxCs.Interface.PxModelScript;
+﻿using System;
+using static PxCs.Interface.PxModelScript;
 
 namespace PxCs.Data.Animation
 {
+    [Serializable]
     public class PxAnimationCombinationData
     {
         public string name = default!;

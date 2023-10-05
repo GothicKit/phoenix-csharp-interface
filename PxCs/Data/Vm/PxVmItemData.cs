@@ -3,6 +3,7 @@ using PxCs.Interface;
 
 namespace PxCs.Data.Vm
 {
+    [Serializable]
     public class PxVmItemData : PxVmData
     {
         public int id;

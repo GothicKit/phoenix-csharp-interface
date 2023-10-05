@@ -1,8 +1,10 @@
+using System;
 using System.Numerics;
 using PxCs.Interface;
 
 namespace PxCs.Data.Struct
 {
+    [Serializable]
     public struct VobDecalData
     {
         public string name;

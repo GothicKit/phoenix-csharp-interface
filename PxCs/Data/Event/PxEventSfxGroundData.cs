@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Event
+﻿using System;
+
+namespace PxCs.Data.Event
 {
+    [Serializable]
     public class PxEventSfxGroundData
     {
         public int frame;

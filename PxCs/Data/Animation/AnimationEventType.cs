@@ -1,6 +1,7 @@
 ﻿namespace PxCs.Data.Animation
 {
-    public enum PxAnimationEventType
+
+	public enum PxAnimationEventType
     {
         PxTag = 0,
 		PxSound = 1,

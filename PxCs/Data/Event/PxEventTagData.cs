@@ -1,7 +1,9 @@
-﻿using static PxCs.Interface.PxModelScript;
+﻿using System;
+using static PxCs.Interface.PxModelScript;
 
 namespace PxCs.Data.Event
 {
+    [Serializable]
     public class PxEventTagData
     {
         public int frame;

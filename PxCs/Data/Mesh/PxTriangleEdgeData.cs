@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Mesh
+﻿using System;
+
+namespace PxCs.Data.Mesh
 {
+    [Serializable]
     public class PxTriangleEdgeData
     {
         public ushort a;

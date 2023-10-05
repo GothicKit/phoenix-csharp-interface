@@ -1,8 +1,10 @@
-﻿using PxCs.Data.Animation;
+﻿using System;
+using PxCs.Data.Animation;
 using PxCs.Data.ModelScript;
 
 namespace PxCs.Data.Model
 {
+    [Serializable]
     public class PxModelScriptData
     {
         public PxSkeletonData skeleton = default!;

@@ -1,7 +1,9 @@
-﻿using static PxCs.Interface.PxWorld;
+﻿using System;
+using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data.Vob
 {
+	[Serializable]
     public class PxVobSoundData : PxVobData
     {
 		public float volume;

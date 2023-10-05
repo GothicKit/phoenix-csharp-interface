@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace PxCs.Data.Struct
 {
@@ -7,6 +8,7 @@ namespace PxCs.Data.Struct
     /// 
     /// Needs to be struct as it will be auto-marshaled.
     /// </summary>
+    [Serializable]
     public struct PxAABBData
     {
         public Vector3 min;
