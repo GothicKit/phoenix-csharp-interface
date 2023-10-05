@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Vob
+﻿using System;
+
+namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobZoneMusicData : PxVobData
     {
         public bool enabled;

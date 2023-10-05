@@ -1,8 +1,10 @@
-﻿using PxCs.Data.Struct;
+﻿using System;
+using PxCs.Data.Struct;
 using System.Numerics;
 
 namespace PxCs.Data.Mesh
 {
+    [Serializable]
     public class PxMultiResolutionMeshData
     {
         public Vector3[] positions = default!;

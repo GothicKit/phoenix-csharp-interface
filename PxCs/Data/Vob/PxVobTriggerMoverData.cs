@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Numerics;
 using PxCs.Data.Animation;
 using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobTriggerMoverData : PxVobTriggerData
     {
         public PxVobTriggerMoverBehaviour behaviour;

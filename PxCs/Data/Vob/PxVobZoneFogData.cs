@@ -1,7 +1,9 @@
-﻿using PxCs.Data.Struct;
+﻿using System;
+using PxCs.Data.Struct;
 
 namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobZoneFogData : PxVobData
     {
         public float rangeCenter;

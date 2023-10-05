@@ -1,7 +1,9 @@
-﻿using static PxCs.Interface.PxTexture;
+﻿using System;
+using static PxCs.Interface.PxTexture;
 
 namespace PxCs.Data.Texture
 {
+    [Serializable]
     public class PxTextureData
     {
         public Format format;

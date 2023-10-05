@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Struct
+﻿using System;
+
+namespace PxCs.Data.Struct
 {
+    [Serializable]
     public struct PxMatrix3x3Data
     {
         // IMPORTANT: float[3][3] - This matrix is column-major column order!

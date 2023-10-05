@@ -1,5 +1,8 @@
+using System;
+
 namespace PxCs.Data.Vm
 {
+    [Serializable]
     public class PxVmMenuData : PxVmData
     {
         public string? backPic;

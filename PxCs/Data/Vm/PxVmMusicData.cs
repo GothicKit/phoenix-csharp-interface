@@ -1,5 +1,8 @@
+using System;
+
 namespace PxCs.Data.Vm
 {
+    [Serializable]
     public class PxVmMusicData : PxVmData
     {
         public string file = default!;

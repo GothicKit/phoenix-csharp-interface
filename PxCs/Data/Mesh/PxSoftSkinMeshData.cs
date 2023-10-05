@@ -1,7 +1,9 @@
-﻿using PxCs.Data.Struct;
+﻿using System;
+using PxCs.Data.Struct;
 
 namespace PxCs.Data.Mesh
 {
+    [Serializable]
     public class PxSoftSkinMeshData
     {
         public PxMultiResolutionMeshData mesh = default!;

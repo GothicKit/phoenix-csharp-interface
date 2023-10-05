@@ -1,7 +1,9 @@
+using System;
 using System.Numerics;
 
 namespace PxCs.Data.Mesh
 {
+    [Serializable]
     public class PxMorphAnimationData
     {
         public string name = default!;

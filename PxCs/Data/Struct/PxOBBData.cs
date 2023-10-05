@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace PxCs.Data.Struct
 {
@@ -9,6 +10,7 @@ namespace PxCs.Data.Struct
     /// https://en.wikipedia.org/wiki/Minimum_bounding_box#Arbitrarily_oriented_minimum_bounding_box
     /// may be rotated in the coordinate system and don't have to align with its axes.
     /// </summary>
+    [Serializable]
     public class PxOBBData
     {
         public Vector3 center;

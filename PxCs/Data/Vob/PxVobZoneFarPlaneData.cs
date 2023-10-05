@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Vob
+﻿using System;
+
+namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobZoneFarPlaneData : PxVobData
     {
         public float vobFarPlaneZ;

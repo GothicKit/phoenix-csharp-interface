@@ -1,7 +1,9 @@
-﻿using PxCs.Data.Struct;
+﻿using System;
+using PxCs.Data.Struct;
 
 namespace PxCs.Data.Model
 {
+    [Serializable]
     public class PxModelHierarchyNodeData
     {
         public short parentIndex;
