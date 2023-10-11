@@ -16,7 +16,7 @@ namespace PxCs.Tests
             Assert.True(worldPtr != IntPtr.Zero, "World couldn't be loaded inside vfs.");
 
             var mesh = PxWorld.pxWorldGetMesh(worldPtr);
-            
+
             var vertices = PxMesh.GetVertices(mesh);
             Assert.Equal(55439u, vertices.LongLength);
             Assert.Equal(new Vector3(91365f, -4026.6008f, 46900f), vertices[0]); // Testing some random Vertex.
@@ -25,6 +25,11 @@ namespace PxCs.Tests
             Assert.Equal(419936u, features.LongLength);
             Assert.Equal(new Vector2(1.1119385f, 2.6441517f), features[0].texture); // Testing some random Feature.
 
+            var lightMaps = PxMesh.GetLightMaps(mesh);
+            Assert.Equal(2126u, lightMaps.LongLength);
+            // TODO: test normals when they will be added
+            Assert.Equal(new Vector3(-2937.2917f,700.0022f,-12120.643f),lightMaps[0].origin);
+
             // Check indices
             var vertexIndices = PxMesh.GetPolygonVertexIndices(mesh);
             Assert.Equal(320166, vertexIndices.Length);
@@ -32,6 +37,8 @@ namespace PxCs.Tests
             Assert.Equal(106722, materialIndices.Length);
             var featureIndices = PxMesh.GetPolygonFeatureIndices(mesh);
             Assert.Equal(320166, featureIndices.Length);
+            var lightMapIndices = PxMesh.GetPolygonLightMapIndices(mesh);
+            Assert.Equal(106722, lightMapIndices.Length);
 
             PxWorld.pxWorldDestroy(worldPtr);
 
