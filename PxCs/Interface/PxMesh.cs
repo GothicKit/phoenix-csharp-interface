@@ -203,7 +203,7 @@ namespace PxCs.Interface
                 pxMshGetLightMap(msh, i, out IntPtr texturePtr, out Vector3 origin);
 
                 
-                var image = PxTexture.GetTextureFromPtr(texturePtr, PxTexture.Format.tex_R5G6B5);
+                var image = PxTexture.GetTextureFromPtr(texturePtr, true, PxTexture.Format.tex_R5G6B5);
 
                 array[i] = new PxLightMapData()
                 {

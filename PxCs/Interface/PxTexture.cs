@@ -44,7 +44,11 @@ namespace PxCs.Interface
 
             if (texturePtr == IntPtr.Zero)
                 return null;
+            return GetTextureFromPtr(texturePtr, false, supportedFormats);
+        }
 
+        public static PxTextureData? GetTextureFromPtr(IntPtr texturePtr,bool isSharedPtr, params Format[] supportedFormats)
+        {
             pxTexGetMeta(texturePtr, out Format format, out uint width, out uint height, out uint mipmapCount, out uint averageColor);
             var mipmaps = new PxTextureMipmapData[mipmapCount];
 
@@ -57,7 +61,8 @@ namespace PxCs.Interface
                     mipmaps[level] = LoadMipmapUncompressed(texturePtr, level);
             }
 
-            pxTexDestroy(texturePtr);
+            if(!isSharedPtr)
+                pxTexDestroy(texturePtr);
 
             // If we loaded the uncompressed value, we need to change the format.
             if (!supportedFormats.Contains(format))
