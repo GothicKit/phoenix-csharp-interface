@@ -17,7 +17,7 @@ namespace PxCs.Data.Vob
         public PxVobData[] childVobs = default!;
 
         public Vector3 position;
-        public PxMatrix3x3Data rotation = default!;
+        public PxMatrix3x3Data? rotation;
 
         public string presetName = "";
         public string vobName = "";
