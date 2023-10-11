@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Vm
+﻿using System;
+
+namespace PxCs.Data.Vm
 {
+	[Serializable]
 	public class PxVmSfxData : PxVmData
 	{
 		public string file = default!;

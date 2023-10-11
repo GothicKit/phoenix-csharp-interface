@@ -45,3 +45,7 @@ dotnet test --environment GOTHIC1_ASSET_DIR="PATH_TO_YOUR_GOTHIC1_ASSETS_ROOT_FO
 
 **execution - VS**  
 --> Just click on Test ;-)
+
+**execution - Rider**
+* Specify the _.runsettings_ file at _Settings --> Unit Testing --> Test Runner --> Test Settings --> Use specific .runsettings/.testsettings settings file_
+* Hint: You can clone the existing _.runsettings_ with file name _local.runsettings_. This file can reflect your local Gothic path settings and will be ignored by git

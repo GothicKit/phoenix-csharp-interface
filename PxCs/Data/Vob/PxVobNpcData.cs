@@ -1,7 +1,9 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobNpcData : PxVobData
     {
         public class PxVobNpcTalentData

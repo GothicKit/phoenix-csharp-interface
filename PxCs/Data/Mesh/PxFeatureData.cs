@@ -1,7 +1,9 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace PxCs.Data.Mesh
 {
+    [Serializable]
     public class PxFeatureData
     {
         public Vector2 texture;

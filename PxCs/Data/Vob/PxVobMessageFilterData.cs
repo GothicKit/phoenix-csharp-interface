@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Vob
+﻿using System;
+
+namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobMessageFilterData : PxVobData
     {
         public string target = default!;

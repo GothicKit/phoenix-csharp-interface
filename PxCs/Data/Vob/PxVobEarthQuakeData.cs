@@ -1,7 +1,9 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobEarthQuakeData : PxVobData
     {
         public float radius;

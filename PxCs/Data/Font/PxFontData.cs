@@ -1,7 +1,9 @@
-﻿using PxCs.Data.Texture;
+﻿using System;
+using PxCs.Data.Texture;
 
 namespace PxCs.Data.Font
 {
+    [Serializable]
     public class PxFontData
     {
         public string name = default!;

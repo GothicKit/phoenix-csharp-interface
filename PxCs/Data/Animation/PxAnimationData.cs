@@ -1,8 +1,9 @@
-﻿using PxCs.Data.Struct;
-using System;
+﻿using System;
+using PxCs.Data.Struct;
 
 namespace PxCs.Data.Animation
 {
+    [Serializable]
     public class PxAnimationData
     {
         public string name = default!;

@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Animation
+﻿using System;
+
+namespace PxCs.Data.Animation
 {
+    [Serializable]
     public class PxAnimationBlendingData
     {
         public string name = default!;

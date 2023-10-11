@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace PxCs.Interface
 {
-    public class PxBuffer
+    public static class PxBuffer
     {
         private const string DLLNAME = PxPhoenix.DLLNAME;
 

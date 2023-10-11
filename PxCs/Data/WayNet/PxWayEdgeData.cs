@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.WayNet
+﻿using System;
+
+namespace PxCs.Data.WayNet
 {
+    [Serializable]
     public class PxWayEdgeData
     {
         public uint a;

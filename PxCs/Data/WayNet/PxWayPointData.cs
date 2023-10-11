@@ -1,7 +1,9 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace PxCs.Data.WayNet
 {
+    [Serializable]
     public class PxWayPointData
     {
         public string name = "";

@@ -6,12 +6,8 @@ using Xunit;
 
 namespace PxCs.Tests
 {
-    public class PxVmTest : PxPhoenixTest
+    public class PxVmTest : PxDaedalusScriptTest
     {
-        private const string VmGothicPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
-        private const string VmSfxPath = "_work/DATA/scripts/_compiled/SFX.DAT";
-        private const string VmMenuPath = "_work/DATA/scripts/_compiled/MENU.DAT";
-
         public static void PxVmExternalDefaultCallbackFunction(IntPtr vmPtr, string missingCallbackName)
         {
 
@@ -27,15 +23,6 @@ namespace PxCs.Tests
             Assert.True(instance != 0, "Instance is >0<. Maybe pxVmStackPopInt() is broken?");
         }
 
-        private IntPtr LoadVm(string relativeFilePath)
-        {
-            var bufferPtr = LoadBuffer(relativeFilePath);
-            var vmPtr = PxVm.pxVmLoad(bufferPtr);
-            DestroyBuffer(bufferPtr); // No need any longer
-
-            return vmPtr;
-        }
-
         [Fact]
         public void Test_call_External_callback()
         {
@@ -49,27 +36,6 @@ namespace PxCs.Tests
             Assert.True(called, "Function wasn't called successfully.");
 
             PxVm.pxVmDestroy(vmPtr);
-        }
-
-        /// <summary>
-        /// Shows 2 ways of loading Symbols.
-        /// </summary>
-        [Fact]
-        public void Test_get_Symbols()
-        {
-            var vmPtr = LoadVm(VmGothicPath);
-
-            var symbol1 = PxVm.GetSymbol(vmPtr, 3644); // Should be GRD_ARMOR_H
-            var symbol2 = PxVm.GetSymbol(vmPtr, "GRD_ARMOR_H");
-
-            Assert.NotNull(symbol1);
-            Assert.NotNull(symbol2);
-
-            Assert.Equal(3644, (int)symbol1.id);
-            Assert.Equal("GRD_ARMOR_H", symbol1.name.ToUpper());
-
-            Assert.Equal(3644, (int)symbol2.id);
-            Assert.Equal("GRD_ARMOR_H", symbol2.name.ToUpper());
         }
 
         [Fact]
@@ -202,6 +168,8 @@ namespace PxCs.Tests
             var pxNpc = PxVm.InitializeNpc(vmPtr, 7774); // Buddler
 
             var success = PxVm.CallFunction(vmPtr, (uint)pxNpc.routine, pxNpc.instancePtr);
+
+            PxVm.pxVmDestroy(vmPtr);
         }
 
         // The below test has two purposes:

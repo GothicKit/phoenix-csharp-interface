@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data
+﻿using System;
+
+namespace PxCs.Data
 {
+    [Serializable]
     public class PxSkeletonData
     {
         public string name = default!;

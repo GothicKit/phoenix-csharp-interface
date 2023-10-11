@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Texture
+﻿using System;
+
+namespace PxCs.Data.Texture
 {
+    [Serializable]
     public class PxTextureMipmapData
     {
         public uint level;

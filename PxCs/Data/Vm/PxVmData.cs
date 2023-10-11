@@ -2,6 +2,7 @@
 
 namespace PxCs.Data.Vm
 {
+	[Serializable]
 	public abstract class PxVmData
 	{
 		public IntPtr instancePtr;

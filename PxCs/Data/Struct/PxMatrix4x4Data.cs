@@ -1,5 +1,8 @@
-﻿namespace PxCs.Data.Struct
+﻿using System;
+
+namespace PxCs.Data.Struct
 {
+    [Serializable]
     public struct PxMatrix4x4Data
     {
         public float m00;

@@ -1,8 +1,10 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using static PxCs.Interface.PxMaterial;
 
 namespace PxCs.Data.Mesh
 {
+    [Serializable]
     public class PxMaterialData
     {
         public string name = default!;

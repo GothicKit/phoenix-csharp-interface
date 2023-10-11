@@ -5,6 +5,7 @@ using static PxCs.Interface.PxWorld;
 
 namespace PxCs.Data.Vob
 {
+    [Serializable]
     public class PxVobData
     {
         public uint id;

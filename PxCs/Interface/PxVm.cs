@@ -116,14 +116,6 @@ namespace PxCs.Interface
         public delegate void PxVmExternalDefaultCallback(IntPtr vmPtr, string missingCallbackName);
         public delegate void PxVmExternalCallback(IntPtr vmPtr);
 
-        [DllImport(DLLNAME)] public static extern IntPtr pxScriptGetSymbolById(IntPtr vm, uint index);
-        [DllImport(DLLNAME)] public static extern IntPtr pxScriptGetSymbolByName(IntPtr vm, string name);
-        [DllImport(DLLNAME)] public static extern uint pxScriptSymbolGetId(IntPtr symbol);
-        [DllImport(DLLNAME)] public static extern IntPtr pxScriptSymbolGetName(IntPtr symbol);
-        [DllImport(DLLNAME)] public static extern int pxScriptSymbolGetInt(IntPtr symbol, uint i);
-        [DllImport(DLLNAME)] public static extern float pxScriptSymbolGetFloat(IntPtr symbol, uint i);
-        [DllImport(DLLNAME)] public static extern IntPtr pxScriptSymbolGetString(IntPtr symbol, uint i);
-
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoad(IntPtr buffer);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxVmDestroy(IntPtr vm);
@@ -446,32 +438,6 @@ namespace PxCs.Interface
                 return null;
 
             return GetMusicByInstancePtr(sfxPtr);
-        }
-
-        public static PxVmSymbolData? GetSymbol(IntPtr vm, uint index)
-        {
-            var symbolPtr = pxScriptGetSymbolById(vm, index);
-
-            return GetSymbolData(symbolPtr);
-        }
-
-        public static PxVmSymbolData? GetSymbol(IntPtr vm, string name)
-        {
-            var symbolPtr = pxScriptGetSymbolByName(vm, name);
-
-            return GetSymbolData(symbolPtr);
-        }
-
-        private static PxVmSymbolData? GetSymbolData(IntPtr symbolPtr)
-        {
-            if (symbolPtr == IntPtr.Zero)
-                return null;
-
-            return new PxVmSymbolData()
-            {
-                id = pxScriptSymbolGetId(symbolPtr),
-                name = pxScriptSymbolGetName(symbolPtr).MarshalAsString()
-            };
         }
 
         public static string[] GetInstancesByClassName(IntPtr vmPtr, string name)
