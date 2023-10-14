@@ -119,6 +119,9 @@ namespace PxCs.Tests
             Assert.Equal(-1, nodes[0].parentNodeIndex);
             Assert.Equal(0u, nodes[0].polygonIndex);
             Assert.Equal(0u, nodes[0].polygonCount);
+            
+            PxWorld.pxWorldDestroy(worldPtr);
+            DestroyVfs(vfsPtr);
         }
     }
 }
