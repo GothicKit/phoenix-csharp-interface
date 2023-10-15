@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using Microsoft.VisualBasic.CompilerServices;
 using PxCs.Data.Vob;
 using PxCs.Interface;
@@ -86,6 +87,39 @@ namespace PxCs.Tests
             var decalVob = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVob && i.visualType == PxWorld.PxVobVisualType.PxVobVisualDecal);
             Assert.True(decalVob.vobDecal.HasValue);
 
+            PxWorld.pxWorldDestroy(worldPtr);
+            DestroyVfs(vfsPtr);
+        }
+
+        [Fact]
+        public void Test_load_BspTree()
+        {
+            var vfsPtr = LoadVfs("Data/worlds.VDF");
+            var worldPtr = PxWorld.pxWorldLoadFromVfs(vfsPtr, "world.zen");
+            var bspPtr = PxWorld.pxWorldGetBspTree(worldPtr);
+
+            var mode = PxBspTree.pxBspGetMode(bspPtr);
+            Assert.Equal(PxBspTree.PxBspTreeMode.PxBspOutdoor, mode);
+
+            var polygonIndices = PxBspTree.GetPolygonIndices(bspPtr);
+            Assert.Equal(480135, polygonIndices.Length);
+            Assert.Equal(102u, polygonIndices[150]);
+            
+            var sectors = PxBspTree.GetSectors(bspPtr);
+            Assert.Equal(299, sectors.Length);
+            Assert.Equal("WALD11", sectors[0].name);
+            Assert.Equal(9, sectors[0].nodeIndices.Length);
+            Assert.Equal(24, sectors[0].portalPolygonIndices.Length);
+            
+            var nodes = PxBspTree.GetNodes(bspPtr);
+            Assert.Equal(6644, nodes.Length);
+            Assert.Equal(new Vector4(1, 0, 0, 18540.0156f), nodes[0].plane);
+            Assert.Equal(1, nodes[0].frontNodeIndex);
+            Assert.Equal(1599, nodes[0].backNodeIndex);
+            Assert.Equal(-1, nodes[0].parentNodeIndex);
+            Assert.Equal(0u, nodes[0].polygonIndex);
+            Assert.Equal(0u, nodes[0].polygonCount);
+            
             PxWorld.pxWorldDestroy(worldPtr);
             DestroyVfs(vfsPtr);
         }
