@@ -27,6 +27,12 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxMshGetPolygonMaterialIndices(IntPtr msh, out uint length);
         [DllImport(DLLNAME)] public static extern IntPtr pxMshGetPolygonFeatureIndices(IntPtr msh, out uint length);
         [DllImport(DLLNAME)] public static extern IntPtr pxMshGetPolygonVertexIndices(IntPtr msh, out uint length);
+        
+        [DllImport(DLLNAME)] public static extern uint pxMshGetPolygonCount(IntPtr msh);
+
+        [DllImport(DLLNAME)]
+        public static extern void pxMshGetPolygon(IntPtr msh, uint idx, out uint materialIndex, out int lightmapIndex,
+            out PxPolygonFlagsData flags, out IntPtr vertexIndices, out IntPtr featureIndices, out uint vertexCount);
 
 
         public static int[] GetPolygonVertexIndices(IntPtr msh)
@@ -42,6 +48,28 @@ namespace PxCs.Interface
         public static int[] GetPolygonFeatureIndices(IntPtr msh)
         {
             return pxMshGetPolygonFeatureIndices(msh, out uint length).MarshalAsArray<int>(length);
+        }
+
+        public static PxPolygonData[] GetPolygons(IntPtr msh)
+        {
+            var count = pxMshGetPolygonCount(msh);
+            var array = new PxPolygonData[count];
+            
+            for (var i = 0u; i < count; i++)
+            {
+                array[i] = new PxPolygonData
+                {
+                    flags = new PxPolygonFlagsData()
+                };
+
+                pxMshGetPolygon(msh, i, out array[i].materialIndex, out array[i].lightmapIndex, out array[i].flags,
+                    out IntPtr vertexIndices, out IntPtr featureIndices, out uint vertexCount);
+
+                array[i].vertexIndices = vertexIndices.MarshalAsArray<uint>(vertexCount);
+                array[i].featureIndices = featureIndices.MarshalAsArray<uint>(vertexCount);
+            }
+
+            return array;
         }
 
         public static Vector3[] GetVertices(IntPtr msh)

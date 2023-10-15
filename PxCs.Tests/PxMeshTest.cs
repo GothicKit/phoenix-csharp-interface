@@ -32,6 +32,10 @@ namespace PxCs.Tests
             Assert.Equal(106722, materialIndices.Length);
             var featureIndices = PxMesh.GetPolygonFeatureIndices(mesh);
             Assert.Equal(320166, featureIndices.Length);
+            
+            // Check Polygons
+            var polygons = PxMesh.GetPolygons(mesh);
+            Assert.Equal(138215, polygons.Length);
 
             PxWorld.pxWorldDestroy(worldPtr);
 
