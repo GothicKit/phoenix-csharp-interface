@@ -19,7 +19,8 @@ namespace PxCs.Interface
             PxVmInstanceTypeSfx = 3,
             PxVmInstanceTypeMusic = 4,
             PxVmInstanceTypeMenu = 5,
-            PxVmInstanceTypeMenuItem = 6
+            PxVmInstanceTypeMenuItem = 6,
+            PxVmInstanceTypePfx = 7
         };
 
         [Flags]
@@ -294,6 +295,61 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern int pxVmInstanceMusicGetTransitionType(IntPtr instance);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceMusicGetTransitionSubType(IntPtr instance);
 
+        // C_ParticleFX
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetPpsValue(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetPpsScaleKeys(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetPpsIsLooping(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetPpsIsSmooth(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetPpsFps(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetPpsCrateEm(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetPpsCreateEmDelay(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpType(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpFor(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpOffsetVec(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpDistribType(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetShpDistribWalkSpeed(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetShpIsVolume(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpDim(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpMesh(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetShpMeshRender(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetShpScaleKeys(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetShpScaleIsLooping(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetShpScaleIsSmooth(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetShpScaleFps(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetDirMode(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetDirFor(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetDirModeTargetFor(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetDirModeTargetPos(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetDirAngleHead(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetDirAngleHeadVar(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetDirAngleElev(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetDirAngleElevVar(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetVelAvg(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetVelVar(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetLspPartAvg(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetLspPartVar(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetFlyGravity(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetFlyCollDet(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetVisName(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetVisOrientation(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetVisTexIsQuadPoly(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetVisTexAniFps(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern bool pxVmInstancePfxGetVisTexAniIsLooping(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetVisTexColorStart(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetVisTexColorEnd(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetVisSizeStart(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetVisSizeEndScale(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetVisAlphaFunc(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetVisAlphaStart(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetVisAlphaEnd(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetTrlFadeSpeed(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetTrlTexture(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetTrlWidth(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetMrkFadeSpeed(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetMrkTexture(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetMrkSize(IntPtr instance);
+
+        
         public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
         {
             StackPushParameters(vmPtr, parameters);
@@ -438,6 +494,16 @@ namespace PxCs.Interface
                 return null;
 
             return GetMusicByInstancePtr(sfxPtr);
+        }
+
+        public static PxVmPfxData? InitializePfx(IntPtr vmPtr, string name)
+        {
+            var pfxPtr = pxVmInstanceInitializeByName(vmPtr, name, PxVmInstanceType.PxVmInstanceTypePfx, IntPtr.Zero);
+
+            if (pfxPtr == IntPtr.Zero)
+                return null;
+
+            return GetPfxByInstancePtr(pfxPtr);
         }
 
         public static string[] GetInstancesByClassName(IntPtr vmPtr, string name)
@@ -686,6 +752,78 @@ namespace PxCs.Interface
 
             return sfx;
         }
+
+        private static PxVmPfxData GetPfxByInstancePtr(IntPtr instancePtr)
+        {
+            var pfx = new PxVmPfxData();
+            AddInstanceData(pfx, instancePtr);
+
+            pfx.ppsValue = pxVmInstancePfxGetPpsValue(instancePtr);
+		    pfx.ppsScaleKeys = pxVmInstancePfxGetPpsScaleKeys(instancePtr).MarshalAsString();
+		    pfx.ppsIsLooping = pxVmInstancePfxGetPpsIsLooping(instancePtr);
+		    pfx.ppsIsSmooth = pxVmInstancePfxGetPpsIsSmooth(instancePtr);
+		    pfx.ppsFPS = pxVmInstancePfxGetPpsFps(instancePtr);
+		    pfx.ppsCreateEm = pxVmInstancePfxGetPpsCrateEm(instancePtr).MarshalAsString();
+		    pfx.ppsCreateEmDelay = pxVmInstancePfxGetPpsCreateEmDelay(instancePtr);
+
+		    pfx.shpType = pxVmInstancePfxGetShpType(instancePtr).MarshalAsString();
+		    pfx.shpFOR = pxVmInstancePfxGetShpFor(instancePtr).MarshalAsString();
+		    pfx.shpOffsetVec = pxVmInstancePfxGetShpOffsetVec(instancePtr).MarshalAsString();
+		    pfx.shpDistribType = pxVmInstancePfxGetShpDistribType(instancePtr).MarshalAsString();
+		    pfx.shpDistribWalkSpeed = pxVmInstancePfxGetShpDistribWalkSpeed(instancePtr);
+		    pfx.shpIsVolume = pxVmInstancePfxGetShpIsVolume(instancePtr);
+		    pfx.shpDim = pxVmInstancePfxGetShpDim(instancePtr).MarshalAsString();
+		    pfx.shpMesh = pxVmInstancePfxGetShpMesh(instancePtr).MarshalAsString();
+		    pfx.shpMeshRender = pxVmInstancePfxGetShpMeshRender(instancePtr);
+		    pfx.shpScaleKeys = pxVmInstancePfxGetShpScaleKeys(instancePtr).MarshalAsString();
+            pfx.shpScaleIsLooping = pxVmInstancePfxGetShpScaleIsLooping(instancePtr);
+		    pfx.shpScaleIsSmooth = pxVmInstancePfxGetShpScaleIsSmooth(instancePtr);
+		    pfx.shpScaleFPS = pxVmInstancePfxGetShpScaleFps(instancePtr);
+
+		    pfx.dirMode = pxVmInstancePfxGetDirMode(instancePtr).MarshalAsString();
+		    pfx.dirFOR = pxVmInstancePfxGetDirFor(instancePtr).MarshalAsString();
+		    pfx.dirModeTargetFOR = pxVmInstancePfxGetDirModeTargetFor(instancePtr).MarshalAsString();
+		    pfx.dirModeTargetPos = pxVmInstancePfxGetDirModeTargetPos(instancePtr).MarshalAsString();
+		    pfx.dirAngleHead = pxVmInstancePfxGetDirAngleHead(instancePtr);
+		    pfx.dirAngleHeadVar = pxVmInstancePfxGetDirAngleHeadVar(instancePtr);
+		    pfx.dirAngleElev = pxVmInstancePfxGetDirAngleElev(instancePtr);
+		    pfx.dirAngleElevVar = pxVmInstancePfxGetDirAngleElevVar(instancePtr);
+		    pfx.velAvg = pxVmInstancePfxGetVelAvg(instancePtr);
+		    pfx.velVar = pxVmInstancePfxGetVelVar(instancePtr);
+
+		    pfx.lspPartAvg = pxVmInstancePfxGetLspPartAvg(instancePtr);
+		    pfx.lspPartVar = pxVmInstancePfxGetLspPartVar(instancePtr);
+
+		    pfx.flyGravity = pxVmInstancePfxGetFlyGravity(instancePtr).MarshalAsString();
+		    pfx.flyCollDet = pxVmInstancePfxGetFlyCollDet(instancePtr);
+
+		    pfx.visName = pxVmInstancePfxGetVisName(instancePtr).MarshalAsString();
+		    pfx.visOrientation = pxVmInstancePfxGetVisOrientation(instancePtr).MarshalAsString();
+		    pfx.visTexIsQuadPoly = pxVmInstancePfxGetVisTexIsQuadPoly(instancePtr);
+		    pfx.visTexAniFPS = pxVmInstancePfxGetVisTexAniFps(instancePtr);
+		    pfx.visTexAniIsLooping = pxVmInstancePfxGetVisTexAniIsLooping(instancePtr);
+
+		    pfx.visTexColorStart = pxVmInstancePfxGetVisTexColorStart(instancePtr).MarshalAsString();
+		    pfx.visTexColorEnd = pxVmInstancePfxGetVisTexColorEnd(instancePtr).MarshalAsString();
+
+		    pfx.visSizeStart = pxVmInstancePfxGetVisSizeStart(instancePtr).MarshalAsString();
+		    pfx.visSizeEndScale = pxVmInstancePfxGetVisSizeEndScale(instancePtr);
+
+            pfx.visAlphaFunc = pxVmInstancePfxGetVisAlphaFunc(instancePtr).MarshalAsString();
+		    pfx.visAlphaStart = pxVmInstancePfxGetVisAlphaStart(instancePtr);
+		    pfx.visAlphaEnd = pxVmInstancePfxGetVisAlphaEnd(instancePtr);
+
+		    pfx.trlFadeSpeed = pxVmInstancePfxGetTrlFadeSpeed(instancePtr);
+		    pfx.trlTexture = pxVmInstancePfxGetTrlTexture(instancePtr).MarshalAsString();
+		    pfx.trlWidth = pxVmInstancePfxGetTrlWidth(instancePtr);
+
+		    pfx.mrkFadeSpeed = pxVmInstancePfxGetMrkFadeSpeed(instancePtr);
+		    pfx.mrkTexture = pxVmInstancePfxGetMrkTexture(instancePtr).MarshalAsString();
+		    pfx.mrkSize = pxVmInstancePfxGetMrkSize(instancePtr);
+
+            return pfx;
+        }
+
         private static PxVmMusicData GetMusicByInstancePtr(IntPtr instancePtr)
         {
             var music = new PxVmMusicData();
