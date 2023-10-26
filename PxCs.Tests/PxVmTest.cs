@@ -130,6 +130,19 @@ namespace PxCs.Tests
         }
 
         [Fact]
+        public void Test_instantiate_Pfx_by_name()
+        {
+            var vmPtr = LoadVm(VmPfxPath);
+
+            var firePfx = PxVm.InitializePfx(vmPtr, "FIRE");
+
+            Assert.NotEqual(firePfx!.instancePtr, IntPtr.Zero);
+            Assert.True(firePfx.shpType.ToLower() == "sphere", "Fire has wrong shpType.");
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
         public void Test_instantiate_Npc_by_index()
         {
             var vmPtr = LoadVm(VmGothicPath);
