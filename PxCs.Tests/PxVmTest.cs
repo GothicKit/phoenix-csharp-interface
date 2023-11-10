@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PxCs.Data.Vm;
 using PxCs.Interface;
@@ -58,6 +59,20 @@ namespace PxCs.Tests
             var hero = PxVm.InitializeNpc(vmPtr, "hero");
 
             Assert.NotEqual(hero!.instancePtr, IntPtr.Zero);
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
+        public void Test_enumerate_Items()
+        {
+            var vmPtr = LoadVm(VmGothicPath);
+
+            var itemNames = new List<string>();
+            PxVm.pxVmEnumerateInstancesByClassName(vmPtr, "C_Item", (string name) => itemNames.Add(name));
+
+            Assert.True(itemNames.Count > 0, "No items found.");
+            Assert.True(itemNames.Contains("ITARSCROLLHEAL"), "No scroll found.");
 
             PxVm.pxVmDestroy(vmPtr);
         }
