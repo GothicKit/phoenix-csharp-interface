@@ -7,6 +7,8 @@ namespace PxCs.Data.Sound
     {
         public Type arrayType;
         public T[] sound;
+        public ushort channels;
+        public int sampleRate;
 
         public PxSoundData()
         {

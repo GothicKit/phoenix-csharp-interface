@@ -197,6 +197,7 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldLoadFromVfs(IntPtr vfs, string name);
         [DllImport(DLLNAME)] public static extern void pxWorldDestroy(IntPtr world);
 
+        [DllImport(DLLNAME)] public static extern IntPtr pxWorldGetBspTree(IntPtr world);
         [DllImport(DLLNAME)] public static extern IntPtr pxWorldGetMesh(IntPtr world);
         [DllImport(DLLNAME)] public static extern uint pxWorldGetWayPointCount(IntPtr world);
         [DllImport(DLLNAME)]

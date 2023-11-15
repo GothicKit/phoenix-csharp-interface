@@ -31,24 +31,30 @@ namespace PxCs.Interface
             {
                 var size = PxBuffer.pxBufferSize(wavSound);
                 var arrayPtr = PxBuffer.pxBufferArray(wavSound);
+                var wavFile = arrayPtr.MarshalAsArray<byte>((uint)size);
+                
+                UInt16 channels = BitConverter.ToUInt16(wavFile, 22);
+                int sampleRate = BitConverter.ToInt32(wavFile, 24);
 
                 if (typeof(T) == typeof(byte))
                 {
-                    var wavFile = arrayPtr.MarshalAsArray<T>((uint)size);
                     return new PxSoundData<T>
                     {
-                        sound = wavFile
+                        sound = wavFile as T[],
+                        channels = channels,
+                        sampleRate = sampleRate
                     };
                 }
                 else if (typeof(T) == typeof(float))
                 {
-                    var wavFile = arrayPtr.MarshalAsArray<byte>((uint)size);
                     var floatArray = ConvertWAVByteArrayToFloatArray(wavFile);
                     T[] soundArray = new T[floatArray.Length];
                     Array.Copy(floatArray, soundArray, floatArray.Length);
                     return new PxSoundData<T>
                     {
-                        sound = soundArray
+                        sound = soundArray,
+                        channels = channels,
+                        sampleRate = sampleRate
                     };
                 }
                 else
@@ -112,7 +118,6 @@ namespace PxCs.Interface
                     data[i] = (float)source[i] / maxValue;
 
                 return data;
-
             }
             else if (bit == BitDepth.bit_16)
             {
@@ -161,4 +166,3 @@ namespace PxCs.Interface
         }
     }
 }
-

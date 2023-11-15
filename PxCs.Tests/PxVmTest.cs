@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PxCs.Data.Vm;
 using PxCs.Interface;
@@ -58,6 +59,20 @@ namespace PxCs.Tests
             var hero = PxVm.InitializeNpc(vmPtr, "hero");
 
             Assert.NotEqual(hero!.instancePtr, IntPtr.Zero);
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
+        public void Test_enumerate_Items()
+        {
+            var vmPtr = LoadVm(VmGothicPath);
+
+            var itemNames = new List<string>();
+            PxVm.pxVmEnumerateInstancesByClassName(vmPtr, "C_Item", (string name) => itemNames.Add(name));
+
+            Assert.True(itemNames.Count > 0, "No items found.");
+            Assert.True(itemNames.Contains("ITARSCROLLHEAL"), "No scroll found.");
 
             PxVm.pxVmDestroy(vmPtr);
         }
@@ -125,6 +140,19 @@ namespace PxCs.Tests
 
             Assert.NotEqual(fireSfx!.instancePtr, IntPtr.Zero);
             Assert.True(fireSfx.file!.ToLower() == "fire_large01.wav".ToLower(), "FireLarge has wrong file name.");
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
+        public void Test_instantiate_Pfx_by_name()
+        {
+            var vmPtr = LoadVm(VmPfxPath);
+
+            var firePfx = PxVm.InitializePfx(vmPtr, "FIRE");
+
+            Assert.NotEqual(firePfx!.instancePtr, IntPtr.Zero);
+            Assert.True(firePfx.shpType.ToLower() == "sphere", "Fire has wrong shpType.");
 
             PxVm.pxVmDestroy(vmPtr);
         }

@@ -8,6 +8,7 @@ namespace PxCs.Tests
     {
         protected const string VmGothicPath = "_work/DATA/scripts/_compiled/GOTHIC.DAT";
         protected const string VmSfxPath = "_work/DATA/scripts/_compiled/SFX.DAT";
+        protected const string VmPfxPath = "_work/DATA/scripts/_compiled/PARTICLEFX.DAT";
         protected const string VmMenuPath = "_work/DATA/scripts/_compiled/MENU.DAT";
         
         
