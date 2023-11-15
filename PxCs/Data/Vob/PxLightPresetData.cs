@@ -15,10 +15,10 @@ namespace PxCs.Data.Vob
         public string lensflareFx = default!;
 
         public bool on;
-        public float[]? rangeAnimationScale;
+        public float[] rangeAnimationScale = default!;
         public float rangeAnimationFps;
         public bool rangeAnimationSmooth;
-        public Vector4Byte[]? colorAnimationList;
+        public Vector4Byte[] colorAnimationList = default!;
         public float colorAnimationFps;
         public bool colorAnimationSmooth;
         public bool canMove;

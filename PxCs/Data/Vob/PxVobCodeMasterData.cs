@@ -10,7 +10,7 @@ namespace PxCs.Data.Vob
         public bool firstFalseIsFailure;
         public string failureTarget = default!;
         public bool untriggeredCancels;
-        public string[]? slaves;
+        public string[] slaves  = default!;
 
     }
 }

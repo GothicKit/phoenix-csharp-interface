@@ -6,8 +6,8 @@ namespace PxCs.Data.Vob
     public class PxVobMobContainerData : PxVobMobInterData
     {
         public bool locked;
-        public string? key;
-        public string? pickString;
-        public string? contents;
+        public string key = default!;
+        public string pickString = default!;
+        public string contents = default!;
     }
 }
