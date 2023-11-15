@@ -53,54 +53,20 @@ namespace PxCs.Tests
             var item = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCItem);
             Assert.IsType<PxVobItemData>(item);
 
-            // var npc = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCNpc);
-            // Assert.IsType<PxVobNpcData>(npc);
-
-            // var moverController = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCMoverController);
-            // Assert.IsType<PxVobMoverControllerData>(moverController);
-
             var pfxController = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCPFXController);
             Assert.IsType<PxVobPfxControllerData>(pfxController);
 
             var animate = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobAnimate);
             Assert.IsType<PxVobAnimateData>(animate);
 
-            // var lensFlare = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobLensFlare);
-            // Assert.IsType<PxVobLensFlareData>(lensFlare);
-
             var light = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCVobLight);
             Assert.IsType<PxVobLightData>(light);
-
-            // var messageFilter = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCMessageFilter);
-            // Assert.IsType<PxVobMessageFilterData>(messageFilter);
-
-            // var codeMaster = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCCodeMaster);
-            // Assert.IsType<PxVobCodeMasterData>(codeMaster);
-
-            // var triggerWorldStart = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTriggerWorldStart);
-            // Assert.IsType<PxVobTriggerListData>(triggerWorldStart);
-
-            // var touchDamage = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCTouchDamage);
-            // Assert.IsType<PxVobTouchDamageData>(touchDamage);
-
-            // var triggerUntouch = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTriggerUntouch);
-            // Assert.IsType<PxVobTriggerUntouchData>(triggerUntouch);
-
-            // var earthquake = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCEarthquake);
-            // Assert.IsType<PxVobEarthQuakeData>(earthquake);
 
             var chest = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCMobContainer);
             Assert.IsType<PxVobMobContainerData>(chest);
 
-            // In world.zen there is no Trigger. Therefore commenting this line out.
-            // var trigger = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTrigger);
-            // Assert.IsType<PxVobTriggerData>(trigger);
-
             var triggerList = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_zCTriggerList);
             Assert.IsType<PxVobTriggerListData>(triggerList);
-
-            // var triggerScript = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCTriggerScript);
-            // Assert.IsType<PxVobTriggerScriptData>(triggerScript);
 
             var triggerLevelChange = vobs[0].childVobs!.First(i => i.type == PxWorld.PxVobType.PxVob_oCTriggerChangeLevel);
             Assert.IsType<PxVobTriggerChangeLevelData>(triggerLevelChange);
