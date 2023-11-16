@@ -73,7 +73,7 @@ namespace PxCs.Data.Vob
         public string currentRoutine = default!;
         public bool respawn;
         public int respawnTime;
-        public int[]? protection;
+        public int[] protection = default!;
         public int bsInterruptableOverride;
         public int npcType;
         public int spellMana;
