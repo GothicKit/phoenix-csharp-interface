@@ -163,10 +163,27 @@ namespace PxCs.Tests
             var vmPtr = LoadVm(VmGothicPath);
             PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
 
-            // FIXME: I need to check what's a real index of an NPC.
             var npc = PxVm.InitializeNpc(vmPtr, 7656);
 
             Assert.NotEqual(npc!.instancePtr, IntPtr.Zero);
+            Assert.True(npc.level != 0, "NPC has no level set.");
+
+            PxVm.pxVmDestroy(vmPtr);
+        }
+
+        [Fact]
+        public void Test_change_Npc_value()
+        {
+            var vmPtr = LoadVm(VmGothicPath);
+            PxVm.pxVmRegisterExternalDefault(vmPtr, PxVmExternalDefaultCallbackFunction);
+
+            var npc = PxVm.InitializeNpc(vmPtr, 7656);
+            var valueToTest = "SomeDebugValue";
+
+            Assert.True(npc.wp != valueToTest);
+            PxVm.pxVmInstanceNpcSetWP(npc.instancePtr, valueToTest);
+
+            // There is no way to get the information back as of now. We can therefore check for an exception only.
 
             PxVm.pxVmDestroy(vmPtr);
         }
