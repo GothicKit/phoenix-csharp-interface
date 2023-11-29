@@ -164,11 +164,41 @@ namespace PxCs.Interface
         // C_Npc
         public delegate void PxVmEnumerateInstancesCallback(string itemName);
         [DllImport(DLLNAME)] public static extern void pxVmEnumerateInstancesByClassName(IntPtr vm, string name, PxVmEnumerateInstancesCallback cb);
-
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetId(IntPtr instance);
         [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNameLength(IntPtr instance);
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetName(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetSlot(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetNpcType(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetFlags(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetAttributeLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetAttribute(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetProtectionLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetProtection(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetDamageLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetDamage(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetDamageType(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetGuild(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetLevel(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetMissionLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetMission(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetFightTactic(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetWeapon(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetVoice(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetVoicePitch(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetBodyMass(IntPtr instance);
         [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetRoutine(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetStartAiState(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetSpawnPoint(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetSpawnDelay(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetSenses(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetSensesRange(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern uint pxVmInstanceNpcGetAiLength(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetAiVar(IntPtr instance, uint i);
+        [DllImport(DLLNAME)] public static extern IntPtr pxVmInstanceNpcGetWP(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern void pxVmInstanceNpcSetWP(IntPtr instance, string wpName);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetExp(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetExpNext(IntPtr instance);
+        [DllImport(DLLNAME)] public static extern int pxVmInstanceNpcGetLp(IntPtr instance);
 
         // C_Item
         [DllImport(DLLNAME)] public static extern int pxVmInstanceItemGetId(IntPtr instance);
@@ -349,7 +379,7 @@ namespace PxCs.Interface
         [DllImport(DLLNAME)] public static extern IntPtr pxVmInstancePfxGetMrkTexture(IntPtr instance);
         [DllImport(DLLNAME)] public static extern float pxVmInstancePfxGetMrkSize(IntPtr instance);
 
-        
+
         public static bool CallFunction(IntPtr vmPtr, string methodName, params object[] parameters)
         {
             StackPushParameters(vmPtr, parameters);
@@ -525,15 +555,64 @@ namespace PxCs.Interface
             var npc = new PxVmNpcData();
             AddInstanceData(npc, instancePtr);
 
-            var nameCount = pxVmInstanceNpcGetNameLength(instancePtr);
-            string[] names = new string[nameCount];
-            for (var i = 0u; i < nameCount; i++)
-                names[i] = pxVmInstanceNpcGetName(instancePtr, i).MarshalAsString();
-
             npc.id = pxVmInstanceNpcGetId(instancePtr);
             npc.symbolIndex = pxVmInstanceGetSymbolIndex(instancePtr);
-            npc.names = names;
+
+            npc.slot = pxVmInstanceNpcGetSlot(instancePtr).MarshalAsString();
+            npc.npcType = pxVmInstanceNpcGetNpcType(instancePtr);
+            npc.flags = pxVmInstanceNpcGetFlags(instancePtr);
+            npc.startAiState = pxVmInstanceNpcGetStartAiState(instancePtr);
+            npc.spawnPoint = pxVmInstanceNpcGetSpawnPoint(instancePtr).MarshalAsString();
+            npc.spawnDelay = pxVmInstanceNpcGetSpawnDelay(instancePtr);
+            npc.damageType = pxVmInstanceNpcGetDamageType(instancePtr);
+            npc.guild = pxVmInstanceNpcGetGuild(instancePtr);
+            npc.level = pxVmInstanceNpcGetLevel(instancePtr);
+            npc.fightTactic = pxVmInstanceNpcGetFightTactic(instancePtr);
+            npc.weapon = pxVmInstanceNpcGetWeapon(instancePtr);
+            npc.voice = pxVmInstanceNpcGetVoice(instancePtr);
+            npc.voicePitch = pxVmInstanceNpcGetVoicePitch(instancePtr);
+            npc.bodyMass = pxVmInstanceNpcGetBodyMass(instancePtr);
             npc.routine = pxVmInstanceNpcGetRoutine(instancePtr);
+            npc.aiState = pxVmInstanceNpcGetStartAiState(instancePtr);
+            npc.spawnPoint = pxVmInstanceNpcGetSpawnPoint(instancePtr).MarshalAsString();
+            npc.spawnDelay = pxVmInstanceNpcGetSpawnDelay(instancePtr);
+            npc.senses = pxVmInstanceNpcGetSenses(instancePtr);
+            npc.sensesRange = pxVmInstanceNpcGetSensesRange(instancePtr);
+            npc.wp = pxVmInstanceNpcGetWP(instancePtr).MarshalAsString();
+            npc.exp = pxVmInstanceNpcGetExp(instancePtr);
+            npc.expNext = pxVmInstanceNpcGetExpNext(instancePtr);
+            npc.lp = pxVmInstanceNpcGetLp(instancePtr);
+
+            var nameLength = pxVmInstanceNpcGetNameLength(instancePtr);
+            var attributeLength = pxVmInstanceNpcGetAttributeLength(instancePtr);
+            var protectionLength = pxVmInstanceNpcGetProtectionLength(instancePtr);
+            var damageLength = pxVmInstanceNpcGetDamageLength(instancePtr);
+            var missionLength = pxVmInstanceNpcGetMissionLength(instancePtr);
+            var aiLength = pxVmInstanceNpcGetAiLength(instancePtr);
+
+            npc.names = new string[nameLength];
+            for (var i = 0u; i < nameLength; i++)
+                npc.names[i] = pxVmInstanceNpcGetName(instancePtr, i).MarshalAsString();
+
+            npc.attribute = new int[attributeLength];
+            for (var i = 0u; i < attributeLength; i++)
+                npc.attribute[i] = pxVmInstanceNpcGetAttribute(instancePtr, i);
+
+            npc.protection = new int[protectionLength];
+            for (var i = 0u; i < protectionLength; i++)
+                npc.protection[i] = pxVmInstanceNpcGetProtection(instancePtr, i);
+
+            npc.damage = new int[damageLength];
+            for (var i = 0u; i < damageLength; i++)
+                npc.damage[i] = pxVmInstanceNpcGetDamage(instancePtr, i);
+
+            npc.mission = new int[missionLength];
+            for (var i = 0u; i < missionLength; i++)
+                npc.mission[i] = pxVmInstanceNpcGetMission(instancePtr, i);
+
+            npc.aiVar = new int[aiLength];
+            for (var i = 0u; i < aiLength; i++)
+                npc.aiVar[i] = pxVmInstanceNpcGetAiVar(instancePtr, i);
 
             return npc;
         }
